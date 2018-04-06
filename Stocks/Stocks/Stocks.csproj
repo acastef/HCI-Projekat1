@@ -1,0 +1,326 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{8C5ADD22-4208-4A15-B0A0-57DBE5DC095A}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>Stocks</RootNamespace>
+    <AssemblyName>Stocks</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Avapi, Version=1.4.8.1, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Avapi.1.4.8.1\lib\netstandard2.0\Avapi.dll</HintPath>
+    </Reference>
+    <Reference Include="LiveCharts, Version=0.9.7.0, Culture=neutral, PublicKeyToken=0bc1f845d1ebb8df, processorArchitecture=MSIL">
+      <HintPath>..\packages\LiveCharts.0.9.7\lib\net45\LiveCharts.dll</HintPath>
+    </Reference>
+    <Reference Include="LiveCharts.Wpf, Version=0.9.7.0, Culture=neutral, PublicKeyToken=0bc1f845d1ebb8df, processorArchitecture=MSIL">
+      <HintPath>..\packages\LiveCharts.Wpf.0.9.7\lib\net45\LiveCharts.Wpf.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Compile Include="ADOSC\Const_ADOSC.cs" />
+    <Compile Include="ADOSC\Impl_ADOSC.cs" />
+    <Compile Include="ADOSC\Int_ADOSC.cs" />
+    <Compile Include="ADXR\Const_ADXR.cs" />
+    <Compile Include="ADXR\Impl_ADXR.cs" />
+    <Compile Include="ADXR\Int_ADXR.cs" />
+    <Compile Include="ADX\Const_ADX.cs" />
+    <Compile Include="ADX\Impl_ADX.cs" />
+    <Compile Include="ADX\Int_ADX.cs" />
+    <Compile Include="AD\Const_AD.cs" />
+    <Compile Include="AD\Impl_AD.cs" />
+    <Compile Include="AD\Int_AD.cs" />
+    <Compile Include="APO\Const_APO.cs" />
+    <Compile Include="APO\Impl_APO.cs" />
+    <Compile Include="APO\Int_APO.cs" />
+    <Compile Include="AROONOSC\Const_AROONOSC.cs" />
+    <Compile Include="AROONOSC\Impl_AROONOSC.cs" />
+    <Compile Include="AROONOSC\Int_AROONOSC.cs" />
+    <Compile Include="AROON\Const_AROON.cs" />
+    <Compile Include="AROON\Impl_AROON.cs" />
+    <Compile Include="AROON\Int_AROON.cs" />
+    <Compile Include="ATR\Const_ATR.cs" />
+    <Compile Include="ATR\Impl_ATR.cs" />
+    <Compile Include="ATR\Int_ATR.cs" />
+    <Compile Include="AvapiConnection.cs" />
+    <Compile Include="BATCH_STOCK_QUOTES\Const_BATCH_STOCK_QUOTES.cs" />
+    <Compile Include="BATCH_STOCK_QUOTES\Impl_BATCH_STOCK_QUOTES.cs" />
+    <Compile Include="BATCH_STOCK_QUOTES\Int_BATCH_STOCK_QUOTES.cs" />
+    <Compile Include="BBANDS\Const_BBANDS.cs" />
+    <Compile Include="BBANDS\Impl_BBANDS.cs" />
+    <Compile Include="BBANDS\Int_BBANDS.cs" />
+    <Compile Include="BOP\Const_BOP.cs" />
+    <Compile Include="BOP\Impl_BOP.cs" />
+    <Compile Include="BOP\Int_BOP.cs" />
+    <Compile Include="CCI\Const_CCI.cs" />
+    <Compile Include="CCI\Impl_CCI.cs" />
+    <Compile Include="CCI\Int_CCI.cs" />
+    <Compile Include="CMO\Const_CMO.cs" />
+    <Compile Include="CMO\Impl_CMO.cs" />
+    <Compile Include="CMO\Int_CMO.cs" />
+    <Compile Include="CURRENCY_EXCHANGE_RATE\Const_CURRENCY_EXCHANGE_RATE.cs" />
+    <Compile Include="CURRENCY_EXCHANGE_RATE\Impl_CURRENCY_EXCHANGE_RATE.cs" />
+    <Compile Include="CURRENCY_EXCHANGE_RATE\Int_CURRENCY_EXCHANGE_RATE.cs" />
+    <Compile Include="DEMA\Const_DEMA.cs" />
+    <Compile Include="DEMA\Impl_DEMA.cs" />
+    <Compile Include="DEMA\Int_DEMA.cs" />
+    <Compile Include="DIGITAL_CURRENCY_DAILY\Const_DIGITAL_CURRENCY_DAILY.cs" />
+    <Compile Include="DIGITAL_CURRENCY_DAILY\Impl_DIGITAL_CURRENCY_DAILY.cs" />
+    <Compile Include="DIGITAL_CURRENCY_DAILY\Int_DIGITAL_CURRENCY_DAILY.cs" />
+    <Compile Include="DIGITAL_CURRENCY_INTRADAY\Const_DIGITAL_CURRENCY_INTRADAY.cs" />
+    <Compile Include="DIGITAL_CURRENCY_INTRADAY\Impl_DIGITAL_CURRENCY_INTRADAY.cs" />
+    <Compile Include="DIGITAL_CURRENCY_INTRADAY\Int_DIGITAL_CURRENCY_INTRADAY.cs" />
+    <Compile Include="DIGITAL_CURRENCY_MONTHLY\Const_DIGITAL_CURRENCY_MONTHLY.cs" />
+    <Compile Include="DIGITAL_CURRENCY_MONTHLY\Impl_DIGITAL_CURRENCY_MONTHLY.cs" />
+    <Compile Include="DIGITAL_CURRENCY_MONTHLY\Int_DIGITAL_CURRENCY_MONTHLY.cs" />
+    <Compile Include="DIGITAL_CURRENCY_WEEKLY\Const_DIGITAL_CURRENCY_WEEKLY.cs" />
+    <Compile Include="DIGITAL_CURRENCY_WEEKLY\Impl_DIGITAL_CURRENCY_WEEKLY.cs" />
+    <Compile Include="DIGITAL_CURRENCY_WEEKLY\Int_DIGITAL_CURRENCY_WEEKLY.cs" />
+    <Compile Include="DX\Const_DX.cs" />
+    <Compile Include="DX\Impl_DX.cs" />
+    <Compile Include="DX\Int_DX.cs" />
+    <Compile Include="EMA\Const_EMA.cs" />
+    <Compile Include="EMA\Impl_EMA.cs" />
+    <Compile Include="EMA\Int_EMA.cs" />
+    <Compile Include="HistoryTrending\HistoryTrending.xaml.cs">
+      <DependentUpon>HistoryTrending.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="HT_DCPERIOD\Const_HT_DCPERIOD.cs" />
+    <Compile Include="HT_DCPERIOD\Impl_HT_DCPERIOD.cs" />
+    <Compile Include="HT_DCPERIOD\Int_HT_DCPERIOD.cs" />
+    <Compile Include="HT_DCPHASE\Const_HT_DCPHASE.cs" />
+    <Compile Include="HT_DCPHASE\Impl_HT_DCPHASE.cs" />
+    <Compile Include="HT_DCPHASE\Int_HT_DCPHASE.cs" />
+    <Compile Include="HT_PHASOR\Const_HT_PHASOR.cs" />
+    <Compile Include="HT_PHASOR\Impl_HT_PHASOR.cs" />
+    <Compile Include="HT_PHASOR\Int_HT_PHASOR.cs" />
+    <Compile Include="HT_SINE\Const_HT_SINE.cs" />
+    <Compile Include="HT_SINE\Impl_HT_SINE.cs" />
+    <Compile Include="HT_SINE\Int_HT_SINE.cs" />
+    <Compile Include="HT_TRENDLINE\Const_HT_TRENDLINE.cs" />
+    <Compile Include="HT_TRENDLINE\Impl_HT_TRENDLINE.cs" />
+    <Compile Include="HT_TRENDLINE\Int_HT_TRENDLINE.cs" />
+    <Compile Include="HT_TRENDMODE\Const_HT_TRENDMODE.cs" />
+    <Compile Include="HT_TRENDMODE\Impl_HT_TRENDMODE.cs" />
+    <Compile Include="HT_TRENDMODE\Int_HT_TRENDMODE.cs" />
+    <Compile Include="IAvapiConnection.cs" />
+    <Compile Include="KAMA\Const_KAMA.cs" />
+    <Compile Include="KAMA\Impl_KAMA.cs" />
+    <Compile Include="KAMA\Int_KAMA.cs" />
+    <Compile Include="MACDEXT\Const_MACDEXT.cs" />
+    <Compile Include="MACDEXT\Impl_MACDEXT.cs" />
+    <Compile Include="MACDEXT\Int_MACDEXT.cs" />
+    <Compile Include="MACD\Const_MACD.cs" />
+    <Compile Include="MACD\Impl_MACD.cs" />
+    <Compile Include="MACD\Int_MACD.cs" />
+    <Compile Include="MAMA\Const_MAMA.cs" />
+    <Compile Include="MAMA\Impl_MAMA.cs" />
+    <Compile Include="MAMA\Int_MAMA.cs" />
+    <Compile Include="MFI\Const_MFI.cs" />
+    <Compile Include="MFI\Impl_MFI.cs" />
+    <Compile Include="MFI\Int_MFI.cs" />
+    <Compile Include="MIDPOINT\Const_MIDPOINT.cs" />
+    <Compile Include="MIDPOINT\Impl_MIDPOINT.cs" />
+    <Compile Include="MIDPOINT\Int_MIDPOINT.cs" />
+    <Compile Include="MIDPRICE\Const_MIDPRICE.cs" />
+    <Compile Include="MIDPRICE\Impl_MIDPRICE.cs" />
+    <Compile Include="MIDPRICE\Int_MIDPRICE.cs" />
+    <Compile Include="MINUS_DI\Const_MINUS_DI.cs" />
+    <Compile Include="MINUS_DI\Impl_MINUS_DI.cs" />
+    <Compile Include="MINUS_DI\Int_MINUS_DI.cs" />
+    <Compile Include="MINUS_DM\Const_MINUS_DM.cs" />
+    <Compile Include="MINUS_DM\Impl_MINUS_DM.cs" />
+    <Compile Include="MINUS_DM\Int_MINUS_DM.cs" />
+    <Compile Include="Model\DateModel.cs" />
+    <Compile Include="MOM\Const_MOM.cs" />
+    <Compile Include="MOM\Impl_MOM.cs" />
+    <Compile Include="MOM\Int_MOM.cs" />
+    <Compile Include="NATR\Const_NATR.cs" />
+    <Compile Include="NATR\Impl_NATR.cs" />
+    <Compile Include="NATR\Int_NATR.cs" />
+    <Compile Include="OBV\Const_OBV.cs" />
+    <Compile Include="OBV\Impl_OBV.cs" />
+    <Compile Include="OBV\Int_OBV.cs" />
+    <Compile Include="PLUS_DI\Const_PLUS_DI.cs" />
+    <Compile Include="PLUS_DI\Impl_PLUS_DI.cs" />
+    <Compile Include="PLUS_DI\Int_PLUS_DI.cs" />
+    <Compile Include="PLUS_DM\Const_PLUS_DM.cs" />
+    <Compile Include="PLUS_DM\Impl_PLUS_DM.cs" />
+    <Compile Include="PLUS_DM\Int_PLUS_DM.cs" />
+    <Compile Include="PPO\Const_PPO.cs" />
+    <Compile Include="PPO\Impl_PPO.cs" />
+    <Compile Include="PPO\Int_PPO.cs" />
+    <Compile Include="RealTime\RealTimeTrending.xaml.cs">
+      <DependentUpon>RealTimeTrending.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ROCR\Const_ROCR.cs" />
+    <Compile Include="ROCR\Impl_ROCR.cs" />
+    <Compile Include="ROCR\Int_ROCR.cs" />
+    <Compile Include="ROC\Const_ROC.cs" />
+    <Compile Include="ROC\Impl_ROC.cs" />
+    <Compile Include="ROC\Int_ROC.cs" />
+    <Compile Include="RSI\Const_RSI.cs" />
+    <Compile Include="RSI\Impl_RSI.cs" />
+    <Compile Include="RSI\Int_RSI.cs" />
+    <Compile Include="SAR\Const_SAR.cs" />
+    <Compile Include="SAR\Impl_SAR.cs" />
+    <Compile Include="SAR\Int_SAR.cs" />
+    <Compile Include="SECTOR\Impl_SECTOR.cs" />
+    <Compile Include="SECTOR\Int_SECTOR.cs" />
+    <Compile Include="SMA\Const_SMA.cs" />
+    <Compile Include="SMA\Impl_SMA.cs" />
+    <Compile Include="SMA\Int_SMA.cs" />
+    <Compile Include="STOCHF\Const_STOCHF.cs" />
+    <Compile Include="STOCHF\Impl_STOCHF.cs" />
+    <Compile Include="STOCHF\Int_STOCHF.cs" />
+    <Compile Include="STOCHRSI\Const_STOCHRSI.cs" />
+    <Compile Include="STOCHRSI\Impl_STOCHRSI.cs" />
+    <Compile Include="STOCHRSI\Int_STOCHRSI.cs" />
+    <Compile Include="STOCH\Const_STOCH.cs" />
+    <Compile Include="STOCH\Impl_STOCH.cs" />
+    <Compile Include="STOCH\Int_STOCH.cs" />
+    <Compile Include="T3\Const_T3.cs" />
+    <Compile Include="T3\Impl_T3.cs" />
+    <Compile Include="T3\Int_T3.cs" />
+    <Compile Include="TEMA\Const_TEMA.cs" />
+    <Compile Include="TEMA\Impl_TEMA.cs" />
+    <Compile Include="TEMA\Int_TEMA.cs" />
+    <Compile Include="TIME_SERIES_DAILY\Const_TIME_SERIES_DAILY.cs" />
+    <Compile Include="TIME_SERIES_DAILY\Impl_TIME_SERIES_DAILY.cs" />
+    <Compile Include="TIME_SERIES_DAILY\Int_TIME_SERIES_DAILY.cs" />
+    <Compile Include="TIME_SERIES_DAILY_ADJUSTED\Const_TIME_SERIES_DAILY_ADJUSTED.cs" />
+    <Compile Include="TIME_SERIES_DAILY_ADJUSTED\Impl_TIME_SERIES_DAILY_ADJUSTED.cs" />
+    <Compile Include="TIME_SERIES_DAILY_ADJUSTED\Int_TIME_SERIES_DAILY_ADJUSTED.cs" />
+    <Compile Include="TIME_SERIES_INTRADAY\Const_TIME_SERIES_INTRADAY.cs" />
+    <Compile Include="TIME_SERIES_INTRADAY\Impl_TIME_SERIES_INTRADAY.cs" />
+    <Compile Include="TIME_SERIES_INTRADAY\Int_TIME_SERIES_INTRADAY.cs" />
+    <Compile Include="TIME_SERIES_MONTHLY\Const_TIME_SERIES_MONTHLY.cs" />
+    <Compile Include="TIME_SERIES_MONTHLY\Impl_TIME_SERIES_MONTHLY.cs" />
+    <Compile Include="TIME_SERIES_MONTHLY\Int_TIME_SERIES_MONTHLY.cs" />
+    <Compile Include="TIME_SERIES_MONTHLY_ADJUSTED\Const_TIME_SERIES_MONTHLY_ADJUSTED.cs" />
+    <Compile Include="TIME_SERIES_MONTHLY_ADJUSTED\Impl_TIME_SERIES_MONTHLY_ADJUSTED.cs" />
+    <Compile Include="TIME_SERIES_MONTHLY_ADJUSTED\Int_TIME_SERIES_MONTHLY_ADJUSTED.cs" />
+    <Compile Include="TIME_SERIES_WEEKLY\Const_TIME_SERIES_WEEKLY.cs" />
+    <Compile Include="TIME_SERIES_WEEKLY\Impl_TIME_SERIES_WEEKLY.cs" />
+    <Compile Include="TIME_SERIES_WEEKLY\Int_TIME_SERIES_WEEKLY.cs" />
+    <Compile Include="TIME_SERIES_WEEKLY_ADJUSTED\Const_TIME_SERIES_WEEKLY_ADJUSTED.cs" />
+    <Compile Include="TIME_SERIES_WEEKLY_ADJUSTED\Impl_TIME_SERIES_WEEKLY_ADJUSTED.cs" />
+    <Compile Include="TIME_SERIES_WEEKLY_ADJUSTED\Int_TIME_SERIES_WEEKLY_ADJUSTED.cs" />
+    <Compile Include="TRANGE\Const_TRANGE.cs" />
+    <Compile Include="TRANGE\Impl_TRANGE.cs" />
+    <Compile Include="TRANGE\Int_TRANGE.cs" />
+    <Compile Include="TRIMA\Const_TRIMA.cs" />
+    <Compile Include="TRIMA\Impl_TRIMA.cs" />
+    <Compile Include="TRIMA\Int_TRIMA.cs" />
+    <Compile Include="TRIX\Const_TRIX.cs" />
+    <Compile Include="TRIX\Impl_TRIX.cs" />
+    <Compile Include="TRIX\Int_TRIX.cs" />
+    <Compile Include="ULTOSC\Const_ULTOSC.cs" />
+    <Compile Include="ULTOSC\Impl_ULTOSC.cs" />
+    <Compile Include="ULTOSC\Int_ULTOSC.cs" />
+    <Compile Include="Utility.cs" />
+    <Compile Include="WILLR\Const_WILLR.cs" />
+    <Compile Include="WILLR\Impl_WILLR.cs" />
+    <Compile Include="WILLR\Int_WILLR.cs" />
+    <Compile Include="WMA\Const_WMA.cs" />
+    <Compile Include="WMA\Impl_WMA.cs" />
+    <Compile Include="WMA\Int_WMA.cs" />
+    <Page Include="HistoryTrending\HistoryTrending.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Page Include="RealTime\RealTimeTrending.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
