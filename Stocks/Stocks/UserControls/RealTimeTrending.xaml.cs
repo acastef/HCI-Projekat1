@@ -19,7 +19,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Stocks.RealTime
+namespace Stocks.UserControls
 {
     /// <summary>
     /// Interaction logic for RealTimeTrending.xaml

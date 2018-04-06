@@ -3,14 +3,44 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:userControls="clr-namespace:Stocks.UserControls"
         xmlns:local="clr-namespace:Stocks"
         xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
-        xmlns:realTime="clr-namespace:Stocks.RealTime"
-        xmlns:history="clr-namespace:Stocks.HistoryTrending"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        <!--<realTime:RealTimeTrending></realTime:RealTimeTrending>-->
-        <history:HistoryTrending></history:HistoryTrending>
+    <Grid >
+     
+        <Grid.ColumnDefinitions>
+
+            <ColumnDefinition Width="*">
+
+            </ColumnDefinition>
+
+            <ColumnDefinition Width="2*">
+
+            </ColumnDefinition>
+
+
+        </Grid.ColumnDefinitions>
+
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="2*"/>
+                <RowDefinition Height="3*"/>
+            </Grid.RowDefinitions>
+
+            <userControls:RealTimeTrending Grid.Row ="1" ></userControls:RealTimeTrending >
+            <userControls:HistoryTrending  Grid.Row ="0" ></userControls:HistoryTrending>
+
+        </Grid>
+        
+       
+        
+        
+        <userControls:ItemSelection  Grid.Column="0">
+
+            
+        </userControls:ItemSelection  >
+        
     </Grid>
 </Window>

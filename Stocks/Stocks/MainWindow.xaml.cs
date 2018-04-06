@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Stocks.FileManager;
+using Stocks.Model;
 
 namespace Stocks
 {
@@ -22,7 +24,26 @@ namespace Stocks
     {
         public MainWindow()
         {
+            Load();
+            
             InitializeComponent();
         }
+
+        public void Load()
+        {
+            LoadData Data = new LoadData();
+            try
+            {
+                AbstractData Stocks = Data.ReadStocks();
+                AbstractData CriptroCurrencies = Data.ReadCriptoCurrencies();
+                AbstractData Currencies = Data.ReadCurrencies();
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("Neuspesno ucitavanje fajla");
+            }
+        }
     }
+
+    
 }

@@ -13,5 +13,7 @@ namespace Stocks
     /// </summary>
     public partial class App : Application
     {
+        
+        
     }
 }

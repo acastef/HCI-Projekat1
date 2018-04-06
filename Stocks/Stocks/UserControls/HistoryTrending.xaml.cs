@@ -20,7 +20,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Stocks.HistoryTrending
+namespace Stocks.UserControls
+
 {
     /// <summary>
     /// Interaction logic for HistoryTrending.xaml
@@ -138,13 +139,13 @@ namespace Stocks.HistoryTrending
                 //Console.WriteLine("========================");
                 foreach (var timeseries in data.TimeSeries)
                 {
-                    Console.WriteLine("open: " + timeseries.open);
-                    Console.WriteLine("high: " + timeseries.high);
-                    Console.WriteLine("low: " + timeseries.low);
-                    Console.WriteLine("close: " + timeseries.close);
-                    Console.WriteLine("volume: " + timeseries.volume);
-                    Console.WriteLine("DateTime: " + timeseries.DateTime);
-                    Console.WriteLine("========================");
+                    //Console.WriteLine("open: " + timeseries.open);
+                    //Console.WriteLine("high: " + timeseries.high);
+                    //Console.WriteLine("low: " + timeseries.low);
+                    //Console.WriteLine("close: " + timeseries.close);
+                    //Console.WriteLine("volume: " + timeseries.volume);
+                    //Console.WriteLine("DateTime: " + timeseries.DateTime);
+                    //Console.WriteLine("========================");
 
                     values.Add(new DateTimePoint(DateTime.ParseExact(timeseries.DateTime, "yyyy-MM-dd", CultureInfo.InvariantCulture),
                         double.Parse(timeseries.close)));

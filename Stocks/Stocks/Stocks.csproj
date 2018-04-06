@@ -43,6 +43,7 @@
     <Reference Include="LiveCharts.Wpf, Version=0.9.7.0, Culture=neutral, PublicKeyToken=0bc1f845d1ebb8df, processorArchitecture=MSIL">
       <HintPath>..\packages\LiveCharts.Wpf.0.9.7\lib\net45\LiveCharts.Wpf.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -130,7 +131,8 @@
     <Compile Include="EMA\Const_EMA.cs" />
     <Compile Include="EMA\Impl_EMA.cs" />
     <Compile Include="EMA\Int_EMA.cs" />
-    <Compile Include="HistoryTrending\HistoryTrending.xaml.cs">
+    <Compile Include="FileManager\LoadData.cs" />
+    <Compile Include="UserControls\HistoryTrending.xaml.cs">
       <DependentUpon>HistoryTrending.xaml</DependentUpon>
     </Compile>
     <Compile Include="HT_DCPERIOD\Const_HT_DCPERIOD.cs" />
@@ -179,6 +181,8 @@
     <Compile Include="MINUS_DM\Const_MINUS_DM.cs" />
     <Compile Include="MINUS_DM\Impl_MINUS_DM.cs" />
     <Compile Include="MINUS_DM\Int_MINUS_DM.cs" />
+    <Compile Include="Model\AbstractData.cs" />
+    <Compile Include="Model\ConcreteData.cs" />
     <Compile Include="Model\DateModel.cs" />
     <Compile Include="MOM\Const_MOM.cs" />
     <Compile Include="MOM\Impl_MOM.cs" />
@@ -198,7 +202,7 @@
     <Compile Include="PPO\Const_PPO.cs" />
     <Compile Include="PPO\Impl_PPO.cs" />
     <Compile Include="PPO\Int_PPO.cs" />
-    <Compile Include="RealTime\RealTimeTrending.xaml.cs">
+    <Compile Include="UserControls\RealTimeTrending.xaml.cs">
       <DependentUpon>RealTimeTrending.xaml</DependentUpon>
     </Compile>
     <Compile Include="ROCR\Const_ROCR.cs" />
@@ -266,6 +270,9 @@
     <Compile Include="ULTOSC\Const_ULTOSC.cs" />
     <Compile Include="ULTOSC\Impl_ULTOSC.cs" />
     <Compile Include="ULTOSC\Int_ULTOSC.cs" />
+    <Compile Include="UserControls\ItemSelection.xaml.cs">
+      <DependentUpon>ItemSelection.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Utility.cs" />
     <Compile Include="WILLR\Const_WILLR.cs" />
     <Compile Include="WILLR\Impl_WILLR.cs" />
@@ -273,7 +280,7 @@
     <Compile Include="WMA\Const_WMA.cs" />
     <Compile Include="WMA\Impl_WMA.cs" />
     <Compile Include="WMA\Int_WMA.cs" />
-    <Page Include="HistoryTrending\HistoryTrending.xaml">
+    <Page Include="UserControls\HistoryTrending.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -289,7 +296,11 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="RealTime\RealTimeTrending.xaml">
+    <Page Include="UserControls\RealTimeTrending.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\ItemSelection.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -321,6 +332,8 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Files\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
