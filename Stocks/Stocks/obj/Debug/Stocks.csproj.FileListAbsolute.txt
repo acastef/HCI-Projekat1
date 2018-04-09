@@ -253,3 +253,4 @@ D:\Faks\Semestar VI\HCI\Projekat\Projekat\Stocks\Stocks\obj\Debug\UserControls\I
 D:\Faks\Semestar VI\HCI\Projekat\Projekat\Stocks\Stocks\obj\Debug\UserControls\HistoryTrending.baml
 D:\Faks\Semestar VI\HCI\Projekat\Projekat\Stocks\Stocks\obj\Debug\UserControls\RealTimeTrending.baml
 D:\Faks\Semestar VI\HCI\Projekat\Projekat\Stocks\Stocks\obj\Debug\UserControls\ItemSelection.baml
+D:\Faks\Semestar VI\HCI\Projekat\Projekat\Stocks\Stocks\obj\Debug\Stocks.csprojResolveAssemblyReference.cache

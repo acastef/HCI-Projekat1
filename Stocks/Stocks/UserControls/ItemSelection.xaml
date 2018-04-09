@@ -7,15 +7,13 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <TextBlock  TextWrapping="Wrap">
-            Use the Chart.Zoom property to enable zooming and panning, you have some options: None, X, Y and XY, click, hold and drag the chart for panning.
-        </TextBlock>
-        <StackPanel>
-            <Button>
-                <TextBlock>Toggle zoming mode, current is:
-                </TextBlock>
-            </Button>
-            <Button>Reset Zoom</Button>
-        </StackPanel>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <TextBox Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></TextBox>
+            <ListBox Grid.Row="1"  ItemsSource="{Binding MyFilteredItems}"></ListBox>
+        </Grid>
     </Grid>
 </UserControl>
