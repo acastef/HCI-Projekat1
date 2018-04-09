@@ -10,21 +10,23 @@
     <UserControl.Resources>
         <local:ZoomingModeCoverter x:Key="ZoomingModeCoverter"></local:ZoomingModeCoverter>
     </UserControl.Resources>
-    <Grid>
+    <Grid MinHeight="200">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
-        <TextBlock Grid.Row="0" TextWrapping="Wrap">
-            Use the Chart.Zoom property to enable zooming and panning, you have some options: None, X, Y and XY, click, hold and drag the chart for panning.
+        <TextBlock Grid.Row="0" TextWrapping="Wrap" FontSize="40" TextAlignment="Center"
+                   Text="{Binding Title}">
         </TextBlock>
-        <StackPanel Grid.Row="1">
-            <Button Click="ToogleZoomingMode">
-                <TextBlock>Toggle zoming mode, current is: 
-                    <TextBlock Text="{Binding ZoomingMode, Converter={StaticResource ZoomingModeCoverter}}"/>
-                </TextBlock>
-            </Button>
+        <StackPanel Grid.Row="1" Orientation="Horizontal">
+            <Button Click="MinHistory">MIN</Button>
+            <Button Click="History5y">5 years</Button>
+            <Button Click="History2y">2 years</Button>
+            <Button Click="History1y">1 year</Button>
+            <Button Click="History3m">3 months</Button>
+            <Button Click="History1m">1 month</Button>
+            <Button Click="History10d">10 days</Button>
             <Button Click="ResetZoomOnClick">Reset Zoom</Button>
         </StackPanel>
         <lvc:CartesianChart Grid.Row="2" Series="{Binding SeriesCollection}" Zoom="{Binding ZoomingMode}" >

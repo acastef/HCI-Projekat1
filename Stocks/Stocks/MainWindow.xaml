@@ -7,40 +7,40 @@
         xmlns:local="clr-namespace:Stocks"
         xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="700" Width="800">
     <Grid >
-     
         <Grid.ColumnDefinitions>
-
-            <ColumnDefinition Width="*">
-
-            </ColumnDefinition>
-
-            <ColumnDefinition Width="2*">
-
-            </ColumnDefinition>
-
-
+            <ColumnDefinition Width="Auto"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
 
-        <Grid Grid.Column="1">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="2*"/>
-                <RowDefinition Height="3*"/>
-            </Grid.RowDefinitions>
-
-            <userControls:RealTimeTrending Grid.Row ="1" ></userControls:RealTimeTrending >
-            <userControls:HistoryTrending  Grid.Row ="0" ></userControls:HistoryTrending>
-
-        </Grid>
+        <TabControl Grid.Column="0">
+            <TabItem>
+                <TabItem.Header>
+                    <TextBlock FontSize="15">Stocks</TextBlock>
+                </TabItem.Header>
+                
+            </TabItem>
+            <TabItem>
+                <TabItem.Header>
+                    <TextBlock FontSize="15">Digital Currencies</TextBlock>
+                </TabItem.Header>
+            </TabItem>
+            <TabItem>
+                <TabItem.Header>
+                    <TextBlock FontSize="15">Currencies</TextBlock>
+                </TabItem.Header>
+            </TabItem>
+        </TabControl>
+        <ScrollViewer Grid.Column="1">
+            <StackPanel>
+                <userControls:DataViewer></userControls:DataViewer>
+                <userControls:DataViewer></userControls:DataViewer>
+            </StackPanel>
+           
+        </ScrollViewer>
         
-       
-        
-        
-        <userControls:ItemSelection  Grid.Column="0">
-
-            
-        </userControls:ItemSelection  >
+      
         
     </Grid>
 </Window>
