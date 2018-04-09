@@ -11,11 +11,19 @@
              Background="#E9E9E9">
     <Grid Height="500" Width="1000" >
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="780"></ColumnDefinition>
-            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <!--<ColumnDefinition></ColumnDefinition>-->
         </Grid.ColumnDefinitions>
 
-        <Grid Margin="10, -60, 15, 10" MaxHeight="350">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        
+        <Slider Grid.Row="0" Maximum="120" TickFrequency="1" TickPlacement="BottomRight"></Slider>
+        
+        <Grid Grid.Row="1" Margin="10, -60, 15, 10" MaxHeight="350">
             <Grid.Effect>
                 <DropShadowEffect BlurRadius="15" Direction="-90" RenderingBias="Quality" Opacity=".2" ShadowDepth="1"/>
             </Grid.Effect>
@@ -62,6 +70,7 @@
 
                     <!--a small visual improvement, lets hide the first points (x = 0, x=1) to get better animations-->
                     <lvc:Axis LabelFormatter="{Binding Formatter}" FontSize="11"></lvc:Axis>
+                    
                 </lvc:CartesianChart.AxisX>
             </lvc:CartesianChart>
             <StackPanel Grid.Row="3" VerticalAlignment="Center" Margin="25, 0">
@@ -69,7 +78,7 @@
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Foreground="{Binding ForegroundColor}" FontSize="40" Text="{Binding LastLecture, StringFormat={}{0:N1}}">
                     </TextBlock>
-                    <TextBlock Foreground="#303030" FontSize="18" VerticalAlignment="Bottom" Margin="8, 6">kWh</TextBlock>
+                    <TextBlock Foreground="#303030" FontSize="18" VerticalAlignment="Bottom" Margin="8, 6" Text="{Binding Currency}"></TextBlock>
                     <Separator Width="20" Background="#59FFFFFF"></Separator>
                     <TextBlock Foreground="{Binding ForegroundColor}" FontSize="40" Text="{Binding Step, StringFormat={}{0:N1}}" 
                                HorizontalAlignment="Right"></TextBlock>
@@ -77,7 +86,7 @@
             </StackPanel>
         </Grid>
 
-        <Grid Grid.Column="1" Margin="15, 20, 15, 15" MaxHeight="350">
+        <!--<Grid Grid.Column="1" Margin="15, 20, 15, 15" MaxHeight="350">
             <Grid.Effect>
                 <DropShadowEffect BlurRadius="15" Direction="-90" RenderingBias="Quality" Opacity=".2" ShadowDepth="1"/>
             </Grid.Effect>
@@ -107,7 +116,7 @@
                     <Style.Triggers>
                         <Trigger Property="AxisOrientation" Value="X">
                             <Setter Property="IsEnabled" Value="False"></Setter>
-                            <!--<Setter Property="Step" Value="3"></Setter>-->
+                            --><!--<Setter Property="Step" Value="3"></Setter>--><!--
                         </Trigger>
                     </Style.Triggers>
                 </Style>
@@ -155,6 +164,6 @@
                     <TextBlock Foreground="#303030" FontSize="18" VerticalAlignment="Bottom" Margin="8, 6">kWh</TextBlock>
                 </StackPanel>
             </StackPanel>
-        </Grid>
+        </Grid>-->
     </Grid>
 </UserControl>

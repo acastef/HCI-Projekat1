@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Stocks.Model
 {
-    class ConcreteData
+    public class ConcreteData
     {
         
         private String _code;

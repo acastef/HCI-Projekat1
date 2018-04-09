@@ -10,11 +10,11 @@ none
 false
 DEBUG;TRACE
 D:\Faks\Semestar VI\HCI\Projekat\Projekat\Stocks\Stocks\App.xaml
-4666113098
+7977777157
 
-2161083883652
+2201878797744
 1241681783807
-UserControls\HistoryTrending.xaml;MainWindow.xaml;UserControls\RealTimeTrending.xaml;UserControls\ItemSelection.xaml;
+UserControls\DataViewer.xaml;UserControls\DigitalCurrencyHisotryTrendind.xaml;UserControls\HistoryTrending.xaml;MainWindow.xaml;UserControls\RealTimeTrending.xaml;UserControls\ItemSelection.xaml;UserControls\RealtimeViewer.xaml;
 
 True
 

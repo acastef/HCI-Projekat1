@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Stocks.Model;
 
 namespace Stocks.UserControls
 {
@@ -35,23 +36,41 @@ namespace Stocks.UserControls
             }
         }
 
-        public List<string> MyItems { get; set; }
+        public List<CheckBox> MyItems { get; set; }
 
-        public IEnumerable<string> MyFilteredItems
+        public List<CheckBox> MyFilteredItems
         {
-            get
-            {
-                Console.WriteLine(SearchText);
-                if (SearchText == null) return MyItems;
-                return MyItems.Where(x => x.ToUpper().StartsWith(SearchText.ToUpper()));
-            }
+            get;
+            set;
+            
+        }
+
+        public IEnumerable<CheckBox> getItems()
+        {
+            List<CheckBox> newItems = new List<CheckBox>();
+
+            if (SearchText == null) return MyItems;
+
+            //foreach (CheckBox cb in MyItems)
+            //{
+            //    String name = (String)cb.Content;
+            //    //String a = "AB";
+            //    if (name.ToUpper().StartsWith(SearchText.ToUpper()))
+            //    {
+            //        newItems.Add(cb);
+            //    }
+            //}
+
+            //return newItems;
+
+            return MyItems.Where(x => ((String)x.Content).ToUpper().StartsWith(SearchText.ToUpper()));
         }
 
         public ItemSelection()
         {
             InitializeComponent();
 
-            MyItems = new List<string>() { "ABC", "DEF", "GHI" };
+            //MyItems = new List<string>() { "ABC", "DEF", "GHI" };
 
             this.DataContext = this;
         }

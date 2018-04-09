@@ -7,40 +7,67 @@
         xmlns:local="clr-namespace:Stocks"
         xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="700" Width="800">
     <Grid >
-     
         <Grid.ColumnDefinitions>
-
-            <ColumnDefinition Width="*">
-
-            </ColumnDefinition>
-
-            <ColumnDefinition Width="2*">
-
-            </ColumnDefinition>
-
-
+            <ColumnDefinition Width="Auto"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
 
-        <Grid Grid.Column="1">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="2*"/>
-                <RowDefinition Height="3*"/>
-            </Grid.RowDefinitions>
+        <TabControl Grid.Column="0">
+            <TabItem>
+                <TabItem.Header>
+                    <TextBlock FontSize="15">Stocks</TextBlock>
+                </TabItem.Header>
+                <TabItem.Content>
+                    <ScrollViewer>
+                        <StackPanel Name="StockListContainer">
+                            <userControls:ItemSelection x:Name="StockItemSel"></userControls:ItemSelection>
+                        </StackPanel>
+                    </ScrollViewer>
+                    
+                    
+                </TabItem.Content>
 
-            <userControls:RealTimeTrending Grid.Row ="1" ></userControls:RealTimeTrending >
-            <userControls:HistoryTrending  Grid.Row ="0" ></userControls:HistoryTrending>
+            </TabItem>
+            <TabItem>
+                <TabItem.Header>
+                    <TextBlock FontSize="15">Digital Currencies</TextBlock>
+                </TabItem.Header>
+                <TabItem.Content>
+                    <ScrollViewer>
+                        <StackPanel Name="DCurrenciesListContainer">
+                            <userControls:ItemSelection x:Name="DCurrenciesItemSel"></userControls:ItemSelection>
+                        </StackPanel>
+                    </ScrollViewer>
 
-        </Grid>
-        
-       
-        
-        
-        <userControls:ItemSelection  Grid.Column="0">
 
-            
-        </userControls:ItemSelection  >
+                </TabItem.Content>
+            </TabItem>
+            <TabItem>
+                <TabItem.Header>
+                    <TextBlock FontSize="15">Currencies</TextBlock>
+                </TabItem.Header>
+                <TabItem.Content>
+                    <ScrollViewer>
+                        <StackPanel Name="CCurrencesListContainer">
+                            <userControls:ItemSelection x:Name="CCurrenciesItemSel"></userControls:ItemSelection>
+                        </StackPanel>
+                    </ScrollViewer>
+
+
+                </TabItem.Content>
+            </TabItem>
+        </TabControl>
+        <ScrollViewer Grid.Column="1">
+            <StackPanel Name ="DataContainer">
+                <userControls:DataViewer></userControls:DataViewer>
+                <userControls:DataViewer></userControls:DataViewer>
+            </StackPanel>
+           
+        </ScrollViewer>
+        
+      
         
     </Grid>
 </Window>

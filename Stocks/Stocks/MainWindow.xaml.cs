@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Stocks.FileManager;
 using Stocks.Model;
+using Stocks.UserControls;
 
 namespace Stocks
 {
@@ -22,11 +23,42 @@ namespace Stocks
     /// </summary>
     public partial class MainWindow : Window
     {
+
+        private AbstractData Stocks;
+        private AbstractData Currencies;
+        private AbstractData Cryptocurrency;
+
+        private List<CheckBox> checkBoxList = new List<CheckBox>();
+
         public MainWindow()
         {
+            
             Load();
             
             InitializeComponent();
+
+            List<ConcreteData> items = new List<ConcreteData>();
+
+            foreach(ConcreteData data in Stocks.ConcreteDataCollection)
+            {
+                CheckBox cb = new CheckBox();
+                cb.Content = data.Name;
+                checkBoxList.Add(cb);
+                items.Add(data);
+            }
+
+            foreach(CheckBox chBox in checkBoxList)
+            {
+                StockListContainer.Children.Add(chBox);
+            }
+            
+
+            StockItemSel.MyItems = checkBoxList;
+
+
+            var temp = new DataViewer();
+            DataContainer.Children.Add(temp);
+            DataContext = this;
         }
 
         public void Load()
@@ -34,9 +66,9 @@ namespace Stocks
             LoadData Data = new LoadData();
             try
             {
-                AbstractData Stocks = Data.ReadStocks();
-                AbstractData CriptroCurrencies = Data.ReadCriptoCurrencies();
-                AbstractData Currencies = Data.ReadCurrencies();
+                Stocks = Data.ReadStocks();
+                Cryptocurrency = Data.ReadCriptoCurrencies();
+                Currencies = Data.ReadCurrencies();
             }
             catch (Exception)
             {
