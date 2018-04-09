@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Stocks.Util;
 
 namespace Stocks.UserControls
 {
@@ -20,9 +21,29 @@ namespace Stocks.UserControls
     /// </summary>
     public partial class DataViewer : UserControl
     {
+        private HistoryTrending _historyTrending;
+        private RealtimeViewer _realtime;
+
         public DataViewer()
         {
             InitializeComponent();
         }
+
+        
+        public HistoryTrending HistoryTrending
+        {
+            get { return _historyTrending; }
+            set { _historyTrending = value; }
+        }
+
+
+
+        public RealtimeViewer RealTime
+        {
+            get { return _realtime; }
+            set { _realtime = value; }
+        }
+
+
     }
 }

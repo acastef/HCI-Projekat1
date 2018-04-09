@@ -35,7 +35,7 @@ namespace Stocks.UserControls
     {
         private ZoomingOptions _zoomingMode;
         private string _title;
-        private HistoryArgs _args;
+        private FetchArgs _args;
         private IAvapiConnection _connection = AvapiConnection.Instance;
         private double _exchangeRate = 1; 
 
@@ -52,7 +52,13 @@ namespace Stocks.UserControls
             gradientBrush.GradientStops.Add(new GradientStop(Colors.Transparent, 1));
 
             _connection.Connect("5XQ6Y6JJKEOQ7JRU");
-            _args = new HistoryArgs { DefaultCurrency = "RSD", Symbol = "MSFT", DatePoint = HistoryRate.NONE};
+            _args = new FetchArgs
+            {
+                DefaultCurrency = Configuration.Instance.DefaultCurrency,
+                Symbol = Configuration.Instance.Symbol,
+                FullName = Configuration.Instance.FullName,
+                RefreshRate = Configuration.Instance.RefreshRate
+            };
 
             XFormatter = val => new DateTime((long)val).ToString("dd MMM yyyy");
             YFormatter = val => val.ToString("0.##") + " " + _args.DefaultCurrency;
@@ -65,17 +71,55 @@ namespace Stocks.UserControls
                     Fill = gradientBrush,
                     StrokeThickness = 1,
                     PointGeometrySize = 0,
-                    Title = _args.Symbol,
-                    
+                    Title = _args.FullName,
+
                 }
             };
 
             ZoomingMode = ZoomingOptions.Xy;
 
-            Title = _args.Symbol;
+            Title = _args.FullName;
 
             DataContext = this;
         }
+
+        //public HistoryTrending(FetchArgs args) : this()
+        //{
+        //    //InitializeComponent();
+
+        //    var gradientBrush = new LinearGradientBrush
+        //    {
+        //        StartPoint = new Point(0, 0),
+        //        EndPoint = new Point(0, 1)
+        //    };
+        //    gradientBrush.GradientStops.Add(new GradientStop(Color.FromRgb(33, 148, 241), 0));
+        //    gradientBrush.GradientStops.Add(new GradientStop(Colors.Transparent, 1));
+
+        //    _connection.Connect("5XQ6Y6JJKEOQ7JRU");
+        //    _args = args;
+
+        //    XFormatter = val => new DateTime((long)val).ToString("dd MMM yyyy");
+        //    YFormatter = val => val.ToString("0.##") + " " + _args.DefaultCurrency;
+
+        //    SeriesCollection = new SeriesCollection
+        //    {
+        //        new LineSeries
+        //        {
+        //            Values = GetData(),
+        //            Fill = gradientBrush,
+        //            StrokeThickness = 1,
+        //            PointGeometrySize = 0,
+        //            Title = _args.Symbol,
+
+        //        }
+        //    };
+
+        //    ZoomingMode = ZoomingOptions.Xy;
+
+        //    Title = _args.Symbol;
+
+        //    DataContext = this;
+        //}
 
         public SeriesCollection SeriesCollection { get; set; }
         public Func<double, string> XFormatter { get; set; }
@@ -91,16 +135,7 @@ namespace Stocks.UserControls
             }
         }
 
-        public HistoryArgs HistoryArgs
-        {
-            get { return _args; }
-            set
-            {
-                _args = value;
-                Title = _args.Symbol;
-                OnPropertyChanged("HistoryArgs");
-            }
-        }
+        
 
         public ZoomingOptions ZoomingMode
         {
@@ -219,7 +254,7 @@ namespace Stocks.UserControls
 
         private async void MinHistory(object sender, RoutedEventArgs e)
         {
-            _args.DatePoint = HistoryRate.MIN;
+            
             var values = new ChartValues<DateTimePoint>();
             Int_TIME_SERIES_MONTHLY_ADJUSTED time_series_montly_adjusted = _connection.GetQueryObject_TIME_SERIES_MONTHLY_ADJUSTED();
             IAvapiResponse_TIME_SERIES_MONTHLY_ADJUSTED time_series_weekly_adjustedResponse =
@@ -241,7 +276,7 @@ namespace Stocks.UserControls
 
         private async void History5y(object sender, RoutedEventArgs e)
         {
-            _args.DatePoint = HistoryRate.YEARS5;
+            
             var values = new ChartValues<DateTimePoint>();
             Int_TIME_SERIES_MONTHLY_ADJUSTED time_series_montly_adjusted = _connection.GetQueryObject_TIME_SERIES_MONTHLY_ADJUSTED();
             IAvapiResponse_TIME_SERIES_MONTHLY_ADJUSTED time_series_weekly_adjustedResponse =
@@ -269,7 +304,7 @@ namespace Stocks.UserControls
 
         private async void History2y(object sender, RoutedEventArgs e)
         {
-            _args.DatePoint = HistoryRate.YEARS2;
+           
             var values = new ChartValues<DateTimePoint>();
             Int_TIME_SERIES_WEEKLY_ADJUSTED time_series_weekly_adjusted = _connection.GetQueryObject_TIME_SERIES_WEEKLY_ADJUSTED();
             IAvapiResponse_TIME_SERIES_WEEKLY_ADJUSTED time_series_weekly_adjustedResponse =
@@ -298,7 +333,7 @@ namespace Stocks.UserControls
 
         private async void History1y(object sender, RoutedEventArgs e)
         {
-            _args.DatePoint = HistoryRate.YEARS1;
+            
             var values = new ChartValues<DateTimePoint>();
             Int_TIME_SERIES_WEEKLY_ADJUSTED time_series_weekly_adjusted = _connection.GetQueryObject_TIME_SERIES_WEEKLY_ADJUSTED();
             IAvapiResponse_TIME_SERIES_WEEKLY_ADJUSTED time_series_weekly_adjustedResponse =
@@ -326,7 +361,7 @@ namespace Stocks.UserControls
 
         private async void History3m(object sender, RoutedEventArgs e)
         {
-            _args.DatePoint = HistoryRate.MONTS3;
+           
             var values = new ChartValues<DateTimePoint>();
             Int_TIME_SERIES_DAILY_ADJUSTED time_series_daily_adjusted = _connection.GetQueryObject_TIME_SERIES_DAILY_ADJUSTED();
             IAvapiResponse_TIME_SERIES_DAILY_ADJUSTED time_series_daily_adjustedResponse =
@@ -356,7 +391,7 @@ namespace Stocks.UserControls
 
         private async void History1m(object sender, RoutedEventArgs e)
         {
-            _args.DatePoint = HistoryRate.MONTS1;
+            
             var values = new ChartValues<DateTimePoint>();
             Int_TIME_SERIES_DAILY_ADJUSTED time_series_daily_adjusted = _connection.GetQueryObject_TIME_SERIES_DAILY_ADJUSTED();
             IAvapiResponse_TIME_SERIES_DAILY_ADJUSTED time_series_daily_adjustedResponse =
@@ -386,7 +421,7 @@ namespace Stocks.UserControls
 
         private async void History10d(object sender, RoutedEventArgs e)
         {
-            _args.DatePoint = HistoryRate.DAYS10;
+           
             var values = new ChartValues<DateTimePoint>();
             Int_TIME_SERIES_DAILY_ADJUSTED time_series_daily_adjusted = _connection.GetQueryObject_TIME_SERIES_DAILY_ADJUSTED();
             IAvapiResponse_TIME_SERIES_DAILY_ADJUSTED time_series_daily_adjustedResponse =

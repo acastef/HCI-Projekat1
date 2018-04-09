@@ -10,28 +10,18 @@ namespace Stocks.Util
 {
     
 
-    public abstract class FetchArgs
+    public class FetchArgs
     {
         public string Symbol { get; set; }
         public string DefaultCurrency { get; set; }
-        public string TargetCurrency { get; set; }
-    }
-
-    public enum HistoryRate
-    {
-        MIN, YEARS5, YEARS2, YEARS1, MONTS3, MONTS1, DAYS10, NONE
-    }
-
-    public class RealTimeArgs : FetchArgs
-    {
+        public string FullName { get; set; }
         public int RefreshRate { get; set; }
-        
+        public TypeSeries Type { get; set; }
     }
 
-    public class HistoryArgs : FetchArgs
+    public enum TypeSeries
     {
-        public HistoryRate DatePoint { get; set; }
+        STOCK,CURRENCY, DIGITAL_CURRENCY
     }
-
 
 }

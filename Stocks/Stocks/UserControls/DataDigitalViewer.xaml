@@ -1,0 +1,18 @@
+﻿<UserControl x:Class="Stocks.UserControls.DataDigitalViewer"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Stocks.UserControls"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid MaxHeight="250">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"></ColumnDefinition>
+            <ColumnDefinition Width="3*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+        <local:RealtimeViewer Grid.Column="0"></local:RealtimeViewer>
+        <local:DigitalCurrencyHisotryTrendind Grid.Column="1"></local:DigitalCurrencyHisotryTrendind>
+    </Grid>
+</UserControl>

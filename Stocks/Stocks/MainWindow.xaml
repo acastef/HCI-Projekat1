@@ -8,23 +8,47 @@
         xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
         mc:Ignorable="d"
         Title="MainWindow" Height="700" Width="800">
-    <Grid >
+    <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"></ColumnDefinition>
             <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
 
+        <Grid.Resources>
+            <Style TargetType="TabControl">
+                <Setter Property="Background" Value="#232123"></Setter>
+                <Setter Property="Padding" Value="10"></Setter>
+                <Setter Property="Focusable" Value="True"></Setter>
+                
+            </Style>
+        </Grid.Resources>
+        
         <TabControl Grid.Column="0">
             <TabItem>
                 <TabItem.Header>
                     <TextBlock FontSize="15">Stocks</TextBlock>
                 </TabItem.Header>
-                
+                <TabItem.Content>
+                    <StackPanel>
+                        <Button VerticalAlignment="Top" Height="20" Click="Button_Click">Microsoft</Button>
+                        <Button VerticalAlignment="Top" Height="20" Click="Button_Click_2">Apple</Button>
+                        <Button VerticalAlignment="Top" Height="20" Click="Button_Click_3">Facebook</Button>
+                    </StackPanel>
+                    
+                </TabItem.Content>
             </TabItem>
             <TabItem>
                 <TabItem.Header>
                     <TextBlock FontSize="15">Digital Currencies</TextBlock>
                 </TabItem.Header>
+                <TabItem.Content>
+                    <StackPanel>
+                        <Button VerticalAlignment="Top" Height="20" Click="Button_Click_1">Bitcoin</Button>
+                        <Button VerticalAlignment="Top" Height="20" Click="Button_Click_4">Etherum</Button>
+                        <Button VerticalAlignment="Top" Height="20" Click="Button_Click_5">Zcoin</Button>
+                    </StackPanel>
+                    
+                </TabItem.Content>
             </TabItem>
             <TabItem>
                 <TabItem.Header>
@@ -33,10 +57,7 @@
             </TabItem>
         </TabControl>
         <ScrollViewer Grid.Column="1">
-            <StackPanel>
-                <userControls:DataViewer></userControls:DataViewer>
-                <userControls:DataViewer></userControls:DataViewer>
-            </StackPanel>
+            <StackPanel Name="dataContainer"></StackPanel>
            
         </ScrollViewer>
         

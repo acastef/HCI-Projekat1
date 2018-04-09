@@ -261,6 +261,9 @@
     <Compile Include="ULTOSC\Const_ULTOSC.cs" />
     <Compile Include="ULTOSC\Impl_ULTOSC.cs" />
     <Compile Include="ULTOSC\Int_ULTOSC.cs" />
+    <Compile Include="UserControls\DataDigitalViewer.xaml.cs">
+      <DependentUpon>DataDigitalViewer.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\DataViewer.xaml.cs">
       <DependentUpon>DataViewer.xaml</DependentUpon>
     </Compile>
@@ -284,12 +287,17 @@
     </Compile>
     <Compile Include="Utility.cs" />
     <Compile Include="Util\FetchData.cs" />
+    <Compile Include="Util\Configuration.cs" />
     <Compile Include="WILLR\Const_WILLR.cs" />
     <Compile Include="WILLR\Impl_WILLR.cs" />
     <Compile Include="WILLR\Int_WILLR.cs" />
     <Compile Include="WMA\Const_WMA.cs" />
     <Compile Include="WMA\Impl_WMA.cs" />
     <Compile Include="WMA\Int_WMA.cs" />
+    <Page Include="UserControls\DataDigitalViewer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UserControls\DataViewer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
