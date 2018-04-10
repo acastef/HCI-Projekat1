@@ -28,7 +28,7 @@ namespace Stocks.FileManager
 
                 parser.TextFieldType = FieldType.Delimited;
                 parser.SetDelimiters(delimiter);
-                HashSet<ConcreteData> setOfData = new HashSet<ConcreteData>();
+                List<ConcreteData> setOfData = new List<ConcreteData>();
                 while (!parser.EndOfData)
                 {
                     //Processing row

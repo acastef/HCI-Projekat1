@@ -2,8 +2,9 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:Stocks"
+             xmlns:single="clr-namespace:Stocks.Util"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <x:Static Member="single:Configuration.Instance" x:Key="Config"></x:Static>
     </Application.Resources>
 </Application>

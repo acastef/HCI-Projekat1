@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace Stocks.Model
 {
-    class AbstractData
+    public class AbstractData
     {
         private String _name;
-        private HashSet<ConcreteData> _concreteDataCollection;
+        private List<ConcreteData> _concreteDataCollection;
 
 
         public String Name
@@ -18,13 +18,13 @@ namespace Stocks.Model
             set { _name = value; }
         }
         
-        public HashSet<ConcreteData> ConcreteDataCollection
+        public List<ConcreteData> ConcreteDataCollection
         {
             get { return _concreteDataCollection; }
             set { _concreteDataCollection = value; }
         }
 
-        public AbstractData(String name, HashSet<ConcreteData> collection )
+        public AbstractData(String name, List<ConcreteData> collection )
         {
             _name = name;
             _concreteDataCollection = collection;

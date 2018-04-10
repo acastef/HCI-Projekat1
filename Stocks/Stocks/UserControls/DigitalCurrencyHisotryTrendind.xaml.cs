@@ -32,7 +32,7 @@ namespace Stocks.UserControls
     {
         private ZoomingOptions _zoomingMode;
         private string _title;
-        private HistoryArgs _args;
+        private FetchArgs _args;
         private IAvapiConnection _connection = AvapiConnection.Instance;
 
         public DigitalCurrencyHisotryTrendind()
@@ -48,7 +48,13 @@ namespace Stocks.UserControls
             gradientBrush.GradientStops.Add(new GradientStop(Colors.Transparent, 1));
 
             _connection.Connect("5XQ6Y6JJKEOQ7JRU");
-            _args = new HistoryArgs { DefaultCurrency = "RSD", Symbol = "BTC" };
+            _args = new FetchArgs
+            {
+                DefaultCurrency = Configuration.Instance.DefaultCurrency,
+                Symbol = Configuration.Instance.Symbol,
+                FullName = Configuration.Instance.FullName,
+                RefreshRate = Configuration.Instance.RefreshRate
+            };
 
             XFormatter = val => new DateTime((long)val).ToString("dd MMM yyyy");
             YFormatter = val => val.ToString("0.##") + " " + _args.DefaultCurrency;
@@ -61,17 +67,55 @@ namespace Stocks.UserControls
                     Fill = gradientBrush,
                     StrokeThickness = 1,
                     PointGeometrySize = 0,
-                    Title = _args.Symbol,
+                    Title = _args.FullName,
 
                 }
             };
 
             ZoomingMode = ZoomingOptions.Xy;
 
-           
+            Title = _args.FullName;
 
             DataContext = this;
         }
+
+        //public DigitalCurrencyHisotryTrendind(FetchArgs args) : this()
+        //{
+        //    //InitializeComponent();
+
+        //    var gradientBrush = new LinearGradientBrush
+        //    {
+        //        StartPoint = new Point(0, 0),
+        //        EndPoint = new Point(0, 1)
+        //    };
+        //    gradientBrush.GradientStops.Add(new GradientStop(Color.FromRgb(33, 148, 241), 0));
+        //    gradientBrush.GradientStops.Add(new GradientStop(Colors.Transparent, 1));
+
+        //    _connection.Connect("5XQ6Y6JJKEOQ7JRU");
+        //    _args = args;
+
+        //    XFormatter = val => new DateTime((long)val).ToString("dd MMM yyyy");
+        //    YFormatter = val => val.ToString("0.##") + " " + _args.DefaultCurrency;
+
+        //    SeriesCollection = new SeriesCollection
+        //    {
+        //        new LineSeries
+        //        {
+        //            Values = GetData(),
+        //            Fill = gradientBrush,
+        //            StrokeThickness = 1,
+        //            PointGeometrySize = 0,
+        //            Title = _args.Symbol,
+
+        //        }
+        //    };
+
+        //    ZoomingMode = ZoomingOptions.Xy;
+
+
+
+        //    DataContext = this;
+        //}
 
         public SeriesCollection SeriesCollection { get; set; }
         public Func<double, string> XFormatter { get; set; }
@@ -86,18 +130,7 @@ namespace Stocks.UserControls
                 OnPropertyChanged("Title");
             }
         }
-
-        public HistoryArgs HistoryArgs
-        {
-            get { return _args; }
-            set
-            {
-                _args = value;
-                Title = _args.Symbol;
-                OnPropertyChanged("HistoryArgs");
-            }
-        }
-
+        
         private ChartValues<DateTimePoint> GetData()
         {
             var values = new ChartValues<DateTimePoint>();
@@ -121,7 +154,6 @@ namespace Stocks.UserControls
                 {
                     try
                     {
-                        Title = data1.MetaData.DigitalCurrencyName;
                         Int_CURRENCY_EXCHANGE_RATE currency_exchange_rate = _connection.GetQueryObject_CURRENCY_EXCHANGE_RATE();
                         IAvapiResponse_CURRENCY_EXCHANGE_RATE currency_exchange_rateResponse =
                         currency_exchange_rate.QueryPrimitive("USD", _args.DefaultCurrency);
@@ -147,7 +179,6 @@ namespace Stocks.UserControls
                     catch (NullReferenceException)
                     {
                         MessageBox.Show("Failed to fetch currency exchange rate for chosen currency. Values will be show in USD", "Error");
-                        Title = data1.MetaData.DigitalCurrencyName;
                         DateTime offset = DateTime.Now.AddYears(-1);
                         DateTime temp;
                         foreach (var timeseries in data1.TimeSeries)
@@ -167,7 +198,6 @@ namespace Stocks.UserControls
             }
             else
             {
-                Title = data.MetaData.DigitalCurrencyName;
                 DateTime offset = DateTime.Now.AddYears(-1);
                 DateTime temp;
                 foreach (var timeseries in data.TimeSeries)

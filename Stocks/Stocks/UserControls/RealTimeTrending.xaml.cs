@@ -36,7 +36,7 @@ namespace Stocks.UserControls
         private double _trend;
         private Brush _foregroundColor;
         private double _step;
-        private RealTimeArgs _args;
+        private FetchArgs _args;
         private IAvapiConnection _connection = AvapiConnection.Instance;
         private Task _backgroindWork;
         private DispatcherTimer timer;
@@ -52,7 +52,7 @@ namespace Stocks.UserControls
                 .Y(dayModel => dayModel.Value);
 
             _connection.Connect("5XQ6Y6JJKEOQ7JRU");
-            _args = new RealTimeArgs { DefaultCurrency = "RSD", Symbol = "MSFT", RefreshRate = 5 };
+            _args = new FetchArgs { DefaultCurrency = "RSD", Symbol = "MSFT", RefreshRate = 5 };
             LastHourSeries = new SeriesCollection
             {
                 new LineSeries

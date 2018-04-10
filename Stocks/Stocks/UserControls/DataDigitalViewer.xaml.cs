@@ -12,18 +12,23 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Stocks.Util;
 
 namespace Stocks.UserControls
 {
     /// <summary>
-    /// Interaction logic for DataViewer.xaml
+    /// Interaction logic for DataDigitalViewer.xaml
     /// </summary>
-    public partial class DataViewer : UserControl
+    public partial class DataDigitalViewer : UserControl
     {
         private String _id;
-        private HistoryTrending _historyTrending;
         private RealtimeViewer _realtime;
+        private DigitalCurrencyHisotryTrendind _digitalCurrencyHisotryTrendind;
+
+        public DataDigitalViewer(String symbol)
+        {
+            Id = symbol;
+            InitializeComponent();
+        }
 
         public String Id
         {
@@ -31,19 +36,11 @@ namespace Stocks.UserControls
             set { _id = value; }
         }
 
-        public DataViewer(String symbol)
+        public DigitalCurrencyHisotryTrendind DigitalCurrencyHisotryTrendind
         {
-            Id = symbol;
-            InitializeComponent();
+            get { return _digitalCurrencyHisotryTrendind; }
+            set { _digitalCurrencyHisotryTrendind = value; }
         }
-
-        
-        public HistoryTrending HistoryTrending
-        {
-            get { return _historyTrending; }
-            set { _historyTrending = value; }
-        }
-
 
 
         public RealtimeViewer RealTime
@@ -51,7 +48,5 @@ namespace Stocks.UserControls
             get { return _realtime; }
             set { _realtime = value; }
         }
-
-
     }
 }

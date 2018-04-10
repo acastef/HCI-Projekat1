@@ -8,26 +8,48 @@
         xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
         mc:Ignorable="d"
         Title="MainWindow" Height="700" Width="800">
-    <Grid >
+    <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"></ColumnDefinition>
             <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
 
+        <Grid.Resources>
+            <!--<Style TargetType="TabControl">
+                <Setter Property="Background" Value="#232123"></Setter>
+                <Setter Property="Padding" Value="10"></Setter>
+                <Setter Property="Focusable" Value="True"></Setter>
+                
+            </Style>-->
+        </Grid.Resources>
+        
         <TabControl Grid.Column="0">
             <TabItem>
                 <TabItem.Header>
                     <TextBlock FontSize="15">Stocks</TextBlock>
                 </TabItem.Header>
                 <TabItem.Content>
+
                     <ScrollViewer>
                         <StackPanel Name="StockListContainer">
-                            <userControls:ItemSelection x:Name="StockItemSel"></userControls:ItemSelection>
+                            <Grid>
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"></RowDefinition>
+                                        <RowDefinition Height="*"></RowDefinition>
+                                    </Grid.RowDefinitions>
+                                    <TextBox Text="{Binding SearchText1, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></TextBox>
+                                    <ListBox Grid.Row="1"  ItemsSource="{Binding FilterStockItems}"></ListBox>
+                                </Grid>
+                            </Grid>
                         </StackPanel>
                     </ScrollViewer>
                     
                     
                 </TabItem.Content>
+
+                    
+                
 
             </TabItem>
             <TabItem>
@@ -35,13 +57,23 @@
                     <TextBlock FontSize="15">Digital Currencies</TextBlock>
                 </TabItem.Header>
                 <TabItem.Content>
+
                     <ScrollViewer>
                         <StackPanel Name="DCurrenciesListContainer">
-                            <userControls:ItemSelection x:Name="DCurrenciesItemSel"></userControls:ItemSelection>
+                            <Grid>
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"></RowDefinition>
+                                        <RowDefinition Height="*"></RowDefinition>
+                                    </Grid.RowDefinitions>
+                                    <TextBox Text="{Binding SearchText2, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></TextBox>
+                                    <ListBox Grid.Row="1"  ItemsSource="{Binding FilterDCurrenciesItems}"></ListBox>
+                                </Grid>
+                            </Grid>
                         </StackPanel>
                     </ScrollViewer>
 
-
+                    
                 </TabItem.Content>
             </TabItem>
             <TabItem>
@@ -51,7 +83,16 @@
                 <TabItem.Content>
                     <ScrollViewer>
                         <StackPanel Name="CCurrencesListContainer">
-                            <userControls:ItemSelection x:Name="CCurrenciesItemSel"></userControls:ItemSelection>
+                            <Grid>
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"></RowDefinition>
+                                        <RowDefinition Height="*"></RowDefinition>
+                                    </Grid.RowDefinitions>
+                                    <TextBox Text="{Binding SearchText3, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></TextBox>
+                                    <ListBox Grid.Row="1"  ItemsSource="{Binding FilterCCurrenciesItems}"></ListBox>
+                                </Grid>
+                            </Grid>
                         </StackPanel>
                     </ScrollViewer>
 
@@ -61,9 +102,10 @@
         </TabControl>
         <ScrollViewer Grid.Column="1">
             <StackPanel Name ="DataContainer">
-                <userControls:DataViewer></userControls:DataViewer>
-                <userControls:DataViewer></userControls:DataViewer>
+                <!--<userControls:DataViewer></userControls:DataViewer>
+                <userControls:DataViewer></userControls:DataViewer>-->
             </StackPanel>
+
            
         </ScrollViewer>
         
