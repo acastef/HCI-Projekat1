@@ -38,6 +38,7 @@ namespace Stocks.UserControls
         private FetchArgs _args;
         private IAvapiConnection _connection = AvapiConnection.Instance;
         private double _exchangeRate = 1; 
+        
 
         public HistoryTrending()
         {

@@ -79,44 +79,6 @@ namespace Stocks.UserControls
             DataContext = this;
         }
 
-        //public DigitalCurrencyHisotryTrendind(FetchArgs args) : this()
-        //{
-        //    //InitializeComponent();
-
-        //    var gradientBrush = new LinearGradientBrush
-        //    {
-        //        StartPoint = new Point(0, 0),
-        //        EndPoint = new Point(0, 1)
-        //    };
-        //    gradientBrush.GradientStops.Add(new GradientStop(Color.FromRgb(33, 148, 241), 0));
-        //    gradientBrush.GradientStops.Add(new GradientStop(Colors.Transparent, 1));
-
-        //    _connection.Connect("5XQ6Y6JJKEOQ7JRU");
-        //    _args = args;
-
-        //    XFormatter = val => new DateTime((long)val).ToString("dd MMM yyyy");
-        //    YFormatter = val => val.ToString("0.##") + " " + _args.DefaultCurrency;
-
-        //    SeriesCollection = new SeriesCollection
-        //    {
-        //        new LineSeries
-        //        {
-        //            Values = GetData(),
-        //            Fill = gradientBrush,
-        //            StrokeThickness = 1,
-        //            PointGeometrySize = 0,
-        //            Title = _args.Symbol,
-
-        //        }
-        //    };
-
-        //    ZoomingMode = ZoomingOptions.Xy;
-
-
-
-        //    DataContext = this;
-        //}
-
         public SeriesCollection SeriesCollection { get; set; }
         public Func<double, string> XFormatter { get; set; }
         public Func<double, string> YFormatter { get; set; }

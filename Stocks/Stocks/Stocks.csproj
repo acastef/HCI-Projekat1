@@ -261,6 +261,9 @@
     <Compile Include="ULTOSC\Const_ULTOSC.cs" />
     <Compile Include="ULTOSC\Impl_ULTOSC.cs" />
     <Compile Include="ULTOSC\Int_ULTOSC.cs" />
+    <Compile Include="UserControls\CompareGraph.xaml.cs">
+      <DependentUpon>CompareGraph.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\DataDigitalViewer.xaml.cs">
       <DependentUpon>DataDigitalViewer.xaml</DependentUpon>
     </Compile>
@@ -294,6 +297,10 @@
     <Compile Include="WMA\Const_WMA.cs" />
     <Compile Include="WMA\Impl_WMA.cs" />
     <Compile Include="WMA\Int_WMA.cs" />
+    <Page Include="UserControls\CompareGraph.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UserControls\DataDigitalViewer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

@@ -8,7 +8,7 @@
         xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
         mc:Ignorable="d"
         Title="MainWindow" Height="700" Width="800">
-    <Grid>
+    <Grid Background="#282728">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"></ColumnDefinition>
             <ColumnDefinition Width="*"></ColumnDefinition>
@@ -19,7 +19,6 @@
                 <Setter Property="Background" Value="#232123"></Setter>
                 <Setter Property="Padding" Value="10"></Setter>
                 <Setter Property="Focusable" Value="True"></Setter>
-                
             </Style>
         </Grid.Resources>
         

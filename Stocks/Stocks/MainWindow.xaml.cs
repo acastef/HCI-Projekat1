@@ -52,6 +52,8 @@ namespace Stocks
             Configuration.Instance.Symbol = "MSFT";
             Configuration.Instance.FullName = "Microsoft";
             dataContainer.Children.Add(new DataViewer());
+            CompareGraph graph = new CompareGraph();
+            
            
         }
 

@@ -22,6 +22,8 @@
         <StackPanel Grid.Row="1" Orientation="Horizontal">
            
             <Button Click="ResetZoomOnClick">Reset Zoom</Button>
+            <!--<Button IsEnabled="False">Remove</Button>
+            <Button>Add</Button>-->
         </StackPanel>
         <lvc:CartesianChart Grid.Row="2" Series="{Binding SeriesCollection}" Zoom="{Binding ZoomingMode}" >
             <lvc:CartesianChart.AxisX>
