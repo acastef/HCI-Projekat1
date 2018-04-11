@@ -28,24 +28,50 @@
                     <TextBlock FontSize="15">Stocks</TextBlock>
                 </TabItem.Header>
                 <TabItem.Content>
-                    <StackPanel>
-                        <Button VerticalAlignment="Top" Height="20" Click="Button_Click">Microsoft</Button>
-                        <Button VerticalAlignment="Top" Height="20" Click="Button_Click_2">Apple</Button>
-                        <Button VerticalAlignment="Top" Height="20" Click="Button_Click_3">Facebook</Button>
-                    </StackPanel>
+
+                    <ScrollViewer>
+                        <StackPanel Name="StockListContainer">
+                            <Grid>
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"></RowDefinition>
+                                        <RowDefinition Height="*"></RowDefinition>
+                                    </Grid.RowDefinitions>
+                                    <TextBox Text="{Binding SearchText1, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></TextBox>
+                                    <ListBox Grid.Row="1"  ItemsSource="{Binding FilterStockItems}"></ListBox>
+                                </Grid>
+                            </Grid>
+                        </StackPanel>
+                    </ScrollViewer>
+                    
                     
                 </TabItem.Content>
+
+                    
+                
+
             </TabItem>
             <TabItem>
                 <TabItem.Header>
                     <TextBlock FontSize="15">Digital Currencies</TextBlock>
                 </TabItem.Header>
                 <TabItem.Content>
-                    <StackPanel>
-                        <Button VerticalAlignment="Top" Height="20" Click="Button_Click_1">Bitcoin</Button>
-                        <Button VerticalAlignment="Top" Height="20" Click="Button_Click_4">Etherum</Button>
-                        <Button VerticalAlignment="Top" Height="20" Click="Button_Click_5">Zcoin</Button>
-                    </StackPanel>
+
+                    <ScrollViewer>
+                        <StackPanel Name="DCurrenciesListContainer">
+                            <Grid>
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"></RowDefinition>
+                                        <RowDefinition Height="*"></RowDefinition>
+                                    </Grid.RowDefinitions>
+                                    <TextBox Text="{Binding SearchText2, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></TextBox>
+                                    <ListBox Grid.Row="1"  ItemsSource="{Binding FilterDCurrenciesItems}"></ListBox>
+                                </Grid>
+                            </Grid>
+                        </StackPanel>
+                    </ScrollViewer>
+
                     
                 </TabItem.Content>
             </TabItem>
@@ -53,10 +79,32 @@
                 <TabItem.Header>
                     <TextBlock FontSize="15">Currencies</TextBlock>
                 </TabItem.Header>
+                <TabItem.Content>
+                    <ScrollViewer>
+                        <StackPanel Name="CCurrencesListContainer">
+                            <Grid>
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"></RowDefinition>
+                                        <RowDefinition Height="*"></RowDefinition>
+                                    </Grid.RowDefinitions>
+                                    <TextBox Text="{Binding SearchText3, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></TextBox>
+                                    <ListBox Grid.Row="1"  ItemsSource="{Binding FilterCCurrenciesItems}"></ListBox>
+                                </Grid>
+                            </Grid>
+                        </StackPanel>
+                    </ScrollViewer>
+
+
+                </TabItem.Content>
             </TabItem>
         </TabControl>
         <ScrollViewer Grid.Column="1">
-            <StackPanel Name="dataContainer"></StackPanel>
+            <StackPanel Name ="DataContainer">
+                <!--<userControls:DataViewer></userControls:DataViewer>
+                <userControls:DataViewer></userControls:DataViewer>-->
+            </StackPanel>
+
            
         </ScrollViewer>
         

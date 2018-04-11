@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -17,18 +19,217 @@ using Stocks.Model;
 using Stocks.UserControls;
 using Stocks.Util;
 
+
 namespace Stocks
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, INotifyPropertyChanged
     {
+        private static AbstractData Stocks;
+        private AbstractData Currencies;
+        private AbstractData Cryptocurrency;
+        private List<CheckBox> StockItems { get; set; }
+        private List<CheckBox> DCurrenciesItems { get; set; }
+        private List<CheckBox> CCurrenciesItems { get; set; }
+        private List<CheckBox> _checkBoxList { get; set; }
+
+        // search field for stocks
+        private string _searchText1;
+        public string SearchText1
+        {
+            get { return _searchText1; }
+            set
+            {
+                _searchText1 = value;
+
+                OnPropertyChanged("SearchText1");
+                OnPropertyChanged("FilterStockItems");
+            }
+        }
+
+        // search field for DCurrencies
+        private string _searchText2;
+        public string SearchText2
+        {
+            get { return _searchText2; }
+            set
+            {
+                _searchText2 = value;
+
+                OnPropertyChanged("SearchText2");
+                OnPropertyChanged("FilterDCurrenciesItems");
+            }
+        }
+
+        // search field for CCurrencies
+        private string _searchText3;
+        public string SearchText3
+        {
+            get { return _searchText3; }
+            set
+            {
+                _searchText3 = value;
+
+                OnPropertyChanged("SearchText3");
+                OnPropertyChanged("FilterCCurrenciesItems");
+            }
+        }
+
+        // filters Stocks based on searchtext1 input field
+        public IEnumerable<CheckBox> FilterStockItems
+        {
+            get
+            {
+                if (SearchText1 == null) return StockItems;
+
+                return StockItems.Where(x => ((String)x.Content).ToUpper().StartsWith(SearchText1.ToUpper()));
+            }
+        }
+
+        // filters DCurrencies based on searchtext2 input field
+        public IEnumerable<CheckBox> FilterDCurrenciesItems
+        {
+            get
+            {
+                if (SearchText2 == null) return DCurrenciesItems;
+
+                return DCurrenciesItems.Where(x => ((String)x.Content).ToUpper().StartsWith(SearchText2.ToUpper()));
+            }
+        }
+
+        // filters CCurrencies based on searchtext3 input field
+        public IEnumerable<CheckBox> FilterCCurrenciesItems
+        {
+            get
+            {
+                if (SearchText3 == null) return CCurrenciesItems;
+
+                return CCurrenciesItems.Where(x => ((String)x.Content).ToUpper().StartsWith(SearchText3.ToUpper()));
+            }
+        }
+
+
+
         public MainWindow()
         {
+            
             Load();
             
             InitializeComponent();
+
+            StockItems = new List<CheckBox>();
+            DCurrenciesItems = new List<CheckBox>();
+            CCurrenciesItems = new List<CheckBox>();
+
+            // Initialize Stocks
+            foreach (ConcreteData stock in Stocks.ConcreteDataCollection)
+            {
+                //string merged = ;
+                CheckBox cb = new CheckBox()
+                {
+                    Content = stock.Name + "(" + stock.Code + ")"
+                };
+
+                cb.AddHandler(CheckBox.CheckedEvent, new RoutedEventHandler(cb_Checked));
+                cb.AddHandler(CheckBox.UncheckedEvent, new RoutedEventHandler(cb_Unchecked));
+                StockItems.Add(cb);
+            }
+
+
+            
+
+            // Initialize Currencies
+            foreach (ConcreteData stock in Currencies.ConcreteDataCollection)
+            {
+                
+                CheckBox cb = new CheckBox()
+                {
+                    Content = stock.Name + "(" + stock.Code + ")"
+                };
+
+                cb.AddHandler(CheckBox.CheckedEvent, new RoutedEventHandler(cbCurrChecked));
+                cb.AddHandler(CheckBox.UncheckedEvent, new RoutedEventHandler(cbCurrUnchecked));
+                DCurrenciesItems.Add(cb);
+            }
+
+            // Initialize Cryptocurrency
+            foreach (ConcreteData stock in Cryptocurrency.ConcreteDataCollection)
+            {
+                CheckBox cb = new CheckBox()
+                {
+                    Content = stock.Name + "(" + stock.Code + ")"
+                };
+
+                cb.AddHandler(CheckBox.CheckedEvent, new RoutedEventHandler(cb_Checked));
+                cb.AddHandler(CheckBox.UncheckedEvent, new RoutedEventHandler(cb_Unchecked));
+                CCurrenciesItems.Add(cb);
+            }
+
+            DataContext = this;
+        }
+
+        private void cb_Checked(object sender, RoutedEventArgs e)
+        {
+            CheckBox cb = (CheckBox)sender;
+
+            Configuration.Instance.Type = TypeSeries.STOCK;
+            String merged = (String)cb.Content;
+            String firstSplit = merged.Split('(')[1];
+            Configuration.Instance.Symbol = firstSplit.Substring(0, firstSplit.Length -1);
+            Configuration.Instance.FullName = merged.Split('(')[0];
+            DataContainer.Children.Add(new DataViewer(Configuration.Instance.Symbol));
+        }
+        private void cb_Unchecked(object sender, RoutedEventArgs e)
+        {
+            CheckBox cb = (CheckBox)sender;
+
+            
+            String merged = (String)cb.Content;
+            String firstSplit = merged.Split('(')[1];
+            String symbol = firstSplit.Substring(0, firstSplit.Length - 1);
+
+            foreach(DataViewer dv in DataContainer.Children)
+            {
+                if (dv.Id == symbol)
+                {
+                    DataContainer.Children.Remove(dv);
+                    break;
+                }
+            }
+        }
+
+
+
+        private void cbCurrChecked(object sender, RoutedEventArgs e)
+        {
+            CheckBox cb = (CheckBox)sender;
+
+            Configuration.Instance.Type = TypeSeries.STOCK;
+            String merged = (String)cb.Content;
+            String firstSplit = merged.Split('(')[1];
+            Configuration.Instance.Symbol = firstSplit.Substring(0, firstSplit.Length - 1);
+            Configuration.Instance.FullName = merged.Split('(')[0];
+            DataContainer.Children.Add(new DataDigitalViewer(Configuration.Instance.Symbol));
+        }
+        private void cbCurrUnchecked(object sender, RoutedEventArgs e)
+        {
+            CheckBox cb = (CheckBox)sender;
+
+            Configuration.Instance.Type = TypeSeries.STOCK;
+            String merged = (String)cb.Content;
+            String firstSplit = merged.Split('(')[1];
+            String symbol = firstSplit.Substring(0, firstSplit.Length - 1);
+
+            foreach (DataDigitalViewer dv in DataContainer.Children)
+            {
+                if (dv.Id == symbol)
+                {
+                    DataContainer.Children.Remove(dv);
+                    break;
+                }
+            }
         }
 
         public void Load()
@@ -36,66 +237,20 @@ namespace Stocks
             LoadData Data = new LoadData();
             try
             {
-                AbstractData Stocks = Data.ReadStocks();
-                AbstractData CriptroCurrencies = Data.ReadCriptoCurrencies();
-                AbstractData Currencies = Data.ReadCurrencies();
+                Stocks = Data.ReadStocks();
+                Cryptocurrency = Data.ReadCriptoCurrencies();
+                Currencies = Data.ReadCurrencies();
             }
             catch (Exception)
             {
                 Console.WriteLine("Neuspesno ucitavanje fajla");
             }
         }
+        public event PropertyChangedEventHandler PropertyChanged;
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        void OnPropertyChanged(string name)
         {
-            Configuration.Instance.Type = TypeSeries.STOCK;
-            Configuration.Instance.Symbol = "MSFT";
-            Configuration.Instance.FullName = "Microsoft";
-            dataContainer.Children.Add(new DataViewer());
-            CompareGraph graph = new CompareGraph();
-            
-           
-        }
-
-        private void Button_Click_1(object sender, RoutedEventArgs e)
-        {
-            Configuration.Instance.Type = TypeSeries.DIGITAL_CURRENCY;
-            Configuration.Instance.Symbol = "BTC";
-            Configuration.Instance.FullName = "Bitcoin";
-            dataContainer.Children.Add(new DataDigitalViewer());
-            
-        }
-
-        private void Button_Click_2(object sender, RoutedEventArgs e)
-        {
-            Configuration.Instance.Type = TypeSeries.STOCK;
-            Configuration.Instance.Symbol = "AAPL";
-            Configuration.Instance.FullName = "Apple";
-            dataContainer.Children.Add(new DataViewer());
-        }
-
-        private void Button_Click_3(object sender, RoutedEventArgs e)
-        {
-            Configuration.Instance.Type = TypeSeries.STOCK;
-            Configuration.Instance.Symbol = "FB";
-            Configuration.Instance.FullName = "Facebook";
-            dataContainer.Children.Add(new DataViewer());
-        }
-
-        private void Button_Click_4(object sender, RoutedEventArgs e)
-        {
-            Configuration.Instance.Type = TypeSeries.DIGITAL_CURRENCY;
-            Configuration.Instance.Symbol = "ETH";
-            Configuration.Instance.FullName = "Ethereum";
-            dataContainer.Children.Add(new DataDigitalViewer());
-        }
-
-        private void Button_Click_5(object sender, RoutedEventArgs e)
-        {
-            Configuration.Instance.Type = TypeSeries.DIGITAL_CURRENCY;
-            Configuration.Instance.Symbol = "XZC";
-            Configuration.Instance.FullName = "Zcoin";
-            dataContainer.Children.Add(new DataDigitalViewer());
+            if (PropertyChanged != null) PropertyChanged(this, new PropertyChangedEventArgs(name));
         }
     }
 

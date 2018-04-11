@@ -20,12 +20,20 @@ namespace Stocks.UserControls
     /// </summary>
     public partial class DataDigitalViewer : UserControl
     {
+        private String _id;
         private RealtimeViewer _realtime;
         private DigitalCurrencyHisotryTrendind _digitalCurrencyHisotryTrendind;
 
-        public DataDigitalViewer()
+        public DataDigitalViewer(String symbol)
         {
+            Id = symbol;
             InitializeComponent();
+        }
+
+        public String Id
+        {
+            get { return _id; }
+            set { _id = value; }
         }
 
         public DigitalCurrencyHisotryTrendind DigitalCurrencyHisotryTrendind

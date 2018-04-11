@@ -21,11 +21,19 @@ namespace Stocks.UserControls
     /// </summary>
     public partial class DataViewer : UserControl
     {
+        private String _id;
         private HistoryTrending _historyTrending;
         private RealtimeViewer _realtime;
 
-        public DataViewer()
+        public String Id
         {
+            get { return _id; }
+            set { _id = value; }
+        }
+
+        public DataViewer(String symbol)
+        {
+            Id = symbol;
             InitializeComponent();
         }
 

@@ -282,9 +282,6 @@
     <Compile Include="UserControls\RealTimeTrending.xaml.cs">
       <DependentUpon>RealTimeTrending.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\ItemSelection.xaml.cs">
-      <DependentUpon>ItemSelection.xaml</DependentUpon>
-    </Compile>
     <Compile Include="UserControls\RealtimeViewer.xaml.cs">
       <DependentUpon>RealtimeViewer.xaml</DependentUpon>
     </Compile>
@@ -333,10 +330,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\ItemSelection.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="UserControls\RealtimeViewer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -359,6 +352,7 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
