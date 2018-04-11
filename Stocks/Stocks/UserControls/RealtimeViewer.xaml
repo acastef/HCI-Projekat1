@@ -7,6 +7,17 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <TextBlock Grid.Row="0" Grid.Column="0" Foreground="WhiteSmoke" FontSize="20" TextAlignment="Center" VerticalAlignment="Center">Current value:</TextBlock>
+        <TextBlock Grid.Column="0" Grid.Row="1" Foreground="WhiteSmoke" FontSize="20" TextAlignment="Center" VerticalAlignment="Center">Trend:</TextBlock>
+        <TextBlock Grid.Column="1" Grid.Row="0" Foreground="WhiteSmoke" FontSize="20" TextAlignment="Center" VerticalAlignment="Center" Text="{Binding CurrentValue}"></TextBlock>
+        <TextBlock Grid.Column="1" Grid.Row="1" Foreground="WhiteSmoke" FontSize="20" TextAlignment="Center" VerticalAlignment="Center" Text="{Binding Trend}"></TextBlock>
     </Grid>
 </UserControl>

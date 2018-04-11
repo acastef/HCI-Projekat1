@@ -203,7 +203,8 @@ namespace Stocks
                 if (dv.Id == symbol)
                 {
                     DataContainer.Children.Remove(dv);
-                    dv.HistoryTrending.Remove();
+                    if (dv.HistoryTrending.index != -1)
+                        dv.HistoryTrending.Remove();
                     break;
                 }
             }
@@ -261,6 +262,14 @@ namespace Stocks
         void OnPropertyChanged(string name)
         {
             if (PropertyChanged != null) PropertyChanged(this, new PropertyChangedEventArgs(name));
+        }
+
+        // scrolling on mouse wheel
+        private void ListViewScrollViewer_PreviewMouseWheel(object sender, System.Windows.Input.MouseWheelEventArgs e)
+        {
+            ScrollViewer scv = (ScrollViewer)sender;
+            scv.ScrollToVerticalOffset(scv.VerticalOffset - e.Delta);
+            e.Handled = true;
         }
     }
 

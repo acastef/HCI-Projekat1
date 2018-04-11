@@ -47,8 +47,7 @@ namespace Stocks.UserControls
         {
             InitializeComponent();
             temp = new LineSeries();
-            //index = Configuration.Instance.Index;
-            Configuration.Instance.Index++;
+           
 
             var gradientBrush = new LinearGradientBrush
             {
@@ -86,7 +85,7 @@ namespace Stocks.UserControls
             ZoomingMode = ZoomingOptions.Xy;
 
             Title = _args.FullName;
-
+            
             DataContext = this;
         }
 
@@ -425,7 +424,10 @@ namespace Stocks.UserControls
         private void Add(object sender, RoutedEventArgs e)
         {
 
-            if(_exchangeRate != 1)
+            index = Configuration.Instance.Index;
+            Configuration.Instance.Index++;
+
+            if (_exchangeRate != 1)
             {
                 var values = new ChartValues<DateTimePoint>();
                 foreach(var value in SeriesCollection[0].Values)
@@ -452,8 +454,7 @@ namespace Stocks.UserControls
 
         public void Remove()
         {
-            if(index != -1)
-                graph.SeriesCollection.RemoveAt(index);
+            graph.SeriesCollection.RemoveAt(index);
         }
 
         private void Remove(object sender, RoutedEventArgs e)

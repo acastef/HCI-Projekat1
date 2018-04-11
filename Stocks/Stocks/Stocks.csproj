@@ -178,6 +178,7 @@
     <Compile Include="MINUS_DM\Const_MINUS_DM.cs" />
     <Compile Include="MINUS_DM\Impl_MINUS_DM.cs" />
     <Compile Include="MINUS_DM\Int_MINUS_DM.cs" />
+    <Compile Include="Model\RealTimeData.cs" />
     <Compile Include="MOM\Const_MOM.cs" />
     <Compile Include="MOM\Impl_MOM.cs" />
     <Compile Include="MOM\Int_MOM.cs" />
