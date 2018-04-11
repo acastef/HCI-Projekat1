@@ -81,7 +81,7 @@ namespace Stocks.UserControls
             ZoomingMode = ZoomingOptions.Xy;
 
             Title = _args.FullName;
-
+            
             DataContext = this;
         }
 
