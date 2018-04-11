@@ -184,7 +184,7 @@ namespace Stocks
             String firstSplit = merged.Split('(')[1];
             Configuration.Instance.Symbol = firstSplit.Substring(0, firstSplit.Length -1);
             Configuration.Instance.FullName = merged.Split('(')[0];
-            DataContainer.Children.Add(new DataViewer(Configuration.Instance.Symbol));
+            DataContainer.Children.Add(new DataViewer());
         }
         private void cb_Unchecked(object sender, RoutedEventArgs e)
         {
@@ -194,12 +194,22 @@ namespace Stocks
             String merged = (String)cb.Content;
             String firstSplit = merged.Split('(')[1];
             String symbol = firstSplit.Substring(0, firstSplit.Length - 1);
-
-            foreach(DataViewer dv in DataContainer.Children)
+            DataViewer temp;
+            foreach(var dv in DataContainer.Children)
             {
-                if (dv.Id == symbol)
+                try
                 {
-                    DataContainer.Children.Remove(dv);
+                    temp = (DataViewer)dv;
+                }
+                catch (Exception)
+                {
+                    continue;
+                }
+
+                if (temp.Id == symbol)
+                {
+                    temp.HistoryTrending.Remove();
+                    DataContainer.Children.Remove(temp);
                     break;
                 }
             }
@@ -216,7 +226,7 @@ namespace Stocks
             String firstSplit = merged.Split('(')[1];
             Configuration.Instance.Symbol = firstSplit.Substring(0, firstSplit.Length - 1);
             Configuration.Instance.FullName = merged.Split('(')[0];
-            DataContainer.Children.Add(new DataDigitalViewer(Configuration.Instance.Symbol));
+            DataContainer.Children.Add(new DataDigitalViewer());
         }
         private void cbCurrUnchecked(object sender, RoutedEventArgs e)
         {
@@ -227,11 +237,22 @@ namespace Stocks
             String firstSplit = merged.Split('(')[1];
             String symbol = firstSplit.Substring(0, firstSplit.Length - 1);
 
-            foreach (DataDigitalViewer dv in DataContainer.Children)
+            DataDigitalViewer temp;
+            foreach (var dv in DataContainer.Children)
             {
-                if (dv.Id == symbol)
+                try
                 {
-                    DataContainer.Children.Remove(dv);
+                    temp = (DataDigitalViewer)dv;
+                }
+                catch (Exception)
+                {
+                    continue;
+                }
+
+                if (temp.Id == symbol)
+                {
+                    temp.DigitalCurrencyHisotryTrendind.Remove();
+                    DataContainer.Children.Remove(temp);
                     break;
                 }
             }

@@ -64,7 +64,7 @@ namespace Stocks.Util
                 if(_instance == null)
                 {
                     _instance = new Configuration {
-                        DefaultCurrency = "RSD",
+                        DefaultCurrency = "USD",
                         RefreshRate = 5
                     };
                 }

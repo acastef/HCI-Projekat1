@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.ComponentModel;
 using Stocks.Util;
 
 namespace Stocks.UserControls
@@ -28,13 +29,17 @@ namespace Stocks.UserControls
         public String Id
         {
             get { return _id; }
-            set { _id = value; }
+            set {_id = value;}
         }
 
-        public DataViewer(String symbol)
+        public DataViewer()
         {
-            Id = symbol;
+            
             InitializeComponent();
+            Id = Configuration.Instance.Symbol;
+            Title.Text = Configuration.Instance.FullName;
+            _historyTrending = new HistoryTrending();
+            _realtime = new RealtimeViewer();
         }
 
         
@@ -52,6 +57,11 @@ namespace Stocks.UserControls
             set { _realtime = value; }
         }
 
+        public event PropertyChangedEventHandler PropertyChanged;
 
+        protected virtual void OnPropertyChanged(string propertyName = null)
+        {
+            if (PropertyChanged != null) PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 }

@@ -13,8 +13,16 @@
             <ColumnDefinition Width="3*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
 
-        <local:RealtimeViewer Grid.Column="0"></local:RealtimeViewer>
-        <local:HistoryTrending Grid.Column="1"></local:HistoryTrending>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <TextBlock  Grid.ColumnSpan="2" TextAlignment="Center" HorizontalAlignment="Center"
+                   FontSize="30" Foreground="WhiteSmoke" Name="Title" ></TextBlock>
+        
+        <local:RealtimeViewer Grid.Column="0" Grid.Row="1"></local:RealtimeViewer>
+        <local:HistoryTrending Grid.Column="1" Grid.Row="1"></local:HistoryTrending>
 
         
     </Grid>
