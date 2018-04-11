@@ -28,87 +28,65 @@
                     <TextBlock FontSize="15">Stocks</TextBlock>
                 </TabItem.Header>
                 <TabItem.Content>
-
-                    <ScrollViewer>
-                        <StackPanel Name="StockListContainer">
-                            <Grid>
-                                <Grid>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto"></RowDefinition>
-                                        <RowDefinition Height="*"></RowDefinition>
-                                    </Grid.RowDefinitions>
-                                    <TextBox Text="{Binding SearchText1, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></TextBox>
-                                    <ListBox Grid.Row="1"  ItemsSource="{Binding FilterStockItems}"></ListBox>
-                                </Grid>
-                            </Grid>
-                        </StackPanel>
-                    </ScrollViewer>
-                    
-                    
+                    <Grid>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                                <RowDefinition Height="*"></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <TextBox Text="{Binding SearchText1, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></TextBox>
+                            <ListBox   ItemsSource="{Binding FilterStockItems}"
+                                        Grid.Row="1"
+                                        ScrollViewer.VerticalScrollBarVisibility="Visible"
+                                        ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                            </ListBox>
+                        </Grid>
+                    </Grid>
                 </TabItem.Content>
-
-                    
-                
-
             </TabItem>
+            
+            
             <TabItem>
                 <TabItem.Header>
                     <TextBlock FontSize="15">Digital Currencies</TextBlock>
                 </TabItem.Header>
                 <TabItem.Content>
-
-                    <ScrollViewer>
-                        <StackPanel Name="DCurrenciesListContainer">
-                            <Grid>
-                                <Grid>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto"></RowDefinition>
-                                        <RowDefinition Height="*"></RowDefinition>
-                                    </Grid.RowDefinitions>
-                                    <TextBox Text="{Binding SearchText2, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></TextBox>
-                                    <ListBox Grid.Row="1"  ItemsSource="{Binding FilterDCurrenciesItems}"></ListBox>
-                                </Grid>
-                            </Grid>
-                        </StackPanel>
-                    </ScrollViewer>
-
-                    
+                    <Grid>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                                <RowDefinition Height="*"></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <TextBox Text="{Binding SearchText2, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></TextBox>
+                            <ListBox Grid.Row="1"  ItemsSource="{Binding FilterDCurrenciesItems}"></ListBox>
+                        </Grid>
+                    </Grid>
                 </TabItem.Content>
             </TabItem>
+            
+            
             <TabItem>
                 <TabItem.Header>
                     <TextBlock FontSize="15">Currencies</TextBlock>
                 </TabItem.Header>
                 <TabItem.Content>
-                    <ScrollViewer>
-                        <StackPanel Name="CCurrencesListContainer">
-                            <Grid>
-                                <Grid>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto"></RowDefinition>
-                                        <RowDefinition Height="*"></RowDefinition>
-                                    </Grid.RowDefinitions>
-                                    <TextBox Text="{Binding SearchText3, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></TextBox>
-                                    <ListBox Grid.Row="1"  ItemsSource="{Binding FilterCCurrenciesItems}"></ListBox>
-                                </Grid>
-                            </Grid>
-                        </StackPanel>
-                    </ScrollViewer>
-
-
+                    <Grid>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                                <RowDefinition Height="*"></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <TextBox Text="{Binding SearchText3, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></TextBox>
+                            <ListBox Grid.Row="1"  ItemsSource="{Binding FilterCCurrenciesItems}"></ListBox>
+                        </Grid>
+                    </Grid>
                 </TabItem.Content>
             </TabItem>
         </TabControl>
         <ScrollViewer Grid.Column="1">
             <StackPanel Name ="DataContainer">
-                <!--<userControls:DataViewer></userControls:DataViewer>
-                <userControls:DataViewer></userControls:DataViewer>-->
             </StackPanel>
-
-           
         </ScrollViewer>
-        
-      
         
     </Grid>
 </Window>

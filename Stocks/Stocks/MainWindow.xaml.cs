@@ -35,6 +35,7 @@ namespace Stocks
         private List<CheckBox> CCurrenciesItems { get; set; }
         private List<CheckBox> _checkBoxList { get; set; }
         private CompareGraph graph = null;
+        private int index = -1; // pozicija u historyTrendingu na kojoj se dodaje grafik
 
         // search field for stocks
         private string _searchText1;
@@ -184,6 +185,7 @@ namespace Stocks
             String firstSplit = merged.Split('(')[1];
             Configuration.Instance.Symbol = firstSplit.Substring(0, firstSplit.Length -1);
             Configuration.Instance.FullName = merged.Split('(')[0];
+
             DataContainer.Children.Add(new DataViewer());
         }
         private void cb_Unchecked(object sender, RoutedEventArgs e)
@@ -277,6 +279,14 @@ namespace Stocks
         void OnPropertyChanged(string name)
         {
             if (PropertyChanged != null) PropertyChanged(this, new PropertyChangedEventArgs(name));
+        }
+
+        // scrolling on mouse wheel
+        private void ListViewScrollViewer_PreviewMouseWheel(object sender, System.Windows.Input.MouseWheelEventArgs e)
+        {
+            ScrollViewer scv = (ScrollViewer)sender;
+            scv.ScrollToVerticalOffset(scv.VerticalOffset - e.Delta);
+            e.Handled = true;
         }
     }
 

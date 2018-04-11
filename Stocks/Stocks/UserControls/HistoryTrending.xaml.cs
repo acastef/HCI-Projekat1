@@ -40,11 +40,12 @@ namespace Stocks.UserControls
         private double _exchangeRate = 1;
         private CompareGraph graph = Application.Current.Windows[1] as CompareGraph;
         private LineSeries temp;
-        
 
         public HistoryTrending()
         {
             InitializeComponent();
+            temp = new LineSeries();
+           
 
             temp = new LineSeries();
            
@@ -105,6 +106,7 @@ namespace Stocks.UserControls
         }
 
         
+
 
         public ZoomingOptions ZoomingMode
         {
@@ -419,8 +421,6 @@ namespace Stocks.UserControls
                 MessageBox.Show("Failed to fetch data", "Error");
             else
             {
-                
-
                 DateTime offset = DateTime.Now.AddDays(-10);
                 DateTime temp;
                 foreach (var timeseries in data.TimeSeries)
@@ -434,14 +434,11 @@ namespace Stocks.UserControls
                 }
             }
             SeriesCollection[0].Values = values;
-            
             ResetZoomOnClick(sender, e);
-
         }
 
         private void Add(object sender, RoutedEventArgs e)
         {
-            
 
             if(_exchangeRate != 1)
             {
@@ -452,8 +449,7 @@ namespace Stocks.UserControls
                     values.Add(new DateTimePoint { Value = cast.Value / _exchangeRate, DateTime = cast.DateTime });
                 }
                 temp.Values = values;
-                temp.Title = SeriesCollection[0].Title;
-
+                temp.Title = SeriesCollection[0].Title;         
                 graph.SeriesCollection.Add(temp);
             }
             else
@@ -463,7 +459,6 @@ namespace Stocks.UserControls
                 graph.SeriesCollection.Add(temp);
             }
 
-           
             RemoveButton.IsEnabled = true;
             AddButton.IsEnabled = false;
         }

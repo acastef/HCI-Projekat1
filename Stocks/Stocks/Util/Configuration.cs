@@ -52,6 +52,15 @@ namespace Stocks.Util
             set { typeSeries = value; }
         }
 
+        private int index;
+
+        public int Index
+        {
+            get { return index; }
+            set { index = value; }
+        }
+
+
 
 
 
