@@ -50,7 +50,6 @@ namespace Stocks.UserControls
 
             Task.Run(() =>
             {
-                //ChartValues<DateModel> values = new ChartValues<DateModel>();
                 SynchronizationContext.SetSynchronizationContext(new SynchronizationContext());
                 while (true)
                 {
@@ -65,65 +64,12 @@ namespace Stocks.UserControls
 
                     _backgroindWork.ContinueWith(x =>
                     {
-                        //Dispatcher.Invoke(() =>
-                        //{
-                        //    using (Dispatcher.DisableProcessing())
-                        //    {
-                        //        LastHourSeries[0].Values.Add(values.Last());
-                        //        LastHourSeries[0].Values.RemoveAt(0);
-                        //        //LastHourSeries[0].Values = values;
-                        //    }
-                        //}, DispatcherPriority.ContextIdle);
-                        //Step = ((ChartValues<DateModel>)LastHourSeries[0].Values).Last().Value -
-                        //                ((ChartValues<DateModel>)LastHourSeries[0].Values).ElementAt(
-                        //                    ((ChartValues<DateModel>)LastHourSeries[0].Values).Count - 2).Value;
-                        //if (Step > 0)
-                        //    ForegroundColor = Brushes.Green;
-                        //else if (Step < 0)
-                        //    ForegroundColor = Brushes.Red;
-                        //else
-                        //    ForegroundColor = Brushes.Black;
-                        //LastLecture = ((ChartValues<DateModel>)LastHourSeries[0].Values).Last().Value;
-
-
-                        //MessageBox.Show("Refresh", "Refrash");
                         CurrentValue = value.Value;
                         Trend = value.Trend;
                     }, TaskScheduler.FromCurrentSynchronizationContext());
-                    Thread.Sleep(_args.RefreshRate * 1000);
+                    Thread.Sleep(_args.RefreshRate * 10000);
                 }
-
-
-
-
-
-                //while (true)
-                //{
-                //    Thread.Sleep(5000);
-                //    Dispatcher.BeginInvoke(new Action(()=> {
-                //        values = GetData();
-                //    }), DispatcherPriority.Background);
-
-                //    Application.Current.Dispatcher.Invoke(() => {
-                //        if(values.Count != 0)
-                //        {
-                //            LastHourSeries[0].Values = values;
-                //            Step = ((ChartValues<DateModel>)LastHourSeries[0].Values).Last().Value -
-                //                        ((ChartValues<DateModel>)LastHourSeries[0].Values).ElementAt(
-                //                            ((ChartValues<DateModel>)LastHourSeries[0].Values).Count - 2).Value;
-                //            if (Step > 0)
-                //                ForegroundColor = Brushes.Green;
-                //            else if (Step < 0)
-                //                ForegroundColor = Brushes.Red;
-                //            else
-                //                ForegroundColor = Brushes.Black;
-                //            LastLecture = ((ChartValues<DateModel>)LastHourSeries[0].Values).Last().Value;
-                //        }
-
-                //    });
-
-                //}
-
+                
             });
 
 
@@ -167,28 +113,13 @@ namespace Stocks.UserControls
                         Date = DateTime.ParseExact(data.TimeSeries.First().DateTime, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture),
                         Trend = 75.2
                     };
-                    //foreach (var timeseries in data.TimeSeries)
-                    //{
-                    //    Console.WriteLine("open: " + timeseries.open);
-                    //    Console.WriteLine("high: " + timeseries.high);
-                    //    Console.WriteLine("low: " + timeseries.low);
-                    //    Console.WriteLine("close: " + timeseries.close);
-                    //    Console.WriteLine("volume: " + timeseries.volume);
-                    //    Console.WriteLine("DateTime: " + timeseries.DateTime);
-                    //    Console.WriteLine("========================");
-                        
-
-                    //    values.Insert(0, new DateModel
-                    //    {
-                    //        Value = double.Parse(timeseries.close),
-                    //        DateTime = DateTime.ParseExact(timeseries.DateTime, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)
-                    //    });
-                    //}
+                   
                 }
             }
-            catch (NullReferenceException)
+            catch (Exception)
             {
                 //MessageBox.Show("Failed to send request", "Error");
+                Console.WriteLine("Desila je greska!");
             }
 
 

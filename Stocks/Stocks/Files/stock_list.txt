@@ -30,7 +30,6 @@ DHR Danaher Corp
 DIS Walt Disney Company 
 DOW Dow Chemical Company 
 DUK Duke Energy Corp 
-EMC EMC Corp 
 EMR Emerson Electric Company 
 EXC Exelon Corp 
 F Ford Motor Company 

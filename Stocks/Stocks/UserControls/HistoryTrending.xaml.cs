@@ -40,12 +40,13 @@ namespace Stocks.UserControls
         private double _exchangeRate = 1;
         private CompareGraph graph = Application.Current.Windows[1] as CompareGraph;
         private LineSeries temp;
-        public int index;
-
 
         public HistoryTrending()
         {
             InitializeComponent();
+            temp = new LineSeries();
+           
+
             temp = new LineSeries();
            
 
@@ -160,33 +161,51 @@ namespace Stocks.UserControls
             }
             else
             {
-                try
-                {
-                   
-                    Int_CURRENCY_EXCHANGE_RATE currency_exchange_rate = _connection.GetQueryObject_CURRENCY_EXCHANGE_RATE();
-                    IAvapiResponse_CURRENCY_EXCHANGE_RATE currency_exchange_rateResponse =
-                    currency_exchange_rate.QueryPrimitive("USD", _args.DefaultCurrency);
-                    var data2 = currency_exchange_rateResponse.Data;
-                    if (data2.Error)
-                        MessageBox.Show("Failed to fetch data", "Error");
-                    else
-                    {
-                        _exchangeRate = double.Parse(data2.ExchangeRate);
-                        
-                        foreach (var timeseries in data.TimeSeries)
-                        {
-                            
-                            values.Add(new DateTimePoint(DateTime.ParseExact(timeseries.DateTime, "yyyy-MM-dd", CultureInfo.InvariantCulture),
-                                double.Parse(timeseries.close) * _exchangeRate));
-                            
 
+                if (_args.DefaultCurrency != "USD")
+                {
+                    try
+                    {
+
+
+                        Int_CURRENCY_EXCHANGE_RATE currency_exchange_rate = _connection.GetQueryObject_CURRENCY_EXCHANGE_RATE();
+                        IAvapiResponse_CURRENCY_EXCHANGE_RATE currency_exchange_rateResponse =
+                        currency_exchange_rate.QueryPrimitive("USD", _args.DefaultCurrency);
+                        var data2 = currency_exchange_rateResponse.Data;
+                        if (data2.Error)
+                            MessageBox.Show("Failed to fetch data", "Error");
+                        else
+                        {
+                            _exchangeRate = double.Parse(data2.ExchangeRate);
+
+                            foreach (var timeseries in data.TimeSeries)
+                            {
+
+                                values.Add(new DateTimePoint(DateTime.ParseExact(timeseries.DateTime, "yyyy-MM-dd", CultureInfo.InvariantCulture),
+                                    double.Parse(timeseries.close) * _exchangeRate));
+
+
+                            }
                         }
                     }
+                    catch (NullReferenceException)
+                    {
+
+                        MessageBox.Show("Failed to fetch currency exchange rate for chosen currency. Values will be show in USD", "Error");
+                        _exchangeRate = 1;
+                        foreach (var timeseries in data.TimeSeries)
+                        {
+
+                            values.Add(new DateTimePoint(DateTime.ParseExact(timeseries.DateTime, "yyyy-MM-dd", CultureInfo.InvariantCulture),
+                                    double.Parse(timeseries.close) * _exchangeRate));
+
+
+                        }
+                        YFormatter = val => "$" + val.ToString("0.##");
+                    }
                 }
-                catch (NullReferenceException)
+                else
                 {
-                    
-                    MessageBox.Show("Failed to fetch currency exchange rate for chosen currency. Values will be show in USD", "Error");
                     _exchangeRate = 1;
                     foreach (var timeseries in data.TimeSeries)
                     {
@@ -196,8 +215,9 @@ namespace Stocks.UserControls
 
 
                     }
-                    YFormatter = val =>"$" + val.ToString("0.##");
                 }
+
+               
             }
 
             return values;
@@ -401,8 +421,6 @@ namespace Stocks.UserControls
                 MessageBox.Show("Failed to fetch data", "Error");
             else
             {
-                
-
                 DateTime offset = DateTime.Now.AddDays(-10);
                 DateTime temp;
                 foreach (var timeseries in data.TimeSeries)
@@ -416,18 +434,13 @@ namespace Stocks.UserControls
                 }
             }
             SeriesCollection[0].Values = values;
-            
             ResetZoomOnClick(sender, e);
-
         }
 
         private void Add(object sender, RoutedEventArgs e)
         {
 
-            index = Configuration.Instance.Index;
-            Configuration.Instance.Index++;
-
-            if (_exchangeRate != 1)
+            if(_exchangeRate != 1)
             {
                 var values = new ChartValues<DateTimePoint>();
                 foreach(var value in SeriesCollection[0].Values)
@@ -435,26 +448,32 @@ namespace Stocks.UserControls
                     var cast = (DateTimePoint)value;
                     values.Add(new DateTimePoint { Value = cast.Value / _exchangeRate, DateTime = cast.DateTime });
                 }
-
                 temp.Values = values;
-                temp.Title = SeriesCollection[0].Title;
-                graph.SeriesCollection.Insert(index, temp);
+                temp.Title = SeriesCollection[0].Title;         
+                graph.SeriesCollection.Add(temp);
             }
             else
             {
                 temp.Values = SeriesCollection[0].Values;
                 temp.Title = SeriesCollection[0].Title;
-                graph.SeriesCollection.Insert(index, temp);
+                graph.SeriesCollection.Add(temp);
             }
 
-           
             RemoveButton.IsEnabled = true;
             AddButton.IsEnabled = false;
         }
 
         public void Remove()
         {
-            graph.SeriesCollection.RemoveAt(index);
+            foreach(var item in graph.SeriesCollection)
+            {
+                var ls = item as LineSeries;
+                if(ls.Title == Title)
+                {
+                    graph.SeriesCollection.Remove(item);
+                    break;
+                }
+            }
         }
 
         private void Remove(object sender, RoutedEventArgs e)

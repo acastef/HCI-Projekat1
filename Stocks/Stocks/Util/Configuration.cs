@@ -74,9 +74,7 @@ namespace Stocks.Util
                 {
                     _instance = new Configuration {
                         DefaultCurrency = "USD",
-                        RefreshRate = 5,
-                        Index = 0
-                       
+                        RefreshRate = 5
                     };
                 }
                 return _instance;

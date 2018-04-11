@@ -135,4 +135,3 @@ D:\Faks\Semestar VI\HCI\Projekat\Projekat\Stocks\Stocks\obj\Debug\Stocks.csproj.
 D:\Faks\Semestar VI\HCI\Projekat\Projekat\Stocks\Stocks\obj\Debug\Stocks.csproj.CopyComplete
 D:\Faks\Semestar VI\HCI\Projekat\Projekat\Stocks\Stocks\obj\Debug\Stocks.exe
 D:\Faks\Semestar VI\HCI\Projekat\Projekat\Stocks\Stocks\obj\Debug\Stocks.pdb
-D:\Faks\Semestar VI\HCI\Projekat\Projekat\Stocks\Stocks\obj\Debug\Stocks.csprojResolveAssemblyReference.cache

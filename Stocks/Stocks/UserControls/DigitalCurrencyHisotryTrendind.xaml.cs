@@ -37,11 +37,14 @@ namespace Stocks.UserControls
         private IAvapiConnection _connection = AvapiConnection.Instance;
         private CompareGraph graph = Application.Current.Windows[1] as CompareGraph;
         private LineSeries temp;
+        
 
         public DigitalCurrencyHisotryTrendind()
         {
             InitializeComponent();
 
+            temp = new LineSeries();
+            
             var gradientBrush = new LinearGradientBrush
             {
                 StartPoint = new Point(0, 0),
@@ -108,7 +111,11 @@ namespace Stocks.UserControls
             digital_currency_daily.QueryPrimitive(_args.Symbol,_args.DefaultCurrency);
 
             var data = digital_currency_dailyResponse.Data;
-            if (data.Error)
+            if (data.Error && _args.DefaultCurrency == "USD")
+            {
+                MessageBox.Show("Failed to fetch data", "Error");
+            }
+            else if(data.Error)
             {
 
                 digital_currency_dailyResponse = digital_currency_daily.QueryPrimitive(_args.Symbol, "USD");
@@ -239,31 +246,39 @@ namespace Stocks.UserControls
                     var cast = (DateTimePoint)value;
                     values.Add(new DateTimePoint { Value = cast.Value / _exchangeRate, DateTime = cast.DateTime });
                 }
-                graph.SeriesCollection.Add(temp = new LineSeries
-                {
-                    Values = values,
-                    Title = SeriesCollection[0].Title
-                });
+                temp.Values = values;
+                temp.Title = SeriesCollection[0].Title;
+                graph.SeriesCollection.Add(temp);
             }
             else
             {
-                graph.SeriesCollection.Add(temp = new LineSeries
-                {
-                    Values = SeriesCollection[0].Values,
-                    Title = SeriesCollection[0].Title
-                });
+                temp.Values = SeriesCollection[0].Values;
+                temp.Title = SeriesCollection[0].Title;
+                graph.SeriesCollection.Add(temp);
             }
+
+            RemoveButton.IsEnabled = true;
+            AddButton.IsEnabled = false;
         }
 
         public void Remove()
         {
-            graph.SeriesCollection.Remove(temp);
+            foreach (var item in graph.SeriesCollection)
+            {
+                var ls = item as LineSeries;
+                if (ls.Title == Title)
+                {
+                    graph.SeriesCollection.Remove(item);
+                    break;
+                }
+            }
         }
 
         private void Remove(object sender, RoutedEventArgs e)
         {
             Remove();
-
+            RemoveButton.IsEnabled = false;
+            AddButton.IsEnabled = true;
         }
     }
 }

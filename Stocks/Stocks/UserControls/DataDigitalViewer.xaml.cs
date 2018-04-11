@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Stocks.Util;
 
 namespace Stocks.UserControls
 {
@@ -24,16 +26,21 @@ namespace Stocks.UserControls
         private RealtimeViewer _realtime;
         private DigitalCurrencyHisotryTrendind _digitalCurrencyHisotryTrendind;
 
-        public DataDigitalViewer(String symbol)
+        public DataDigitalViewer()
         {
-            Id = symbol;
+            
             InitializeComponent();
+            Id = Configuration.Instance.Symbol;
+            Title.Text = Configuration.Instance.FullName;
+            _realtime = new RealtimeViewer();
+            _digitalCurrencyHisotryTrendind = new DigitalCurrencyHisotryTrendind();
+
         }
 
         public String Id
         {
             get { return _id; }
-            set { _id = value; }
+            set {_id = value;}
         }
 
         public DigitalCurrencyHisotryTrendind DigitalCurrencyHisotryTrendind
@@ -48,5 +55,8 @@ namespace Stocks.UserControls
             get { return _realtime; }
             set { _realtime = value; }
         }
+
+
+       
     }
 }
