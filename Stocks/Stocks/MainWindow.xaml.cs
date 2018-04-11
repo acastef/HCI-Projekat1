@@ -34,6 +34,8 @@ namespace Stocks
         private List<CheckBox> DCurrenciesItems { get; set; }
         private List<CheckBox> CCurrenciesItems { get; set; }
         private List<CheckBox> _checkBoxList { get; set; }
+        private CompareGraph graph = null;
+        private int index = -1; // pozicija u historyTrendingu na kojoj se dodaje grafik
 
         // search field for stocks
         private string _searchText1;
@@ -167,6 +169,10 @@ namespace Stocks
                 CCurrenciesItems.Add(cb);
             }
 
+            graph = new CompareGraph();
+            graph.Show();
+            
+
             DataContext = this;
         }
 
@@ -179,13 +185,15 @@ namespace Stocks
             String firstSplit = merged.Split('(')[1];
             Configuration.Instance.Symbol = firstSplit.Substring(0, firstSplit.Length -1);
             Configuration.Instance.FullName = merged.Split('(')[0];
-            DataContainer.Children.Add(new DataViewer(Configuration.Instance.Symbol));
+            DataViewer dw = new DataViewer();
+            //dw.HistoryTrending.index = -1;
+            DataContainer.Children.Add(dw);
         }
         private void cb_Unchecked(object sender, RoutedEventArgs e)
         {
             CheckBox cb = (CheckBox)sender;
 
-            Configuration.Instance.Type = TypeSeries.STOCK;
+            
             String merged = (String)cb.Content;
             String firstSplit = merged.Split('(')[1];
             String symbol = firstSplit.Substring(0, firstSplit.Length - 1);
@@ -195,6 +203,7 @@ namespace Stocks
                 if (dv.Id == symbol)
                 {
                     DataContainer.Children.Remove(dv);
+                    dv.HistoryTrending.Remove();
                     break;
                 }
             }
@@ -226,6 +235,7 @@ namespace Stocks
             {
                 if (dv.Id == symbol)
                 {
+                    //dv
                     DataContainer.Children.Remove(dv);
                     break;
                 }

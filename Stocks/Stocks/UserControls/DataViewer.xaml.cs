@@ -24,6 +24,7 @@ namespace Stocks.UserControls
         private String _id;
         private HistoryTrending _historyTrending;
         private RealtimeViewer _realtime;
+        private int dvIndex;
 
         public String Id
         {
@@ -31,10 +32,15 @@ namespace Stocks.UserControls
             set { _id = value; }
         }
 
-        public DataViewer(String symbol)
+        public DataViewer()
         {
-            Id = symbol;
             InitializeComponent();
+            Id = Configuration.Instance.Symbol;
+            HistoryTrending ht = new HistoryTrending();
+            //ht.index = -1;
+            HistoryTrending = ht;
+            RealTime = new RealtimeViewer();
+            DataContext = this;
         }
 
         

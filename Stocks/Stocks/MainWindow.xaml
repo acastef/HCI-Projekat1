@@ -7,20 +7,19 @@
         xmlns:local="clr-namespace:Stocks"
         xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
         mc:Ignorable="d"
-        Title="MainWindow" Height="700" Width="800">
-    <Grid>
+        Title="MainWindow" Height="700" Width="800" Style="{StaticResource CustomWindow}">
+    <Grid Background="#282728">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"></ColumnDefinition>
             <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
 
         <Grid.Resources>
-            <!--<Style TargetType="TabControl">
+            <Style TargetType="TabControl">
                 <Setter Property="Background" Value="#232123"></Setter>
                 <Setter Property="Padding" Value="10"></Setter>
                 <Setter Property="Focusable" Value="True"></Setter>
-                
-            </Style>-->
+            </Style>
         </Grid.Resources>
         
         <TabControl Grid.Column="0">

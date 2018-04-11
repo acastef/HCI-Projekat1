@@ -5,7 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Stocks.UserControls"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450" d:DesignWidth="800" Background="#2d3035"
+             BorderBrush="#282728" BorderThickness="12">
     <Grid MaxHeight="250">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*"></ColumnDefinition>
@@ -14,5 +15,7 @@
 
         <local:RealtimeViewer Grid.Column="0"></local:RealtimeViewer>
         <local:HistoryTrending Grid.Column="1"></local:HistoryTrending>
+
+        
     </Grid>
 </UserControl>

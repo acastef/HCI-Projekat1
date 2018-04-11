@@ -3,8 +3,17 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:Stocks"
              xmlns:single="clr-namespace:Stocks.Util"
+             xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
         <x:Static Member="single:Configuration.Instance" x:Key="Config"></x:Static>
+
+        <Style x:Key="CustomWindow" TargetType="{x:Type Window}">
+            <Setter Property="MinWidth" Value="500"/>
+            <Setter Property="MinHeight" Value="500"/>
+            <!--posaviti ikocinicu-->
+            
+        </Style>
+
     </Application.Resources>
 </Application>

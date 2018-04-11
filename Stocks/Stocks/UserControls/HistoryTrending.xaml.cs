@@ -37,18 +37,25 @@ namespace Stocks.UserControls
         private string _title;
         private FetchArgs _args;
         private IAvapiConnection _connection = AvapiConnection.Instance;
-        private double _exchangeRate = 1; 
+        private double _exchangeRate = 1;
+        private CompareGraph graph = Application.Current.Windows[1] as CompareGraph;
+        private LineSeries temp;
+        public int index;
+
 
         public HistoryTrending()
         {
             InitializeComponent();
+            temp = new LineSeries();
+            //index = Configuration.Instance.Index;
+            Configuration.Instance.Index++;
 
             var gradientBrush = new LinearGradientBrush
             {
                 StartPoint = new Point(0, 0),
                 EndPoint = new Point(0, 1)
             };
-            gradientBrush.GradientStops.Add(new GradientStop(Color.FromRgb(33, 148, 241), 0));
+            gradientBrush.GradientStops.Add(new GradientStop(Color.FromRgb(64, 224, 208), 0));
             gradientBrush.GradientStops.Add(new GradientStop(Colors.Transparent, 1));
 
             _connection.Connect("5XQ6Y6JJKEOQ7JRU");
@@ -83,43 +90,6 @@ namespace Stocks.UserControls
             DataContext = this;
         }
 
-        //public HistoryTrending(FetchArgs args) : this()
-        //{
-        //    //InitializeComponent();
-
-        //    var gradientBrush = new LinearGradientBrush
-        //    {
-        //        StartPoint = new Point(0, 0),
-        //        EndPoint = new Point(0, 1)
-        //    };
-        //    gradientBrush.GradientStops.Add(new GradientStop(Color.FromRgb(33, 148, 241), 0));
-        //    gradientBrush.GradientStops.Add(new GradientStop(Colors.Transparent, 1));
-
-        //    _connection.Connect("5XQ6Y6JJKEOQ7JRU");
-        //    _args = args;
-
-        //    XFormatter = val => new DateTime((long)val).ToString("dd MMM yyyy");
-        //    YFormatter = val => val.ToString("0.##") + " " + _args.DefaultCurrency;
-
-        //    SeriesCollection = new SeriesCollection
-        //    {
-        //        new LineSeries
-        //        {
-        //            Values = GetData(),
-        //            Fill = gradientBrush,
-        //            StrokeThickness = 1,
-        //            PointGeometrySize = 0,
-        //            Title = _args.Symbol,
-
-        //        }
-        //    };
-
-        //    ZoomingMode = ZoomingOptions.Xy;
-
-        //    Title = _args.Symbol;
-
-        //    DataContext = this;
-        //}
 
         public SeriesCollection SeriesCollection { get; set; }
         public Func<double, string> XFormatter { get; set; }
@@ -136,6 +106,7 @@ namespace Stocks.UserControls
         }
 
         
+
 
         public ZoomingOptions ZoomingMode
         {
@@ -449,6 +420,47 @@ namespace Stocks.UserControls
             
             ResetZoomOnClick(sender, e);
 
+        }
+
+        private void Add(object sender, RoutedEventArgs e)
+        {
+
+            if(_exchangeRate != 1)
+            {
+                var values = new ChartValues<DateTimePoint>();
+                foreach(var value in SeriesCollection[0].Values)
+                {
+                    var cast = (DateTimePoint)value;
+                    values.Add(new DateTimePoint { Value = cast.Value / _exchangeRate, DateTime = cast.DateTime });
+                }
+
+                temp.Values = values;
+                temp.Title = SeriesCollection[0].Title;
+                graph.SeriesCollection.Insert(index, temp);
+            }
+            else
+            {
+                temp.Values = SeriesCollection[0].Values;
+                temp.Title = SeriesCollection[0].Title;
+                graph.SeriesCollection.Insert(index, temp);
+            }
+
+           
+            RemoveButton.IsEnabled = true;
+            AddButton.IsEnabled = false;
+        }
+
+        public void Remove()
+        {
+            if(index != -1)
+                graph.SeriesCollection.RemoveAt(index);
+        }
+
+        private void Remove(object sender, RoutedEventArgs e)
+        {
+            Remove();
+            RemoveButton.IsEnabled = false;
+            AddButton.IsEnabled = true;
         }
     }
 

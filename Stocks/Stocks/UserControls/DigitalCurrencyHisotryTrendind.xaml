@@ -17,11 +17,13 @@
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
         <TextBlock Grid.Row="0" TextWrapping="Wrap" FontSize="40" TextAlignment="Center"
-                   Text="{Binding Title}">
+                   Text="{Binding Title}" Foreground="WhiteSmoke">
         </TextBlock>
         <StackPanel Grid.Row="1" Orientation="Horizontal">
            
             <Button Click="ResetZoomOnClick">Reset Zoom</Button>
+            <Button Click="Add">Add</Button>
+            <Button Click="Remove" IsEnabled="False">Remove</Button>
         </StackPanel>
         <lvc:CartesianChart Grid.Row="2" Series="{Binding SeriesCollection}" Zoom="{Binding ZoomingMode}" >
             <lvc:CartesianChart.AxisX>
@@ -31,6 +33,22 @@
             <lvc:CartesianChart.AxisY>
                 <lvc:Axis Name="Y" LabelFormatter="{Binding YFormatter}"/>
             </lvc:CartesianChart.AxisY>
+            <lvc:CartesianChart.Resources>
+                <Style TargetType="lvc:LineSeries">
+                    <Setter Property="Stroke" Value="Turquoise"></Setter>
+                    <Setter Property="StrokeThickness" Value="7"></Setter>
+                </Style>
+                <Style TargetType="lvc:DefaultTooltip">
+                    <Setter Property="Background" Value="#232123"></Setter>
+                    <Setter Property="FontWeight" Value="Bold"></Setter>
+                    <Setter Property="Foreground" Value="WhiteSmoke"></Setter>
+                </Style>
+                <Style TargetType="lvc:Axis">
+                    <Setter Property="FontWeight" Value="Bold"></Setter>
+                    <Setter Property="FontSize" Value="10"></Setter>
+                    <Setter Property="Foreground" Value="WhiteSmoke"></Setter>
+                </Style>
+            </lvc:CartesianChart.Resources>
         </lvc:CartesianChart>
     </Grid>
 </UserControl>

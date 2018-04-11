@@ -33,7 +33,10 @@ namespace Stocks.UserControls
         private ZoomingOptions _zoomingMode;
         private string _title;
         private FetchArgs _args;
+        private double _exchangeRate = 1;
         private IAvapiConnection _connection = AvapiConnection.Instance;
+        private CompareGraph graph = Application.Current.Windows[1] as CompareGraph;
+        private LineSeries temp;
 
         public DigitalCurrencyHisotryTrendind()
         {
@@ -44,7 +47,7 @@ namespace Stocks.UserControls
                 StartPoint = new Point(0, 0),
                 EndPoint = new Point(0, 1)
             };
-            gradientBrush.GradientStops.Add(new GradientStop(Color.FromRgb(33, 148, 241), 0));
+            gradientBrush.GradientStops.Add(new GradientStop(Color.FromRgb(64, 224, 208), 0));
             gradientBrush.GradientStops.Add(new GradientStop(Colors.Transparent, 1));
 
             _connection.Connect("5XQ6Y6JJKEOQ7JRU");
@@ -79,44 +82,6 @@ namespace Stocks.UserControls
             DataContext = this;
         }
 
-        //public DigitalCurrencyHisotryTrendind(FetchArgs args) : this()
-        //{
-        //    //InitializeComponent();
-
-        //    var gradientBrush = new LinearGradientBrush
-        //    {
-        //        StartPoint = new Point(0, 0),
-        //        EndPoint = new Point(0, 1)
-        //    };
-        //    gradientBrush.GradientStops.Add(new GradientStop(Color.FromRgb(33, 148, 241), 0));
-        //    gradientBrush.GradientStops.Add(new GradientStop(Colors.Transparent, 1));
-
-        //    _connection.Connect("5XQ6Y6JJKEOQ7JRU");
-        //    _args = args;
-
-        //    XFormatter = val => new DateTime((long)val).ToString("dd MMM yyyy");
-        //    YFormatter = val => val.ToString("0.##") + " " + _args.DefaultCurrency;
-
-        //    SeriesCollection = new SeriesCollection
-        //    {
-        //        new LineSeries
-        //        {
-        //            Values = GetData(),
-        //            Fill = gradientBrush,
-        //            StrokeThickness = 1,
-        //            PointGeometrySize = 0,
-        //            Title = _args.Symbol,
-
-        //        }
-        //    };
-
-        //    ZoomingMode = ZoomingOptions.Xy;
-
-
-
-        //    DataContext = this;
-        //}
-
         public SeriesCollection SeriesCollection { get; set; }
         public Func<double, string> XFormatter { get; set; }
         public Func<double, string> YFormatter { get; set; }
@@ -134,7 +99,7 @@ namespace Stocks.UserControls
         private ChartValues<DateTimePoint> GetData()
         {
             var values = new ChartValues<DateTimePoint>();
-            double exchangeRate = 1;
+            
 
             Int_DIGITAL_CURRENCY_DAILY digital_currency_daily =
                 _connection.GetQueryObject_DIGITAL_CURRENCY_DAILY();
@@ -162,7 +127,7 @@ namespace Stocks.UserControls
                             MessageBox.Show("Failed to fetch data", "Error");
                         else
                         {
-                            exchangeRate = double.Parse(data2.ExchangeRate);
+                            _exchangeRate = double.Parse(data2.ExchangeRate);
                             DateTime offset = DateTime.Now.AddYears(-1);
                             DateTime temp;
                             foreach (var timeseries in data1.TimeSeries)
@@ -170,7 +135,7 @@ namespace Stocks.UserControls
                                 temp = DateTime.ParseExact(timeseries.DateTime, "yyyy-MM-dd", CultureInfo.InvariantCulture);
                                 if (temp > offset)
                                 {
-                                    values.Add(new DateTimePoint(temp, double.Parse(timeseries.Close) * exchangeRate));
+                                    values.Add(new DateTimePoint(temp, double.Parse(timeseries.Close) * _exchangeRate));
                                 }
 
                             }
@@ -262,6 +227,43 @@ namespace Stocks.UserControls
             X.MaxValue = double.NaN;
             Y.MinValue = double.NaN;
             Y.MaxValue = double.NaN;
+        }
+
+        private void Add(object sender, RoutedEventArgs e)
+        {
+            if (_exchangeRate != 1)
+            {
+                var values = new ChartValues<DateTimePoint>();
+                foreach (var value in SeriesCollection[0].Values)
+                {
+                    var cast = (DateTimePoint)value;
+                    values.Add(new DateTimePoint { Value = cast.Value / _exchangeRate, DateTime = cast.DateTime });
+                }
+                graph.SeriesCollection.Add(temp = new LineSeries
+                {
+                    Values = values,
+                    Title = SeriesCollection[0].Title
+                });
+            }
+            else
+            {
+                graph.SeriesCollection.Add(temp = new LineSeries
+                {
+                    Values = SeriesCollection[0].Values,
+                    Title = SeriesCollection[0].Title
+                });
+            }
+        }
+
+        public void Remove()
+        {
+            graph.SeriesCollection.Remove(temp);
+        }
+
+        private void Remove(object sender, RoutedEventArgs e)
+        {
+            Remove();
+
         }
     }
 }

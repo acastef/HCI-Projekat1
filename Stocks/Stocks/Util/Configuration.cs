@@ -52,6 +52,15 @@ namespace Stocks.Util
             set { typeSeries = value; }
         }
 
+        private int index;
+
+        public int Index
+        {
+            get { return index; }
+            set { index = value; }
+        }
+
+
 
 
 
@@ -64,8 +73,10 @@ namespace Stocks.Util
                 if(_instance == null)
                 {
                     _instance = new Configuration {
-                        DefaultCurrency = "RSD",
-                        RefreshRate = 5
+                        DefaultCurrency = "USD",
+                        RefreshRate = 5,
+                        Index = 0
+                       
                     };
                 }
                 return _instance;
