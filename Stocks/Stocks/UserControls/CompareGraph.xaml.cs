@@ -22,11 +22,15 @@ namespace Stocks.UserControls
     public partial class CompareGraph : Window
     {
 
-        private Random random = new Random();
+       
+       
 
         public CompareGraph()
         {
             InitializeComponent();
+
+            XFormatter = val => new DateTime((long)val).ToString("dd MMM yyyy");
+            YFormatter = val => val.ToString("C");
 
             SeriesCollection = new SeriesCollection();
 
@@ -37,14 +41,6 @@ namespace Stocks.UserControls
         public SeriesCollection SeriesCollection { get; set; }
         public Func<double, string> XFormatter { get; set; }
         public Func<double, string> YFormatter { get; set; }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            SeriesCollection.Add(new LineSeries
-            {
-                Values = new ChartValues<double> {random.Next(),random.Next(),random.Next(),random.Next()},
-
-            });
-        }
+        
     }
 }

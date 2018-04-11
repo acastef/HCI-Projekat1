@@ -34,6 +34,7 @@ namespace Stocks
         private List<CheckBox> DCurrenciesItems { get; set; }
         private List<CheckBox> CCurrenciesItems { get; set; }
         private List<CheckBox> _checkBoxList { get; set; }
+        private CompareGraph graph = null;
 
         // search field for stocks
         private string _searchText1;
@@ -166,6 +167,10 @@ namespace Stocks
                 cb.AddHandler(CheckBox.UncheckedEvent, new RoutedEventHandler(cb_Unchecked));
                 CCurrenciesItems.Add(cb);
             }
+
+            graph = new CompareGraph();
+            graph.Show();
+            
 
             DataContext = this;
         }
