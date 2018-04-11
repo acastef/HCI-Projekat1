@@ -16,9 +16,7 @@
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
-        <!--<TextBlock Grid.Row="0" TextWrapping="Wrap" FontSize="40" TextAlignment="Center"
-                   Text="{Binding Title}" Foreground="WhiteSmoke">
-        </TextBlock>-->
+
         <StackPanel Grid.Row="1" Orientation="Horizontal">
             <Button Click="MinHistory">MIN</Button>
             <Button Click="History5y">5y</Button>

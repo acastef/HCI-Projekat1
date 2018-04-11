@@ -15,5 +15,10 @@
             
         </Style>
 
+        <Style x:Key="CustomButton" TargetType="{x:Type Button}">
+            <Setter Property="Margin" Value="0 10 0 0"></Setter>
+            
+        </Style>
+
     </Application.Resources>
 </Application>
