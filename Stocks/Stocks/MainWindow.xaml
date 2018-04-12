@@ -13,6 +13,10 @@
             <ColumnDefinition Width="Auto"></ColumnDefinition>
             <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height ="*"></RowDefinition>
+            <RowDefinition Height="22"></RowDefinition>
+        </Grid.RowDefinitions>
 
         <Grid.Resources>
             <Style TargetType="TabControl">
@@ -21,8 +25,8 @@
                 <Setter Property="Focusable" Value="True"></Setter>
             </Style>
         </Grid.Resources>
-        
-        <TabControl Grid.Column="0">
+
+        <TabControl Grid.Column="0" Grid.Row="0">
             <TabItem>
                 <TabItem.Header>
                     <TextBlock FontSize="15">Stocks</TextBlock>
@@ -44,8 +48,8 @@
                     </Grid>
                 </TabItem.Content>
             </TabItem>
-            
-            
+
+
             <TabItem>
                 <TabItem.Header>
                     <TextBlock FontSize="15">Digital Currencies</TextBlock>
@@ -63,8 +67,8 @@
                     </Grid>
                 </TabItem.Content>
             </TabItem>
-            
-            
+
+
             <TabItem>
                 <TabItem.Header>
                     <TextBlock FontSize="15">Currencies</TextBlock>
@@ -87,6 +91,11 @@
             <StackPanel Name ="DataContainer">
             </StackPanel>
         </ScrollViewer>
-        
+        <StatusBar Grid.Row="1" Grid.ColumnSpan="2" Height="20">
+            <StatusBarItem VerticalAlignment="Center" HorizontalAlignment="Left" Height="29" Margin="0,-9,0,0">
+                <Label>Status bar</Label>
+            </StatusBarItem>
+        </StatusBar>
     </Grid>
+
 </Window>
