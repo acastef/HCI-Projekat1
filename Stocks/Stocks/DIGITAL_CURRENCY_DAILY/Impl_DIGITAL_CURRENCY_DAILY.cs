@@ -289,7 +289,17 @@ namespace Avapi.AvapiDIGITAL_CURRENCY_DAILY
             }
 
             AvapiResponse_DIGITAL_CURRENCY_DAILY_Content ret = new AvapiResponse_DIGITAL_CURRENCY_DAILY_Content();
-            JObject jsonInputParsed = JObject.Parse(jsonInput);
+            JObject jsonInputParsed;
+            try
+            {
+                jsonInputParsed = JObject.Parse(jsonInput);
+            }
+            catch (Exception)
+            {
+                ret.Error = true;
+                ret.ErrorMessage = "Failed to parse";
+                return ret;
+            }
             string errorMessage = (string)jsonInputParsed["Error Message"];
             if (!string.IsNullOrEmpty(errorMessage))
             {

@@ -20,10 +20,10 @@
                    Text="{Binding Title}" Foreground="WhiteSmoke">
         </TextBlock>-->
         <StackPanel Grid.Row="1" Orientation="Horizontal">
-           
-            <Button Click="ResetZoomOnClick">Reset Zoom</Button>
-            <Button Name="AddButton"  Click="Add">Add</Button>
-            <Button Name="RemoveButton" Click="Remove" IsEnabled="False">Remove</Button>
+
+            <Button Click="ResetZoomOnClick" Style="{StaticResource CustomButton}">Reset Zoom</Button>
+            <Button Name="AddButton"  Click="Add" Style="{StaticResource CustomButton}">Add</Button>
+            <Button Name="RemoveButton" Click="Remove"  Style="{StaticResource CustomButton}">Remove</Button>
         </StackPanel>
         <lvc:CartesianChart Grid.Row="2" Series="{Binding SeriesCollection}" Zoom="{Binding ZoomingMode}" >
             <lvc:CartesianChart.AxisX>
@@ -37,6 +37,7 @@
                 <Style TargetType="lvc:LineSeries">
                     <Setter Property="Stroke" Value="Turquoise"></Setter>
                     <Setter Property="StrokeThickness" Value="7"></Setter>
+                    <Setter Property="PointForeground" Value="Turquoise"></Setter>
                 </Style>
                 <Style TargetType="lvc:DefaultTooltip">
                     <Setter Property="Background" Value="#232123"></Setter>

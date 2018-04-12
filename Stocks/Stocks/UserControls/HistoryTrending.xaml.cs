@@ -24,6 +24,7 @@ using Avapi.AvapiTIME_SERIES_MONTHLY_ADJUSTED;
 using Avapi.AvapiTIME_SERIES_DAILY_ADJUSTED;
 using Avapi.AvapiTIME_SERIES_WEEKLY_ADJUSTED;
 using Avapi.AvapiCURRENCY_EXCHANGE_RATE;
+using System.Windows.Controls.Primitives;
 
 namespace Stocks.UserControls
 
@@ -40,15 +41,15 @@ namespace Stocks.UserControls
         private double _exchangeRate = 1;
         private CompareGraph graph = Application.Current.Windows[1] as CompareGraph;
         private LineSeries temp;
+        private Popup msg;
+        private bool _added;
 
         public HistoryTrending()
         {
             InitializeComponent();
             temp = new LineSeries();
-           
 
-            temp = new LineSeries();
-           
+            _added = false;
 
             var gradientBrush = new LinearGradientBrush
             {
@@ -440,27 +441,46 @@ namespace Stocks.UserControls
         private void Add(object sender, RoutedEventArgs e)
         {
 
-            if(_exchangeRate != 1)
+            if (_added)
             {
-                var values = new ChartValues<DateTimePoint>();
-                foreach(var value in SeriesCollection[0].Values)
+                msg = new Popup();
+                TextBlock popupText = new TextBlock
                 {
-                    var cast = (DateTimePoint)value;
-                    values.Add(new DateTimePoint { Value = cast.Value / _exchangeRate, DateTime = cast.DateTime });
-                }
-                temp.Values = values;
-                temp.Title = SeriesCollection[0].Title;         
-                graph.SeriesCollection.Add(temp);
+                    Text = "\n  Compare graph already cointains this item!   \n",
+                    Background = Brushes.Turquoise,
+                    Foreground = Brushes.Black,
+                };
+
+                msg.Child = popupText;
+                
+                msg.PlacementTarget = RemoveButton;
+                msg.IsOpen = true;
+                msg.StaysOpen = false;
             }
             else
             {
-                temp.Values = SeriesCollection[0].Values;
-                temp.Title = SeriesCollection[0].Title;
-                graph.SeriesCollection.Add(temp);
-            }
+                if (_exchangeRate != 1)
+                {
+                    var values = new ChartValues<DateTimePoint>();
+                    foreach (var value in SeriesCollection[0].Values)
+                    {
+                        var cast = (DateTimePoint)value;
+                        values.Add(new DateTimePoint { Value = cast.Value / _exchangeRate, DateTime = cast.DateTime });
+                    }
+                    temp.Values = values;
+                    temp.Title = SeriesCollection[0].Title;
+                    graph.SeriesCollection.Add(temp);
+                }
+                else
+                {
+                    temp.Values = SeriesCollection[0].Values;
+                    temp.Title = SeriesCollection[0].Title;
+                    graph.SeriesCollection.Add(temp);
+                }
 
-            RemoveButton.IsEnabled = true;
-            AddButton.IsEnabled = false;
+                _added = true;
+            }
+            
         }
 
         public void Remove()
@@ -478,10 +498,31 @@ namespace Stocks.UserControls
 
         private void Remove(object sender, RoutedEventArgs e)
         {
-            Remove();
-            RemoveButton.IsEnabled = false;
-            AddButton.IsEnabled = true;
+            if (!_added)
+            {
+                msg = new Popup();
+                TextBlock popupText = new TextBlock
+                {
+                    Text = "\n  Compare graph does not cointain this item!  \n",
+                    Background = Brushes.Turquoise,
+                    Foreground = Brushes.Black,
+                };
+
+                msg.Child = popupText;
+
+                msg.PlacementTarget = RemoveButton;
+                msg.IsOpen = true;
+                msg.StaysOpen = false;
+            }
+            else
+            {
+                Remove();
+                _added = false;
+            }
+           
+            
         }
+        
     }
 
     public class ZoomingModeCoverter : IValueConverter

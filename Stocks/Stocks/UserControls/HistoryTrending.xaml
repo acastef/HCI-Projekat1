@@ -18,16 +18,19 @@
         </Grid.RowDefinitions>
 
         <StackPanel Grid.Row="1" Orientation="Horizontal">
-            <Button Click="MinHistory">MIN</Button>
-            <Button Click="History5y">5y</Button>
-            <Button Click="History2y">2y</Button>
-            <Button Click="History1y">1y</Button>
-            <Button Click="History3m">3m</Button>
-            <Button Click="History1m">1m</Button>
-            <Button Click="History10d">10d</Button>
-            <Button Click="ResetZoomOnClick">Reset Zoom</Button>
-            <Button Name="AddButton"  Click="Add">Add</Button>
-            <Button Name="RemoveButton" Click="Remove" IsEnabled="False">Remove</Button>
+            <Button Click="MinHistory" Style="{StaticResource CustomButton}">MIN</Button>
+            <Button Click="History5y" Style="{StaticResource CustomButton}">5y</Button>
+            <Button Click="History2y" Style="{StaticResource CustomButton}">2y</Button>
+            <Button Click="History1y" Style="{StaticResource CustomButton}">1y</Button>
+            <Button Click="History3m" Style="{StaticResource CustomButton}">3m</Button>
+            <Button Click="History1m" Style="{StaticResource CustomButton}">1m</Button>
+            <Button Click="History10d" Style="{StaticResource CustomButton}">10d</Button>
+            <Button Click="ResetZoomOnClick" Style="{StaticResource CustomButton}">Reset Zoom</Button>
+            <Button Name="AddButton"   Click="Add" Style="{StaticResource CustomButton}">Add</Button>
+            <Button Name="RemoveButton"   Click="Remove" IsEnabled="True" Style="{StaticResource CustomButton}">Remove</Button>
+                
+            
+           
         </StackPanel>
         <lvc:CartesianChart Grid.Row="2" Series="{Binding SeriesCollection}" Zoom="{Binding ZoomingMode}" >
             <lvc:CartesianChart.AxisX>
@@ -41,6 +44,7 @@
                 <Style TargetType="lvc:LineSeries">
                     <Setter Property="Stroke" Value="Turquoise"></Setter>
                     <Setter Property="StrokeThickness" Value="7"></Setter>
+                    <Setter Property="PointForeground" Value="Turquoise"></Setter>
                 </Style>
                 <Style TargetType="lvc:DefaultTooltip">
                     <Setter Property="Background" Value="#232123"></Setter>
