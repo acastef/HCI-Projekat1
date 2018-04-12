@@ -185,7 +185,7 @@ namespace Stocks
             String firstSplit = merged.Split('(')[1];
             Configuration.Instance.Symbol = firstSplit.Substring(0, firstSplit.Length -1);
             Configuration.Instance.FullName = merged.Split('(')[0];
-
+            Configuration.Instance.Type = TypeSeries.STOCK;
             DataContainer.Children.Add(new DataViewer());
         }
         private void cb_Unchecked(object sender, RoutedEventArgs e)
@@ -228,6 +228,7 @@ namespace Stocks
             String firstSplit = merged.Split('(')[1];
             Configuration.Instance.Symbol = firstSplit.Substring(0, firstSplit.Length - 1);
             Configuration.Instance.FullName = merged.Split('(')[0];
+            Configuration.Instance.Type = TypeSeries.DIGITAL_CURRENCY;
             DataContainer.Children.Add(new DataDigitalViewer());
         }
         private void cbCurrUnchecked(object sender, RoutedEventArgs e)
