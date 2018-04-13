@@ -9,7 +9,7 @@ namespace Stocks.Model
     public class AbstractData
     {
         private String _name;
-        private List<ConcreteData> _concreteDataCollection;
+        private Dictionary<String, String> _concreteDataCollection;
 
 
         public String Name
@@ -18,13 +18,13 @@ namespace Stocks.Model
             set { _name = value; }
         }
         
-        public List<ConcreteData> ConcreteDataCollection
+        public Dictionary<String, String> ConcreteDataCollection
         {
             get { return _concreteDataCollection; }
             set { _concreteDataCollection = value; }
         }
 
-        public AbstractData(String name, List<ConcreteData> collection )
+        public AbstractData(String name, Dictionary<String, String> collection )
         {
             _name = name;
             _concreteDataCollection = collection;

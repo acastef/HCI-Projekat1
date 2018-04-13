@@ -1,0 +1,39 @@
+﻿<Window x:Class="Stocks.UserControls.SettingsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Stocks.UserControls"
+        mc:Ignorable="d"
+        Title="SettingsWindow" Height="250" Width="350">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="2*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <StackPanel Name ="RealTimeParameters" Margin="3" Grid.Column="0" Grid.Row="0">
+            <Label FontWeight="Bold">Application Options</Label>
+            <ListBox Name ="listOfBoxes"></ListBox>
+        </StackPanel>
+
+
+        <StackPanel Grid.Row="0" Grid.Column="1" Margin="3">
+            <Label FontWeight="Bold" >Default Currency</Label>
+            <ComboBox Name="DefaultCurrencies" ></ComboBox>
+        </StackPanel>
+
+        <StackPanel Grid.Row="0" Grid.Column="2" Margin="3">
+            <Label FontWeight="Bold" >RefreshRatey</Label>
+            <ComboBox Name="RefreshRates" SelectedIndex="1"></ComboBox>
+        </StackPanel>
+
+        <Button Grid.Column="1"  Grid.Row="1" Margin="5"> Save</Button>
+
+    </Grid>
+</Window>

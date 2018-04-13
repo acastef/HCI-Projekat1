@@ -1,0 +1,2 @@
+defaultCurrency: 1
+refreshRate: 2

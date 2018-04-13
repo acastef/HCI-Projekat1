@@ -15,6 +15,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -37,14 +38,17 @@ namespace Stocks.UserControls
         private IAvapiConnection _connection = AvapiConnection.Instance;
         private CompareGraph graph = Application.Current.Windows[1] as CompareGraph;
         private LineSeries temp;
-        
+        private bool _added;
+        private Popup msg;
 
         public DigitalCurrencyHisotryTrendind()
         {
             InitializeComponent();
 
             temp = new LineSeries();
-            
+
+            _added = false;
+
             var gradientBrush = new LinearGradientBrush
             {
                 StartPoint = new Point(0, 0),
@@ -238,27 +242,45 @@ namespace Stocks.UserControls
 
         private void Add(object sender, RoutedEventArgs e)
         {
-            if (_exchangeRate != 1)
+            if (_added)
             {
-                var values = new ChartValues<DateTimePoint>();
-                foreach (var value in SeriesCollection[0].Values)
+                msg = new Popup();
+                TextBlock popupText = new TextBlock
                 {
-                    var cast = (DateTimePoint)value;
-                    values.Add(new DateTimePoint { Value = cast.Value / _exchangeRate, DateTime = cast.DateTime });
-                }
-                temp.Values = values;
-                temp.Title = SeriesCollection[0].Title;
-                graph.SeriesCollection.Add(temp);
+                    Text = "\n  Compare graph already cointains this item!   \n",
+                    Background = Brushes.Turquoise,
+                    Foreground = Brushes.Black,
+                };
+
+                msg.Child = popupText;
+
+                msg.PlacementTarget = RemoveButton;
+                msg.IsOpen = true;
+                msg.StaysOpen = false;
             }
             else
             {
-                temp.Values = SeriesCollection[0].Values;
-                temp.Title = SeriesCollection[0].Title;
-                graph.SeriesCollection.Add(temp);
-            }
+                if (_exchangeRate != 1)
+                {
+                    var values = new ChartValues<DateTimePoint>();
+                    foreach (var value in SeriesCollection[0].Values)
+                    {
+                        var cast = (DateTimePoint)value;
+                        values.Add(new DateTimePoint { Value = cast.Value / _exchangeRate, DateTime = cast.DateTime });
+                    }
+                    temp.Values = values;
+                    temp.Title = SeriesCollection[0].Title;
+                    graph.SeriesCollection.Add(temp);
+                }
+                else
+                {
+                    temp.Values = SeriesCollection[0].Values;
+                    temp.Title = SeriesCollection[0].Title;
+                    graph.SeriesCollection.Add(temp);
+                }
 
-            RemoveButton.IsEnabled = true;
-            AddButton.IsEnabled = false;
+                _added = true;
+            }
         }
 
         public void Remove()
@@ -276,9 +298,27 @@ namespace Stocks.UserControls
 
         private void Remove(object sender, RoutedEventArgs e)
         {
-            Remove();
-            RemoveButton.IsEnabled = false;
-            AddButton.IsEnabled = true;
+            if (!_added)
+            {
+                msg = new Popup();
+                TextBlock popupText = new TextBlock
+                {
+                    Text = "\n  Compare graph does not cointain this item!  \n",
+                    Background = Brushes.Turquoise,
+                    Foreground = Brushes.Black,
+                };
+
+                msg.Child = popupText;
+
+                msg.PlacementTarget = RemoveButton;
+                msg.IsOpen = true;
+                msg.StaysOpen = false;
+            }
+            else
+            {
+                Remove();
+                _added = false;
+            }
         }
     }
 }

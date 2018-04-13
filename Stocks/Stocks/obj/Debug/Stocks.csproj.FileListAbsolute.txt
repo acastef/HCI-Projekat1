@@ -244,7 +244,6 @@ D:\Faks\Semestar VI\HCI\Projekat 1\Projekat\Stocks\Stocks\bin\Debug\LiveCharts.x
 D:\Faks\Semestar VI\HCI\Projekat 1\Projekat\Stocks\Stocks\bin\Debug\LiveCharts.Wpf.pdb
 D:\Faks\Semestar VI\HCI\Projekat 1\Projekat\Stocks\Stocks\bin\Debug\LiveCharts.Wpf.xml
 D:\Faks\Semestar VI\HCI\Projekat 1\Projekat\Stocks\Stocks\bin\Debug\Newtonsoft.Json.xml
-D:\Faks\Semestar VI\HCI\Projekat 1\Projekat\Stocks\Stocks\obj\Debug\Stocks.csprojResolveAssemblyReference.cache
 D:\Faks\Semestar VI\HCI\Projekat 1\Projekat\Stocks\Stocks\obj\Debug\Stocks.exe.config
 D:\Faks\Semestar VI\HCI\Projekat 1\Projekat\Stocks\Stocks\obj\Debug\UserControls\CompareGraph.g.cs
 D:\Faks\Semestar VI\HCI\Projekat 1\Projekat\Stocks\Stocks\obj\Debug\UserControls\DataDigitalViewer.g.cs
@@ -274,3 +273,6 @@ D:\Faks\Semestar VI\HCI\Projekat 1\Projekat\Stocks\Stocks\obj\Debug\Stocks.cspro
 D:\Faks\Semestar VI\HCI\Projekat 1\Projekat\Stocks\Stocks\obj\Debug\Stocks.csproj.CopyComplete
 D:\Faks\Semestar VI\HCI\Projekat 1\Projekat\Stocks\Stocks\obj\Debug\Stocks.exe
 D:\Faks\Semestar VI\HCI\Projekat 1\Projekat\Stocks\Stocks\obj\Debug\Stocks.pdb
+D:\Faks\Semestar VI\HCI\Projekat 1\Projekat\Stocks\Stocks\obj\Debug\UserControls\SettingsWindow.g.cs
+D:\Faks\Semestar VI\HCI\Projekat 1\Projekat\Stocks\Stocks\obj\Debug\UserControls\SettingsWindow.baml
+D:\Faks\Semestar VI\HCI\Projekat 1\Projekat\Stocks\Stocks\obj\Debug\Stocks.csprojResolveAssemblyReference.cache

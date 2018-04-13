@@ -286,6 +286,9 @@
     <Compile Include="UserControls\RealtimeViewer.xaml.cs">
       <DependentUpon>RealtimeViewer.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\SettingsWindow.xaml.cs">
+      <DependentUpon>SettingsWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Utility.cs" />
     <Compile Include="Util\FetchData.cs" />
     <Compile Include="Util\Configuration.cs" />
@@ -335,6 +338,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="UserControls\SettingsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -366,6 +373,12 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Files\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Pictures\settingsImage.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Pictures\settingsImage2.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

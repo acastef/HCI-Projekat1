@@ -273,7 +273,7 @@ namespace Stocks.UserControls
                 var data = time_series_intradayResponse.Data;
                 if (data.Error)
                 {
-                    MessageBox.Show("Failed to fetch data", "Error");
+                    //MessageBox.Show("Failed to fetch data", "Error");
                 }
                 else
                 {

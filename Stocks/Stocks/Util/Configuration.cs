@@ -10,13 +10,58 @@ namespace Stocks.Util
     class Configuration
     {
         private static  Configuration _instance;
-        private string _defaultCurrency;
+        private Dictionary<String, String> _realTimeParameters;
+
+        private int _defaultCurrencyIndex;
+        private List<String> _defaultCurrenciesList = new List<String>();
+
+        private int _refreshRateIndex;
+        private List<int> _refreshRateList = new List<int>();
+
+
+        public int RefreshRateIndex
+        {
+            get { return _refreshRateIndex; }
+            set { _refreshRateIndex = value; }
+        }
+
+        public int RefreshRate
+        {
+            get { return _refreshRateList[_refreshRateIndex]; }
+            set { _refreshRateIndex = _refreshRateList.IndexOf(value); }
+        }
+
+        public List<int> RefreshRateList
+        {
+            get { return _refreshRateList; }
+            set { _refreshRateList = value; }
+        }
+
+        public int DefaultCurrencyIndex
+        {
+            get { return _defaultCurrencyIndex; }
+            set { _defaultCurrencyIndex = value; }
+        }
+
+        public List<String> DefaultCurrenciesList
+        {
+            get { return _defaultCurrenciesList; }
+            set { _defaultCurrenciesList = value; }
+        }
+
+
+        public Dictionary<String, String> RealTimeParameters
+        {
+            get { return _realTimeParameters; }
+            set { _realTimeParameters = value; }
+        }
+
         
 
         public string DefaultCurrency
         {
-            get { return _defaultCurrency; }
-            set { _defaultCurrency = value; }
+            get { return _defaultCurrenciesList[_defaultCurrencyIndex]; }
+            set { _defaultCurrencyIndex = _defaultCurrenciesList.IndexOf(value); }
         }
 
 
@@ -35,14 +80,9 @@ namespace Stocks.Util
             get { return _symbol; }
             set { _symbol = value; }
         }
+        
 
-        private int _refreshRate;
-
-        public int RefreshRate
-        {
-            get { return _refreshRate; }
-            set { _refreshRate = value; }
-        }
+       
 
         private TypeSeries typeSeries;
 
@@ -72,10 +112,7 @@ namespace Stocks.Util
             {
                 if(_instance == null)
                 {
-                    _instance = new Configuration {
-                        DefaultCurrency = "USD",
-                        RefreshRate = 5
-                    };
+                    _instance = new Configuration {};
                 }
                 return _instance;
             }

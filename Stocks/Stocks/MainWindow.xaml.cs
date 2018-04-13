@@ -35,7 +35,8 @@ namespace Stocks
         private List<CheckBox> CCurrenciesItems { get; set; }
         private List<CheckBox> _checkBoxList { get; set; }
         private CompareGraph graph = null;
-        private int index = -1; // pozicija u historyTrendingu na kojoj se dodaje grafik
+        private SettingsWindow settings = null;
+        private LoadData Data = new LoadData();
 
         // search field for stocks
         private string _searchText1;
@@ -126,12 +127,11 @@ namespace Stocks
             CCurrenciesItems = new List<CheckBox>();
 
             // Initialize Stocks
-            foreach (ConcreteData stock in Stocks.ConcreteDataCollection)
+            foreach (String stockCode in Stocks.ConcreteDataCollection.Keys)
             {
-                //string merged = ;
                 CheckBox cb = new CheckBox()
                 {
-                    Content = stock.Name + "(" + stock.Code + ")"
+                    Content = Stocks.ConcreteDataCollection[stockCode] + "(" + stockCode + ")"
                 };
 
                 cb.AddHandler(CheckBox.CheckedEvent, new RoutedEventHandler(cb_Checked));
@@ -143,13 +143,13 @@ namespace Stocks
             
 
             // Initialize Currencies
-            foreach (ConcreteData stock in Currencies.ConcreteDataCollection)
+            foreach (String currencyCode in Currencies.ConcreteDataCollection.Keys)
             {
                 
                 CheckBox cb = new CheckBox()
                 {
-                    Content = stock.Name + "(" + stock.Code + ")"
-                };
+                    Content = Currencies.ConcreteDataCollection[currencyCode] + "(" + currencyCode + ")"
+    };
 
                 cb.AddHandler(CheckBox.CheckedEvent, new RoutedEventHandler(cbCurrChecked));
                 cb.AddHandler(CheckBox.UncheckedEvent, new RoutedEventHandler(cbCurrUnchecked));
@@ -157,11 +157,11 @@ namespace Stocks
             }
 
             // Initialize Cryptocurrency
-            foreach (ConcreteData stock in Cryptocurrency.ConcreteDataCollection)
+            foreach (String digCurrencyCode in Cryptocurrency.ConcreteDataCollection.Keys)
             {
                 CheckBox cb = new CheckBox()
                 {
-                    Content = stock.Name + "(" + stock.Code + ")"
+                    Content = Cryptocurrency.ConcreteDataCollection[digCurrencyCode] + "(" + digCurrencyCode + ")"
                 };
 
                 cb.AddHandler(CheckBox.CheckedEvent, new RoutedEventHandler(cb_Checked));
@@ -262,18 +262,40 @@ namespace Stocks
 
         public void Load()
         {
-            LoadData Data = new LoadData();
+            
             try
             {
                 Stocks = Data.ReadStocks();
                 Cryptocurrency = Data.ReadCriptoCurrencies();
                 Currencies = Data.ReadCurrencies();
+
+                //read metadata
+                int[] meta = Data.ReadMetaData("meta_data.txt");
+                Configuration.Instance.DefaultCurrencyIndex = meta[0];
+                
+
+                //read all deafult currencies in application
+                Configuration.Instance.DefaultCurrenciesList = Data.ReadDefaultCurrencies("default_currencies.txt");
+                //find which of default currencies is the default one (via index)
+                Configuration.Instance.DefaultCurrency = Configuration.Instance.DefaultCurrenciesList[meta[0]];
+                //get full name od default currency from all currencies in the app
+                //Configuration.Instance.FullName = Currencies.ConcreteDataCollection[Configuration.Instance.Symbol]; 
+                // read all real time parameters in application
+                Configuration.Instance.RealTimeParameters = Data.ReadRealTimeParameteres("real_time_parameteres.txt", ":");
+
+                // you should have learned the pattern by now
+                Configuration.Instance.RefreshRateList = Data.ReadRefreshRates("refresh_rate_list.txt");
+                Configuration.Instance.RefreshRateIndex = meta[1];
+                Configuration.Instance.RefreshRate = Configuration.Instance.RefreshRateList[meta[1]];
+
             }
             catch (Exception)
             {
                 Console.WriteLine("Neuspesno ucitavanje fajla");
             }
         }
+
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         void OnPropertyChanged(string name)
@@ -287,6 +309,14 @@ namespace Stocks
             ScrollViewer scv = (ScrollViewer)sender;
             scv.ScrollToVerticalOffset(scv.VerticalOffset - e.Delta);
             e.Handled = true;
+        }
+
+
+        // Action on "SettingsButton" click
+        private void SettingsButton_Click(object sender, RoutedEventArgs e)
+        {
+            settings = new SettingsWindow();
+            settings.Show();
         }
     }
 
