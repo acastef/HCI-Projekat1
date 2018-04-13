@@ -56,57 +56,98 @@ namespace Stocks.UserControls
                 
             };
 
-            Task.Run(() =>
+            //Task.Run(() =>
+            //{
+            //    SynchronizationContext.SetSynchronizationContext(new SynchronizationContext());
+            //    while (true)
+            //    {
+            //        RealTimeData value = new RealTimeData();
+
+            //        _backgroindWork = Task.Factory.StartNew(() =>
+            //        {
+            //            value = GetData();
+            //        }, TaskCreationOptions.LongRunning);
+
+
+
+            //        _backgroindWork.ContinueWith(x =>
+            //        {
+            //            Console.WriteLine(value.Value);
+            //            if (CurrentValue != value.Value || CurrentValue != 0)
+            //            {
+            //                LastValue = CurrentValue;
+            //                CurrentValue = value.Value;
+            //                double pom1 =  CurrentValue - LastValue;
+            //                if (pom1 > 0)
+            //                {
+            //                    Color = Brushes.Green;
+            //                }
+            //                else if (pom1 < 0)
+            //                {
+            //                    Color = Brushes.Red;
+            //                }
+            //                else
+            //                {
+            //                    Color = Brushes.WhiteSmoke;
+            //                }
+            //                pom1 = Math.Truncate(pom1 * 100) / 100;
+            //                Trend = string.Format("{0:N2}", pom1);
+            //                if (LastValue != 0)
+            //                    pom1 = Math.Truncate(pom1 / LastValue * 100);
+            //                else
+            //                    pom1 = 100;
+            //                TrendPercentage = string.Format("{0:N2}%", pom1);
+            //            }
+
+            //        }, TaskScheduler.FromCurrentSynchronizationContext());
+            //        Thread.Sleep(_args.RefreshRate * 10000);
+            //    }
+
+            //});
+
+            Init();
+
+            DataContext = this;
+        }
+
+        private async void Init()
+        {
+            RealTimeData value;
+            await Task.Run(() =>
             {
-                SynchronizationContext.SetSynchronizationContext(new SynchronizationContext());
                 while (true)
                 {
-                    RealTimeData value = new RealTimeData();
-                    
-                    _backgroindWork = Task.Factory.StartNew(() =>
+                    value = GetData();
+                    if (CurrentValue != value.Value || CurrentValue != 0)
                     {
-                        value = GetData();
-                    }, TaskCreationOptions.LongRunning);
-
-                  
-
-                    _backgroindWork.ContinueWith(x =>
-                    {
-                        Console.WriteLine(value.Value);
-                        if (CurrentValue != value.Value || CurrentValue != 0)
+                        LastValue = CurrentValue;
+                        CurrentValue = value.Value;
+                        Console.WriteLine(_args.FullName + "  " + _currentValue);
+                        double pom1 = CurrentValue - LastValue;
+                        if (pom1 > 0)
                         {
-                            LastValue = CurrentValue;
-                            CurrentValue = value.Value;
-                            double pom1 =  CurrentValue - LastValue;
-                            if (pom1 > 0)
-                            {
-                                Color = Brushes.Green;
-                            }
-                            else if (pom1 < 0)
-                            {
-                                Color = Brushes.Red;
-                            }
-                            else
-                            {
-                                Color = Brushes.WhiteSmoke;
-                            }
-                            pom1 = Math.Truncate(pom1 * 100) / 100;
-                            Trend = string.Format("{0:N2}", pom1);
-                            if (LastValue != 0)
-                                pom1 = Math.Truncate(pom1 / LastValue * 100);
-                            else
-                                pom1 = 100;
-                            TrendPercentage = string.Format("{0:N2}%", pom1);
+                            Color = Brushes.Green;
                         }
-                        
-                    }, TaskScheduler.FromCurrentSynchronizationContext());
+                        else if (pom1 < 0)
+                        {
+                            Color = Brushes.Red;
+                        }
+                        else
+                        {
+                            Color = Brushes.WhiteSmoke;
+                        }
+                        pom1 = Math.Truncate(pom1 * 100) / 100;
+                        Trend = string.Format("{0:N2}", pom1);
+                        if (LastValue != 0)
+                            pom1 = Math.Truncate(pom1 / LastValue * 100);
+                        else
+                            pom1 = 100;
+                        TrendPercentage = string.Format("{0:N2}%", pom1);
+                    }
                     Thread.Sleep(_args.RefreshRate * 10000);
                 }
                 
             });
-
-
-            DataContext = this;
         }
 
         private RealTimeData GetData()

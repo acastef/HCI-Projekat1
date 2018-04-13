@@ -144,55 +144,70 @@ namespace Stocks.UserControls
 
         private ChartValues<DateTimePoint> GetData()
         {
-                        
+            var values = new ChartValues<DateTimePoint>();
             Int_TIME_SERIES_DAILY time_series_daily =
                 _connection.GetQueryObject_TIME_SERIES_DAILY();
 
-            
-            IAvapiResponse_TIME_SERIES_DAILY time_series_dailyResponse =
+            try
+            {
+                IAvapiResponse_TIME_SERIES_DAILY time_series_dailyResponse =
             time_series_daily.Query(
                  _args.Symbol,
                  Const_TIME_SERIES_DAILY.TIME_SERIES_DAILY_outputsize.compact);
-            var values = new ChartValues<DateTimePoint>();
+               
 
-            var data = time_series_dailyResponse.Data;
-            if (data.Error)
-            {
-                MessageBox.Show("Failed to fetch data", "Error");
-            }
-            else
-            {
-
-                if (_args.DefaultCurrency != "USD")
+                var data = time_series_dailyResponse.Data;
+                if (data.Error)
                 {
-                    try
+                    MessageBox.Show("Failed to fetch data", "Error");
+                }
+                else
+                {
+
+                    if (_args.DefaultCurrency != "USD")
                     {
-
-
-                        Int_CURRENCY_EXCHANGE_RATE currency_exchange_rate = _connection.GetQueryObject_CURRENCY_EXCHANGE_RATE();
-                        IAvapiResponse_CURRENCY_EXCHANGE_RATE currency_exchange_rateResponse =
-                        currency_exchange_rate.QueryPrimitive("USD", _args.DefaultCurrency);
-                        var data2 = currency_exchange_rateResponse.Data;
-                        if (data2.Error)
-                            MessageBox.Show("Failed to fetch data", "Error");
-                        else
+                        try
                         {
-                            _exchangeRate = double.Parse(data2.ExchangeRate);
 
+
+                            Int_CURRENCY_EXCHANGE_RATE currency_exchange_rate = _connection.GetQueryObject_CURRENCY_EXCHANGE_RATE();
+                            IAvapiResponse_CURRENCY_EXCHANGE_RATE currency_exchange_rateResponse =
+                            currency_exchange_rate.QueryPrimitive("USD", _args.DefaultCurrency);
+                            var data2 = currency_exchange_rateResponse.Data;
+                            if (data2.Error)
+                                MessageBox.Show("Failed to fetch data", "Error");
+                            else
+                            {
+                                _exchangeRate = double.Parse(data2.ExchangeRate);
+
+                                foreach (var timeseries in data.TimeSeries)
+                                {
+
+                                    values.Add(new DateTimePoint(DateTime.ParseExact(timeseries.DateTime, "yyyy-MM-dd", CultureInfo.InvariantCulture),
+                                        double.Parse(timeseries.close) * _exchangeRate));
+
+
+                                }
+                            }
+                        }
+                        catch (NullReferenceException)
+                        {
+
+                            MessageBox.Show("Failed to fetch currency exchange rate for chosen currency. Values will be show in USD", "Error");
+                            _exchangeRate = 1;
                             foreach (var timeseries in data.TimeSeries)
                             {
 
                                 values.Add(new DateTimePoint(DateTime.ParseExact(timeseries.DateTime, "yyyy-MM-dd", CultureInfo.InvariantCulture),
-                                    double.Parse(timeseries.close) * _exchangeRate));
+                                        double.Parse(timeseries.close) * _exchangeRate));
 
 
                             }
+                            YFormatter = val => "$" + val.ToString("0.##");
                         }
                     }
-                    catch (NullReferenceException)
+                    else
                     {
-
-                        MessageBox.Show("Failed to fetch currency exchange rate for chosen currency. Values will be show in USD", "Error");
                         _exchangeRate = 1;
                         foreach (var timeseries in data.TimeSeries)
                         {
@@ -202,24 +217,16 @@ namespace Stocks.UserControls
 
 
                         }
-                        YFormatter = val => "$" + val.ToString("0.##");
                     }
+
+
                 }
-                else
-                {
-                    _exchangeRate = 1;
-                    foreach (var timeseries in data.TimeSeries)
-                    {
-
-                        values.Add(new DateTimePoint(DateTime.ParseExact(timeseries.DateTime, "yyyy-MM-dd", CultureInfo.InvariantCulture),
-                                double.Parse(timeseries.close) * _exchangeRate));
-
-
-                    }
-                }
-
-               
             }
+            catch(NullReferenceException)
+            {
+                MessageBox.Show("Suvise se upita salje serveru za krato vreme, misli da smo spameri. Oladi malo", "Error");
+            }
+            
             return values;
         }
 
@@ -266,7 +273,7 @@ namespace Stocks.UserControls
             }
             catch (Exception)
             {
-
+                MessageBox.Show("Previse zahteva poslato u kratkom vremene server misli da si spamer! Oladi malo sa kliktanjem.");
             }
             
             SeriesCollection[0].Values = values;
@@ -302,7 +309,7 @@ namespace Stocks.UserControls
             }
             catch (Exception)
             {
-
+                MessageBox.Show("Previse zahteva poslato u kratkom vremene server misli da si spamer! Oladi malo sa kliktanjem.");
             }
             
             SeriesCollection[0].Values = values;
@@ -340,7 +347,7 @@ namespace Stocks.UserControls
             }
             catch (Exception)
             {
-
+                MessageBox.Show("Previse zahteva poslato u kratkom vremene server misli da si spamer! Oladi malo sa kliktanjem.");
             }
            
             SeriesCollection[0].Values = values;
@@ -378,7 +385,7 @@ namespace Stocks.UserControls
             }
             catch (Exception)
             {
-
+                MessageBox.Show("Previse zahteva poslato u kratkom vremene server misli da si spamer! Oladi malo sa kliktanjem.");
             }
            
             SeriesCollection[0].Values = values;
@@ -417,7 +424,7 @@ namespace Stocks.UserControls
             }
             catch (Exception)
             {
-
+                MessageBox.Show("Previse zahteva poslato u kratkom vremene server misli da si spamer! Oladi malo sa kliktanjem.");
             }
            
             SeriesCollection[0].Values = values;
@@ -456,7 +463,7 @@ namespace Stocks.UserControls
             }
             catch (Exception)
             {
-
+                MessageBox.Show("Previse zahteva poslato u kratkom vremene server misli da si spamer! Oladi malo sa kliktanjem.");
             }
            
             SeriesCollection[0].Values = values;
@@ -493,7 +500,7 @@ namespace Stocks.UserControls
             }
             catch (Exception)
             {
-
+                MessageBox.Show("Previse zahteva poslato u kratkom vremene server misli da si spamer! Oladi malo sa kliktanjem.");
             }
            
             SeriesCollection[0].Values = values;

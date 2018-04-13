@@ -131,7 +131,8 @@ namespace Stocks
                 //string merged = ;
                 CheckBox cb = new CheckBox()
                 {
-                    Content = stock.Name + "(" + stock.Code + ")"
+                    Content = stock.Name + "(" + stock.Code + ")",
+                    Style = (Style)Application.Current.FindResource("CustomCheckBox")
                 };
 
                 cb.AddHandler(CheckBox.CheckedEvent, new RoutedEventHandler(cb_Checked));
@@ -148,7 +149,8 @@ namespace Stocks
                 
                 CheckBox cb = new CheckBox()
                 {
-                    Content = stock.Name + "(" + stock.Code + ")"
+                    Content = stock.Name + "(" + stock.Code + ")",
+                    Style = (Style)Application.Current.FindResource("CustomCheckBox")
                 };
 
                 cb.AddHandler(CheckBox.CheckedEvent, new RoutedEventHandler(cbCurrChecked));
@@ -161,7 +163,8 @@ namespace Stocks
             {
                 CheckBox cb = new CheckBox()
                 {
-                    Content = stock.Name + "(" + stock.Code + ")"
+                    Content = stock.Name + "(" + stock.Code + ")",
+                    Style = (Style)Application.Current.FindResource("CustomCheckBox")
                 };
 
                 cb.AddHandler(CheckBox.CheckedEvent, new RoutedEventHandler(cb_Checked));

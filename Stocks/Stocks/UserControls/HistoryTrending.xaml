@@ -10,7 +10,7 @@
     <UserControl.Resources>
         <local:ZoomingModeCoverter x:Key="ZoomingModeCoverter"></local:ZoomingModeCoverter>
     </UserControl.Resources>
-    <Grid MinHeight="250">
+    <Grid MinHeight="270">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
