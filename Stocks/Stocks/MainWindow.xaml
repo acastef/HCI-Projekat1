@@ -27,7 +27,7 @@
         </Grid.Resources>
 
         <TabControl Grid.Column="0" Grid.Row="0">
-            <TabItem>
+            <TabItem Style="{StaticResource CustomTabitem}">
                 <TabItem.Header>
                     <TextBlock FontSize="15">Stocks</TextBlock>
                 </TabItem.Header>
@@ -42,7 +42,8 @@
                             <ListBox   ItemsSource="{Binding FilterStockItems}"
                                         Grid.Row="1"
                                         ScrollViewer.VerticalScrollBarVisibility="Visible"
-                                        ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                                        ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                       Style="{StaticResource CustomListBox}">
                             </ListBox>
                         </Grid>
                     </Grid>
@@ -50,7 +51,7 @@
             </TabItem>
 
 
-            <TabItem>
+            <TabItem Style="{StaticResource CustomTabitem}">
                 <TabItem.Header>
                     <TextBlock FontSize="15">Digital Currencies</TextBlock>
                 </TabItem.Header>
@@ -62,14 +63,14 @@
                                 <RowDefinition Height="*"></RowDefinition>
                             </Grid.RowDefinitions>
                             <TextBox Text="{Binding SearchText2, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></TextBox>
-                            <ListBox Grid.Row="1"  ItemsSource="{Binding FilterDCurrenciesItems}"></ListBox>
+                            <ListBox Grid.Row="1"  ItemsSource="{Binding FilterDCurrenciesItems}" Style="{StaticResource CustomListBox}"></ListBox>
                         </Grid>
                     </Grid>
                 </TabItem.Content>
             </TabItem>
 
 
-            <TabItem>
+            <TabItem Style="{StaticResource CustomTabitem}">
                 <TabItem.Header>
                     <TextBlock FontSize="15">Currencies</TextBlock>
                 </TabItem.Header>
@@ -81,7 +82,7 @@
                                 <RowDefinition Height="*"></RowDefinition>
                             </Grid.RowDefinitions>
                             <TextBox Text="{Binding SearchText3, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></TextBox>
-                            <ListBox Grid.Row="1"  ItemsSource="{Binding FilterCCurrenciesItems}"></ListBox>
+                            <ListBox Grid.Row="1"  ItemsSource="{Binding FilterCCurrenciesItems}" Style="{StaticResource CustomListBox}"></ListBox>
                         </Grid>
                     </Grid>
                 </TabItem.Content>

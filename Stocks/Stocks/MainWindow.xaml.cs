@@ -131,7 +131,9 @@ namespace Stocks
             {
                 CheckBox cb = new CheckBox()
                 {
-                    Content = Stocks.ConcreteDataCollection[stockCode] + "(" + stockCode + ")"
+                    Content = Stocks.ConcreteDataCollection[stockCode] + "(" + stockCode + ")",
+                     Style = (Style)Application.Current.FindResource("CustomCheckBox")
+
                 };
 
                 cb.AddHandler(CheckBox.CheckedEvent, new RoutedEventHandler(cb_Checked));
@@ -148,8 +150,10 @@ namespace Stocks
                 
                 CheckBox cb = new CheckBox()
                 {
-                    Content = Currencies.ConcreteDataCollection[currencyCode] + "(" + currencyCode + ")"
-    };
+
+                    Content = Currencies.ConcreteDataCollection[currencyCode] + "(" + currencyCode + ")",
+                    Style = (Style)Application.Current.FindResource("CustomCheckBox")
+                };
 
                 cb.AddHandler(CheckBox.CheckedEvent, new RoutedEventHandler(cbCurrChecked));
                 cb.AddHandler(CheckBox.UncheckedEvent, new RoutedEventHandler(cbCurrUnchecked));
@@ -161,7 +165,8 @@ namespace Stocks
             {
                 CheckBox cb = new CheckBox()
                 {
-                    Content = Cryptocurrency.ConcreteDataCollection[digCurrencyCode] + "(" + digCurrencyCode + ")"
+                    Content = Cryptocurrency.ConcreteDataCollection[digCurrencyCode] + "(" + digCurrencyCode + ")",
+                    Style = (Style)Application.Current.FindResource("CustomCheckBox")
                 };
 
                 cb.AddHandler(CheckBox.CheckedEvent, new RoutedEventHandler(cb_Checked));
@@ -185,7 +190,7 @@ namespace Stocks
             String firstSplit = merged.Split('(')[1];
             Configuration.Instance.Symbol = firstSplit.Substring(0, firstSplit.Length -1);
             Configuration.Instance.FullName = merged.Split('(')[0];
-
+            Configuration.Instance.Type = TypeSeries.STOCK;
             DataContainer.Children.Add(new DataViewer());
         }
         private void cb_Unchecked(object sender, RoutedEventArgs e)
@@ -228,6 +233,7 @@ namespace Stocks
             String firstSplit = merged.Split('(')[1];
             Configuration.Instance.Symbol = firstSplit.Substring(0, firstSplit.Length - 1);
             Configuration.Instance.FullName = merged.Split('(')[0];
+            Configuration.Instance.Type = TypeSeries.DIGITAL_CURRENCY;
             DataContainer.Children.Add(new DataDigitalViewer());
         }
         private void cbCurrUnchecked(object sender, RoutedEventArgs e)

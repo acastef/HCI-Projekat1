@@ -25,6 +25,7 @@ using Avapi.AvapiTIME_SERIES_DAILY_ADJUSTED;
 using Avapi.AvapiTIME_SERIES_WEEKLY_ADJUSTED;
 using Avapi.AvapiCURRENCY_EXCHANGE_RATE;
 using System.Windows.Controls.Primitives;
+using System.IO;
 
 namespace Stocks.UserControls
 
@@ -68,6 +69,7 @@ namespace Stocks.UserControls
                 RefreshRate = Configuration.Instance.RefreshRate * 60
             };
 
+            ZoomingMode = ZoomingOptions.Xy;
             XFormatter = val => new DateTime((long)val).ToString("dd MMM yyyy");
             YFormatter = val => val.ToString("0.##") + " " + _args.DefaultCurrency;
 
@@ -83,9 +85,7 @@ namespace Stocks.UserControls
 
                 }
             };
-
-            ZoomingMode = ZoomingOptions.Xy;
-
+            
             Title = _args.FullName;
             
             DataContext = this;
@@ -144,55 +144,70 @@ namespace Stocks.UserControls
 
         private ChartValues<DateTimePoint> GetData()
         {
-                        
+            var values = new ChartValues<DateTimePoint>();
             Int_TIME_SERIES_DAILY time_series_daily =
                 _connection.GetQueryObject_TIME_SERIES_DAILY();
 
-            
-            IAvapiResponse_TIME_SERIES_DAILY time_series_dailyResponse =
+            try
+            {
+                IAvapiResponse_TIME_SERIES_DAILY time_series_dailyResponse =
             time_series_daily.Query(
                  _args.Symbol,
                  Const_TIME_SERIES_DAILY.TIME_SERIES_DAILY_outputsize.compact);
-            var values = new ChartValues<DateTimePoint>();
+               
 
-            var data = time_series_dailyResponse.Data;
-            if (data.Error)
-            {
-                MessageBox.Show("Failed to fetch data", "Error");
-            }
-            else
-            {
-
-                if (_args.DefaultCurrency != "USD")
+                var data = time_series_dailyResponse.Data;
+                if (data.Error)
                 {
-                    try
+                    MessageBox.Show("Failed to fetch data", "Error");
+                }
+                else
+                {
+
+                    if (_args.DefaultCurrency != "USD")
                     {
-
-
-                        Int_CURRENCY_EXCHANGE_RATE currency_exchange_rate = _connection.GetQueryObject_CURRENCY_EXCHANGE_RATE();
-                        IAvapiResponse_CURRENCY_EXCHANGE_RATE currency_exchange_rateResponse =
-                        currency_exchange_rate.QueryPrimitive("USD", _args.DefaultCurrency);
-                        var data2 = currency_exchange_rateResponse.Data;
-                        if (data2.Error)
-                            MessageBox.Show("Failed to fetch data", "Error");
-                        else
+                        try
                         {
-                            _exchangeRate = double.Parse(data2.ExchangeRate);
 
+
+                            Int_CURRENCY_EXCHANGE_RATE currency_exchange_rate = _connection.GetQueryObject_CURRENCY_EXCHANGE_RATE();
+                            IAvapiResponse_CURRENCY_EXCHANGE_RATE currency_exchange_rateResponse =
+                            currency_exchange_rate.QueryPrimitive("USD", _args.DefaultCurrency);
+                            var data2 = currency_exchange_rateResponse.Data;
+                            if (data2.Error)
+                                MessageBox.Show("Failed to fetch data", "Error");
+                            else
+                            {
+                                _exchangeRate = double.Parse(data2.ExchangeRate);
+
+                                foreach (var timeseries in data.TimeSeries)
+                                {
+
+                                    values.Add(new DateTimePoint(DateTime.ParseExact(timeseries.DateTime, "yyyy-MM-dd", CultureInfo.InvariantCulture),
+                                        double.Parse(timeseries.close) * _exchangeRate));
+
+
+                                }
+                            }
+                        }
+                        catch (NullReferenceException)
+                        {
+
+                            MessageBox.Show("Failed to fetch currency exchange rate for chosen currency. Values will be show in USD", "Error");
+                            _exchangeRate = 1;
                             foreach (var timeseries in data.TimeSeries)
                             {
 
                                 values.Add(new DateTimePoint(DateTime.ParseExact(timeseries.DateTime, "yyyy-MM-dd", CultureInfo.InvariantCulture),
-                                    double.Parse(timeseries.close) * _exchangeRate));
+                                        double.Parse(timeseries.close) * _exchangeRate));
 
 
                             }
+                            YFormatter = val => "$" + val.ToString("0.##");
                         }
                     }
-                    catch (NullReferenceException)
+                    else
                     {
-
-                        MessageBox.Show("Failed to fetch currency exchange rate for chosen currency. Values will be show in USD", "Error");
                         _exchangeRate = 1;
                         foreach (var timeseries in data.TimeSeries)
                         {
@@ -202,25 +217,16 @@ namespace Stocks.UserControls
 
 
                         }
-                        YFormatter = val => "$" + val.ToString("0.##");
                     }
+
+
                 }
-                else
-                {
-                    _exchangeRate = 1;
-                    foreach (var timeseries in data.TimeSeries)
-                    {
-
-                        values.Add(new DateTimePoint(DateTime.ParseExact(timeseries.DateTime, "yyyy-MM-dd", CultureInfo.InvariantCulture),
-                                double.Parse(timeseries.close) * _exchangeRate));
-
-
-                    }
-                }
-
-               
             }
-
+            catch(NullReferenceException)
+            {
+                MessageBox.Show("Suvise se upita salje serveru za krato vreme, misli da smo spameri. Oladi malo", "Error");
+            }
+            
             return values;
         }
 
@@ -248,19 +254,28 @@ namespace Stocks.UserControls
             
             var values = new ChartValues<DateTimePoint>();
             Int_TIME_SERIES_MONTHLY_ADJUSTED time_series_montly_adjusted = _connection.GetQueryObject_TIME_SERIES_MONTHLY_ADJUSTED();
-            IAvapiResponse_TIME_SERIES_MONTHLY_ADJUSTED time_series_weekly_adjustedResponse =
-                await time_series_montly_adjusted.QueryPrimitiveAsync(_args.Symbol);
-            var data = time_series_weekly_adjustedResponse.Data;
-            if (data.Error)
-                MessageBox.Show("Failed to fetch data","Error");
-            else
+            try
             {
-                foreach (var timeseries in data.TimeSeries)
+                IAvapiResponse_TIME_SERIES_MONTHLY_ADJUSTED time_series_weekly_adjustedResponse =
+                await time_series_montly_adjusted.QueryPrimitiveAsync(_args.Symbol);
+                var data = time_series_weekly_adjustedResponse.Data;
+                if (data.Error)
+                    MessageBox.Show("Failed to fetch data", "Error");
+                else
                 {
-                    values.Add(new DateTimePoint(DateTime.ParseExact(timeseries.DateTime, "yyyy-MM-dd", CultureInfo.InvariantCulture),
-                        double.Parse(timeseries.adjustedclose) * _exchangeRate));
+                    foreach (var timeseries in data.TimeSeries)
+                    {
+                        values.Add(new DateTimePoint(DateTime.ParseExact(timeseries.DateTime, "yyyy-MM-dd", CultureInfo.InvariantCulture),
+                            double.Parse(timeseries.adjustedclose) * _exchangeRate));
+                    }
+                    Write("\\min.csv", values);
                 }
             }
+            catch (Exception)
+            {
+                MessageBox.Show("Previse zahteva poslato u kratkom vremene server misli da si spamer! Oladi malo sa kliktanjem.");
+            }
+            
             SeriesCollection[0].Values = values;
             ResetZoomOnClick(sender, e);
         }
@@ -270,24 +285,33 @@ namespace Stocks.UserControls
             
             var values = new ChartValues<DateTimePoint>();
             Int_TIME_SERIES_MONTHLY_ADJUSTED time_series_montly_adjusted = _connection.GetQueryObject_TIME_SERIES_MONTHLY_ADJUSTED();
-            IAvapiResponse_TIME_SERIES_MONTHLY_ADJUSTED time_series_weekly_adjustedResponse =
-                await time_series_montly_adjusted.QueryPrimitiveAsync(_args.Symbol);
-            var data = time_series_weekly_adjustedResponse.Data;
-            if (data.Error)
-                MessageBox.Show("Failed to fetch data", "Error");
-            else
+            try
             {
-                DateTime offset = new DateTime(DateTime.Today.Year - 5, DateTime.Today.Month, DateTime.Today.Day);
-                DateTime temp;
-                foreach (var timeseries in data.TimeSeries)
+                IAvapiResponse_TIME_SERIES_MONTHLY_ADJUSTED time_series_weekly_adjustedResponse =
+                await time_series_montly_adjusted.QueryPrimitiveAsync(_args.Symbol);
+                var data = time_series_weekly_adjustedResponse.Data;
+                if (data.Error)
+                    MessageBox.Show("Failed to fetch data", "Error");
+                else
                 {
-                    temp = DateTime.ParseExact(timeseries.DateTime, "yyyy-MM-dd", CultureInfo.InvariantCulture);
-                    if(temp > offset)
+                    DateTime offset = new DateTime(DateTime.Today.Year - 5, DateTime.Today.Month, DateTime.Today.Day);
+                    DateTime temp;
+                    foreach (var timeseries in data.TimeSeries)
                     {
-                        values.Add(new DateTimePoint(temp, double.Parse(timeseries.adjustedclose) * _exchangeRate));
+                        temp = DateTime.ParseExact(timeseries.DateTime, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+                        if (temp > offset)
+                        {
+                            values.Add(new DateTimePoint(temp, double.Parse(timeseries.adjustedclose) * _exchangeRate));
+                        }
                     }
+                    Write("\\5y.csv", values);
                 }
             }
+            catch (Exception)
+            {
+                MessageBox.Show("Previse zahteva poslato u kratkom vremene server misli da si spamer! Oladi malo sa kliktanjem.");
+            }
+            
             SeriesCollection[0].Values = values;
             ResetZoomOnClick(sender, e);
 
@@ -298,25 +322,34 @@ namespace Stocks.UserControls
            
             var values = new ChartValues<DateTimePoint>();
             Int_TIME_SERIES_WEEKLY_ADJUSTED time_series_weekly_adjusted = _connection.GetQueryObject_TIME_SERIES_WEEKLY_ADJUSTED();
-            IAvapiResponse_TIME_SERIES_WEEKLY_ADJUSTED time_series_weekly_adjustedResponse =
-                await time_series_weekly_adjusted.QueryPrimitiveAsync(_args.Symbol);
-            var data = time_series_weekly_adjustedResponse.Data;
-            if (data.Error)
-                MessageBox.Show("Failed to fetch data", "Error");
-            else
+            try
             {
-                DateTime offset = new DateTime(DateTime.Today.Year - 2, DateTime.Today.Month, DateTime.Today.Day);
-                DateTime temp;
-                foreach (var timeseries in data.TimeSeries)
+                IAvapiResponse_TIME_SERIES_WEEKLY_ADJUSTED time_series_weekly_adjustedResponse =
+               await time_series_weekly_adjusted.QueryPrimitiveAsync(_args.Symbol);
+                var data = time_series_weekly_adjustedResponse.Data;
+                if (data.Error)
+                    MessageBox.Show("Failed to fetch data", "Error");
+                else
                 {
-                    temp = DateTime.ParseExact(timeseries.DateTime, "yyyy-MM-dd", CultureInfo.InvariantCulture);
-                    if (temp > offset)
+                    DateTime offset = new DateTime(DateTime.Today.Year - 2, DateTime.Today.Month, DateTime.Today.Day);
+                    DateTime temp;
+                    foreach (var timeseries in data.TimeSeries)
                     {
-                        values.Add(new DateTimePoint(temp, double.Parse(timeseries.adjustedclose) * _exchangeRate));
-                    }
+                        temp = DateTime.ParseExact(timeseries.DateTime, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+                        if (temp > offset)
+                        {
+                            values.Add(new DateTimePoint(temp, double.Parse(timeseries.adjustedclose) * _exchangeRate));
+                        }
 
+                    }
+                    Write("\\2y.csv", values);
                 }
             }
+            catch (Exception)
+            {
+                MessageBox.Show("Previse zahteva poslato u kratkom vremene server misli da si spamer! Oladi malo sa kliktanjem.");
+            }
+           
             SeriesCollection[0].Values = values;
             ResetZoomOnClick(sender, e);
 
@@ -327,25 +360,34 @@ namespace Stocks.UserControls
             
             var values = new ChartValues<DateTimePoint>();
             Int_TIME_SERIES_WEEKLY_ADJUSTED time_series_weekly_adjusted = _connection.GetQueryObject_TIME_SERIES_WEEKLY_ADJUSTED();
-            IAvapiResponse_TIME_SERIES_WEEKLY_ADJUSTED time_series_weekly_adjustedResponse =
-                await time_series_weekly_adjusted.QueryPrimitiveAsync(_args.Symbol);
-            var data = time_series_weekly_adjustedResponse.Data;
-            if (data.Error)
-                MessageBox.Show("Failed to fetch data", "Error");
-            else
+            try
             {
-                DateTime offset = new DateTime(DateTime.Today.Year - 1, DateTime.Today.Month, DateTime.Today.Day);
-                DateTime temp;
-                foreach (var timeseries in data.TimeSeries)
+                IAvapiResponse_TIME_SERIES_WEEKLY_ADJUSTED time_series_weekly_adjustedResponse =
+               await time_series_weekly_adjusted.QueryPrimitiveAsync(_args.Symbol);
+                var data = time_series_weekly_adjustedResponse.Data;
+                if (data.Error)
+                    MessageBox.Show("Failed to fetch data", "Error");
+                else
                 {
-                    temp = DateTime.ParseExact(timeseries.DateTime, "yyyy-MM-dd", CultureInfo.InvariantCulture);
-                    if (temp > offset)
+                    DateTime offset = new DateTime(DateTime.Today.Year - 1, DateTime.Today.Month, DateTime.Today.Day);
+                    DateTime temp;
+                    foreach (var timeseries in data.TimeSeries)
                     {
-                        values.Add(new DateTimePoint(temp, double.Parse(timeseries.adjustedclose) * _exchangeRate));
-                    }
+                        temp = DateTime.ParseExact(timeseries.DateTime, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+                        if (temp > offset)
+                        {
+                            values.Add(new DateTimePoint(temp, double.Parse(timeseries.adjustedclose) * _exchangeRate));
+                        }
 
+                    }
+                    Write("\\1y.csv", values);
                 }
             }
+            catch (Exception)
+            {
+                MessageBox.Show("Previse zahteva poslato u kratkom vremene server misli da si spamer! Oladi malo sa kliktanjem.");
+            }
+           
             SeriesCollection[0].Values = values;
             ResetZoomOnClick(sender, e);
         }
@@ -355,27 +397,36 @@ namespace Stocks.UserControls
            
             var values = new ChartValues<DateTimePoint>();
             Int_TIME_SERIES_DAILY_ADJUSTED time_series_daily_adjusted = _connection.GetQueryObject_TIME_SERIES_DAILY_ADJUSTED();
-            IAvapiResponse_TIME_SERIES_DAILY_ADJUSTED time_series_daily_adjustedResponse =
-                await time_series_daily_adjusted.QueryPrimitiveAsync(_args.Symbol);
-            var data = time_series_daily_adjustedResponse.Data;
-            if (data.Error)
-                MessageBox.Show("Failed to fetch data", "Error");
-            else
+            try
             {
-                
-
-                DateTime offset = new DateTime(DateTime.Today.Year, DateTime.Today.Month - 3, DateTime.Today.Day);
-                DateTime temp;
-                foreach (var timeseries in data.TimeSeries)
+                IAvapiResponse_TIME_SERIES_DAILY_ADJUSTED time_series_daily_adjustedResponse =
+               await time_series_daily_adjusted.QueryPrimitiveAsync(_args.Symbol);
+                var data = time_series_daily_adjustedResponse.Data;
+                if (data.Error)
+                    MessageBox.Show("Failed to fetch data", "Error");
+                else
                 {
-                    temp = DateTime.ParseExact(timeseries.DateTime, "yyyy-MM-dd", CultureInfo.InvariantCulture);
-                    if (temp > offset)
-                    {
-                        values.Add(new DateTimePoint(temp, double.Parse(timeseries.adjustedclose) * _exchangeRate));
-                    }
 
+
+                    DateTime offset = new DateTime(DateTime.Today.Year, DateTime.Today.Month - 3, DateTime.Today.Day);
+                    DateTime temp;
+                    foreach (var timeseries in data.TimeSeries)
+                    {
+                        temp = DateTime.ParseExact(timeseries.DateTime, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+                        if (temp > offset)
+                        {
+                            values.Add(new DateTimePoint(temp, double.Parse(timeseries.adjustedclose) * _exchangeRate));
+                        }
+
+                    }
+                    Write("\\3m.csv", values);
                 }
             }
+            catch (Exception)
+            {
+                MessageBox.Show("Previse zahteva poslato u kratkom vremene server misli da si spamer! Oladi malo sa kliktanjem.");
+            }
+           
             SeriesCollection[0].Values = values;
             ResetZoomOnClick(sender, e);
         }
@@ -385,27 +436,36 @@ namespace Stocks.UserControls
             
             var values = new ChartValues<DateTimePoint>();
             Int_TIME_SERIES_DAILY_ADJUSTED time_series_daily_adjusted = _connection.GetQueryObject_TIME_SERIES_DAILY_ADJUSTED();
-            IAvapiResponse_TIME_SERIES_DAILY_ADJUSTED time_series_daily_adjustedResponse =
-                await time_series_daily_adjusted.QueryPrimitiveAsync(_args.Symbol);
-            var data = time_series_daily_adjustedResponse.Data;
-            if (data.Error)
-                MessageBox.Show("Failed to fetch data", "Error");
-            else
+            try
             {
-               
-
-                DateTime offset = new DateTime(DateTime.Today.Year, DateTime.Today.Month - 1, DateTime.Today.Day);
-                DateTime temp;
-                foreach (var timeseries in data.TimeSeries)
+                IAvapiResponse_TIME_SERIES_DAILY_ADJUSTED time_series_daily_adjustedResponse =
+               await time_series_daily_adjusted.QueryPrimitiveAsync(_args.Symbol);
+                var data = time_series_daily_adjustedResponse.Data;
+                if (data.Error)
+                    MessageBox.Show("Failed to fetch data", "Error");
+                else
                 {
-                    temp = DateTime.ParseExact(timeseries.DateTime, "yyyy-MM-dd", CultureInfo.InvariantCulture);
-                    if (temp > offset)
-                    {
-                        values.Add(new DateTimePoint(temp, double.Parse(timeseries.adjustedclose) * _exchangeRate));
-                    }
 
+
+                    DateTime offset = new DateTime(DateTime.Today.Year, DateTime.Today.Month - 1, DateTime.Today.Day);
+                    DateTime temp;
+                    foreach (var timeseries in data.TimeSeries)
+                    {
+                        temp = DateTime.ParseExact(timeseries.DateTime, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+                        if (temp > offset)
+                        {
+                            values.Add(new DateTimePoint(temp, double.Parse(timeseries.adjustedclose) * _exchangeRate));
+                        }
+
+                    }
+                    Write("\\1m.csv", values);
                 }
             }
+            catch (Exception)
+            {
+                MessageBox.Show("Previse zahteva poslato u kratkom vremene server misli da si spamer! Oladi malo sa kliktanjem.");
+            }
+           
             SeriesCollection[0].Values = values;
             ResetZoomOnClick(sender, e);
         }
@@ -415,27 +475,86 @@ namespace Stocks.UserControls
            
             var values = new ChartValues<DateTimePoint>();
             Int_TIME_SERIES_DAILY_ADJUSTED time_series_daily_adjusted = _connection.GetQueryObject_TIME_SERIES_DAILY_ADJUSTED();
-            IAvapiResponse_TIME_SERIES_DAILY_ADJUSTED time_series_daily_adjustedResponse =
-                await time_series_daily_adjusted.QueryPrimitiveAsync(_args.Symbol);
-            var data = time_series_daily_adjustedResponse.Data;
-            if (data.Error)
-                MessageBox.Show("Failed to fetch data", "Error");
-            else
+            try
             {
-                DateTime offset = DateTime.Now.AddDays(-10);
-                DateTime temp;
-                foreach (var timeseries in data.TimeSeries)
+                IAvapiResponse_TIME_SERIES_DAILY_ADJUSTED time_series_daily_adjustedResponse =
+               await time_series_daily_adjusted.QueryPrimitiveAsync(_args.Symbol);
+                var data = time_series_daily_adjustedResponse.Data;
+                if (data.Error)
+                    MessageBox.Show("Failed to fetch data", "Error");
+                else
                 {
-                    temp = DateTime.ParseExact(timeseries.DateTime, "yyyy-MM-dd", CultureInfo.InvariantCulture);
-                    if (temp > offset)
+                    DateTime offset = DateTime.Now.AddDays(-10);
+                    DateTime temp;
+                    foreach (var timeseries in data.TimeSeries)
                     {
-                        values.Add(new DateTimePoint(temp, double.Parse(timeseries.adjustedclose) * _exchangeRate));
-                    }
+                        temp = DateTime.ParseExact(timeseries.DateTime, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+                        if (temp > offset)
+                        {
+                            values.Add(new DateTimePoint(temp, double.Parse(timeseries.adjustedclose) * _exchangeRate));
+                        }
 
+                    }
                 }
+                Write("\\10d.csv", values);
             }
+            catch (Exception)
+            {
+                MessageBox.Show("Previse zahteva poslato u kratkom vremene server misli da si spamer! Oladi malo sa kliktanjem.");
+            }
+           
             SeriesCollection[0].Values = values;
             ResetZoomOnClick(sender, e);
+        }
+
+        private async void Write(string pathFile, ChartValues<DateTimePoint> values)
+        {
+            string currentPaht = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
+            string path = currentPaht + "\\Files\\" + _args.Symbol;
+
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+
+            path += pathFile;
+
+            using(StreamWriter writer = new StreamWriter(path))
+            {
+                foreach(var line in values)
+                {
+                    await writer.WriteLineAsync(line.DateTime.ToShortDateString() + "," + line.Value / _exchangeRate);
+                } 
+            }
+        }
+
+        private async void Read(string filePath)
+        {
+            var temp = new ChartValues<DateTimePoint>();
+            try
+            {
+                using(StreamReader reader = new StreamReader(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName +
+                    "\\Files\\" + _args.Symbol + filePath))
+                {
+                    string line;
+                    while((line = await reader.ReadLineAsync())!= null)
+                    {
+                        string[] token = line.Split(',');
+                        temp.Add(new DateTimePoint
+                        {
+                            Value = double.Parse(token[1]) * _exchangeRate,
+                            DateTime = DateTime.ParseExact(token[0], "dd-MMM-yy", CultureInfo.InvariantCulture)
+                        });
+
+                    }
+                }
+                SeriesCollection[0].Values = temp;
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Can not get data!", "Error");
+            }
+            
         }
 
         private void Add(object sender, RoutedEventArgs e)

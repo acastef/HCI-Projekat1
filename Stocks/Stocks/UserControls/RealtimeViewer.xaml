@@ -21,10 +21,10 @@
         <TextBlock Grid.Column="0" Grid.Row="1" Foreground="WhiteSmoke" FontSize="20" TextAlignment="Center" VerticalAlignment="Center">Current value:</TextBlock>
         <TextBlock Grid.Column="0" Grid.Row="2" Foreground="WhiteSmoke" FontSize="20" TextAlignment="Center" VerticalAlignment="Center">Trend:</TextBlock>
         <TextBlock Grid.Column="0" Grid.Row="3" Foreground="WhiteSmoke" FontSize="20" TextAlignment="Center" VerticalAlignment="Center">Trend( % ):</TextBlock>
-        <TextBlock Grid.Column="1" Grid.Row="0" Foreground="WhiteSmoke" FontSize="20" TextAlignment="Center" VerticalAlignment="Center" Text="{Binding LastValue}"></TextBlock>
-        <TextBlock Grid.Column="1" Grid.Row="1" Foreground="WhiteSmoke" FontSize="20" TextAlignment="Center" VerticalAlignment="Center" Text="{Binding CurrentValue}"></TextBlock>
-        <TextBlock Grid.Column="1" Grid.Row="2" Foreground="{Binding Color}" FontSize="20" TextAlignment="Center" VerticalAlignment="Center" Text="{Binding Trend}"></TextBlock>
-        <TextBlock Grid.Column="1" Grid.Row="3" Foreground="{Binding Color}" FontSize="20" TextAlignment="Center" VerticalAlignment="Center" Text="{Binding TrendPercentage}"></TextBlock>
+        <TextBlock Grid.Column="1" Grid.Row="0" Foreground="WhiteSmoke" FontSize="20" TextAlignment="Center" VerticalAlignment="Center" Text="{Binding LastValue, StringFormat={}{0:N2}}"></TextBlock>
+        <TextBlock Grid.Column="1" Grid.Row="1" Foreground="WhiteSmoke" FontSize="20" TextAlignment="Center" VerticalAlignment="Center" Text="{Binding CurrentValue, StringFormat={}{0:N2}}"></TextBlock>
+        <TextBlock Grid.Column="1" Grid.Row="2" Foreground="{Binding Color}" FontSize="20" TextAlignment="Center" VerticalAlignment="Center" Text="{Binding Trend, StringFormat={}{0:N2}}"></TextBlock>
+        <TextBlock Grid.Column="1" Grid.Row="3" Foreground="{Binding Color}" FontSize="20" TextAlignment="Center" VerticalAlignment="Center" Text="{Binding TrendPercentage, StringFormat={}{0:N2}}"></TextBlock>
 
     </Grid>
 </UserControl>

@@ -1,4 +1,6 @@
 ﻿using Avapi;
+using Avapi.AvapiCURRENCY_EXCHANGE_RATE;
+using Avapi.AvapiDIGITAL_CURRENCY_INTRADAY;
 using Avapi.AvapiTIME_SERIES_INTRADAY;
 using Stocks.Model;
 using Stocks.Util;
@@ -32,10 +34,11 @@ namespace Stocks.UserControls
         private double _lastValue;
         private String _trendPergentage;
         private String _trend;
-        private String _color;
+        private Brush _color;
         private FetchArgs _args;
         private IAvapiConnection _connection = AvapiConnection.Instance;
         private Task _backgroindWork;
+        private double _exchangeRate = 1;
 
         public RealtimeViewer()
         {
@@ -48,104 +51,199 @@ namespace Stocks.UserControls
                 DefaultCurrency = Configuration.Instance.DefaultCurrency,
                 Symbol = Configuration.Instance.Symbol,
                 FullName = Configuration.Instance.FullName,
-                RefreshRate = Configuration.Instance.RefreshRate * 10
+
+                RefreshRate = Configuration.Instance.RefreshRate *10 ,
+                Type = Configuration.Instance.Type
+                
             };
 
-            Task.Run(() =>
+            //Task.Run(() =>
+            //{
+            //    SynchronizationContext.SetSynchronizationContext(new SynchronizationContext());
+            //    while (true)
+            //    {
+            //        RealTimeData value = new RealTimeData();
+
+            //        _backgroindWork = Task.Factory.StartNew(() =>
+            //        {
+            //            value = GetData();
+            //        }, TaskCreationOptions.LongRunning);
+
+
+
+            //        _backgroindWork.ContinueWith(x =>
+            //        {
+            //            Console.WriteLine(value.Value);
+            //            if (CurrentValue != value.Value || CurrentValue != 0)
+            //            {
+            //                LastValue = CurrentValue;
+            //                CurrentValue = value.Value;
+            //                double pom1 =  CurrentValue - LastValue;
+            //                if (pom1 > 0)
+            //                {
+            //                    Color = Brushes.Green;
+            //                }
+            //                else if (pom1 < 0)
+            //                {
+            //                    Color = Brushes.Red;
+            //                }
+            //                else
+            //                {
+            //                    Color = Brushes.WhiteSmoke;
+            //                }
+            //                pom1 = Math.Truncate(pom1 * 100) / 100;
+            //                Trend = string.Format("{0:N2}", pom1);
+            //                if (LastValue != 0)
+            //                    pom1 = Math.Truncate(pom1 / LastValue * 100);
+            //                else
+            //                    pom1 = 100;
+            //                TrendPercentage = string.Format("{0:N2}%", pom1);
+            //            }
+
+            //        }, TaskScheduler.FromCurrentSynchronizationContext());
+            //        Thread.Sleep(_args.RefreshRate * 10000);
+            //    }
+
+            //});
+
+            Init();
+
+            DataContext = this;
+        }
+
+        private async void Init()
+        {
+            RealTimeData value;
+            await Task.Run(() =>
             {
-                SynchronizationContext.SetSynchronizationContext(new SynchronizationContext());
                 while (true)
                 {
-                    RealTimeData value = new RealTimeData();
-                    
-                    _backgroindWork = Task.Factory.StartNew(() =>
+                    value = GetData();
+                    if (CurrentValue != value.Value || CurrentValue != 0)
                     {
-                        value = GetData();
-                    }, TaskCreationOptions.LongRunning);
-
-                  
-
-                    _backgroindWork.ContinueWith(x =>
-                    {
-                        Console.WriteLine(value.Value);
-                        if (CurrentValue != value.Value || CurrentValue != 0)
+                        LastValue = CurrentValue;
+                        CurrentValue = value.Value;
+                        Console.WriteLine(_args.FullName + "  " + _currentValue);
+                        double pom1 = CurrentValue - LastValue;
+                        if (pom1 > 0)
                         {
-                            LastValue = CurrentValue;
-                            CurrentValue = value.Value;
-                            double pom1 =  CurrentValue - LastValue;
-                            if (pom1 > 0)
-                            {
-                                Color = "Green";
-                            }
-                            else if (pom1 < 0)
-                            {
-                                Color = "Red";
-                            }
-                            else
-                            {
-                                Color = "WhiteSmoke";
-                            }
-                            pom1 = Math.Truncate(pom1 * 100) / 100;
-                            Trend = string.Format("{0:N2}", pom1);
-                            pom1 = Math.Truncate(pom1/LastValue * 100) ;
-                            TrendPercentage = string.Format("{0:N2}%", pom1);
+                            Color = Brushes.Green;
                         }
-                        
-                    }, TaskScheduler.FromCurrentSynchronizationContext());
+                        else if (pom1 < 0)
+                        {
+                            Color = Brushes.Red;
+                        }
+                        else
+                        {
+                            Color = Brushes.WhiteSmoke;
+                        }
+                        pom1 = Math.Truncate(pom1 * 100) / 100;
+                        Trend = string.Format("{0:N2}", pom1);
+                        if (LastValue != 0)
+                            pom1 = Math.Truncate(pom1 / LastValue * 100);
+                        else
+                            pom1 = 100;
+                        TrendPercentage = string.Format("{0:N2}%", pom1);
+                    }
                     Thread.Sleep(_args.RefreshRate * 10000);
                 }
                 
             });
-
-
-            DataContext = this;
         }
 
         private RealTimeData GetData()
         {
 
-            
-            
-            Int_TIME_SERIES_INTRADAY time_series_intraday =
+            if (_args.DefaultCurrency != "USD" && _exchangeRate == 1)
+            {
+                try
+                {
+                    Int_CURRENCY_EXCHANGE_RATE currency_exchange_rate = _connection.GetQueryObject_CURRENCY_EXCHANGE_RATE();
+                    IAvapiResponse_CURRENCY_EXCHANGE_RATE currency_exchange_rateResponse =
+                    currency_exchange_rate.QueryPrimitive("USD", _args.DefaultCurrency);
+                    var data2 = currency_exchange_rateResponse.Data;
+                    if (data2.Error)
+                        MessageBox.Show("Failed to fetch data for exchage rate", "Error");
+                    else
+                    {
+                        _exchangeRate = double.Parse(data2.ExchangeRate);
+                    }
+                }
+                catch (NullReferenceException)
+                {
+                    MessageBox.Show("Failed to fetch currency exchange rate for chosen currency. Values will be show in USD", "Error");
+                }
+
+            }
+
+            if (_args.Type == TypeSeries.STOCK)
+            {
+                Int_TIME_SERIES_INTRADAY time_series_intraday =
                 _connection.GetQueryObject_TIME_SERIES_INTRADAY();
 
-            try
-            {
-                IAvapiResponse_TIME_SERIES_INTRADAY time_series_intradayResponse =
-            time_series_intraday.Query(
-                 _args.Symbol,
-                 Const_TIME_SERIES_INTRADAY.TIME_SERIES_INTRADAY_interval.n_1min,
-                 Const_TIME_SERIES_INTRADAY.TIME_SERIES_INTRADAY_outputsize.compact);
+                try
+                {
+                    IAvapiResponse_TIME_SERIES_INTRADAY time_series_intradayResponse =
+                    time_series_intraday.Query(
+                     _args.Symbol,
+                     Const_TIME_SERIES_INTRADAY.TIME_SERIES_INTRADAY_interval.n_1min,
+                     Const_TIME_SERIES_INTRADAY.TIME_SERIES_INTRADAY_outputsize.compact);
 
-                var data = time_series_intradayResponse.Data;
-                if (data.Error)
-                {
-                    MessageBox.Show("Failed to fetch data for " + _args.Symbol , "Error");
-                }
-                else
-                {
-                    //Console.WriteLine("Information: " + data.MetaData.Information);
-                    //Console.WriteLine("Symbol: " + data.MetaData.Symbol);
-                    //Console.WriteLine("LastRefreshed: " + data.MetaData.LastRefreshed);
-                    //Console.WriteLine("Interval: " + data.MetaData.Interval);
-                    //Console.WriteLine("OutputSize: " + data.MetaData.OutputSize);
-                    //Console.WriteLine("TimeZone: " + data.MetaData.TimeZone);
-                    //Console.WriteLine("========================");
-                    //Console.WriteLine("========================");
-                    return new RealTimeData
+                    var data = time_series_intradayResponse.Data;
+                    if (data.Error)
                     {
-                        Value = double.Parse(data.TimeSeries.First().close),
-                        Date = DateTime.ParseExact(data.TimeSeries.First().DateTime, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture),
-                        Trend = 0
-                    };
-                   
+                        MessageBox.Show("Failed to fetch data for " + _args.Symbol, "Error");
+                    }
+                    else
+                    {
+                        
+
+                        return new RealTimeData
+                        {
+                            Value = double.Parse(data.TimeSeries.First().close) * _exchangeRate,
+                            Date = DateTime.ParseExact(data.TimeSeries.First().DateTime, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture),
+                            Trend = 0
+                        };
+                    }       
+                }
+                catch (Exception)
+                {
+                    //MessageBox.Show("Failed to send request", "Error");
+                    Console.WriteLine("Desila je greska za deonice!");
                 }
             }
-            catch (Exception)
+            else if(_args.Type == TypeSeries.DIGITAL_CURRENCY)
             {
-                //MessageBox.Show("Failed to send request", "Error");
-                Console.WriteLine("Desila je greska!");
+                Int_DIGITAL_CURRENCY_INTRADAY digital_currency_intraday =
+               _connection.GetQueryObject_DIGITAL_CURRENCY_INTRADAY();
+                try
+                {
+                    IAvapiResponse_DIGITAL_CURRENCY_INTRADAY digital_currency_intradayResponse =
+               digital_currency_intraday.QueryPrimitive(_args.Symbol, "USD");
+                    
+                    var data = digital_currency_intradayResponse.Data;
+                    if (data.Error)
+                    {
+                        MessageBox.Show("Failed to fetch data for " + _args.FullName);
+                    }
+                    else
+                    {
+                        return new RealTimeData
+                        {
+                            Value = double.Parse(data.TimeSeries.First().Price) * _exchangeRate,
+                            Date = DateTime.ParseExact(data.TimeSeries.First().DateTime, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture),
+                            Trend = 0
+                        };
+                    }
+                }
+                catch (Exception)
+                {
+                    Console.WriteLine("Desila je greska za kripto valute!");
+                }
+               
             }
+            
+            
 
 
             return new RealTimeData();
@@ -190,7 +288,7 @@ namespace Stocks.UserControls
             }
         }
 
-        public String Color
+        public Brush Color
         {
             get { return _color; }
             set
