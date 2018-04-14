@@ -10,7 +10,7 @@ namespace Stocks.Util
     class Configuration
     {
         private static  Configuration _instance;
-        private Dictionary<String, String> _realTimeParameters;
+        private Dictionary<String, Boolean> _realTimeParameters;
 
         private int _defaultCurrencyIndex;
         private List<String> _defaultCurrenciesList = new List<String>();
@@ -50,7 +50,7 @@ namespace Stocks.Util
         }
 
 
-        public Dictionary<String, String> RealTimeParameters
+        public Dictionary<String, Boolean> RealTimeParameters
         {
             get { return _realTimeParameters; }
             set { _realTimeParameters = value; }

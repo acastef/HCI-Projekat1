@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -84,5 +85,47 @@ namespace Stocks.UserControls
 
             listOfBoxes.ItemsSource = listOfCheckBoxes;
         }
+
+        private void SaveButtonClick(object sender, RoutedEventArgs e)
+        {
+            // gets values from realtime parameters
+            foreach (CheckBox cb in  listOfBoxes.Items)
+            {
+                Configuration.Instance.RealTimeParameters[(String)cb.Content] = (Boolean) cb.IsChecked;
+            }
+
+            // gets default currency index
+            Configuration.Instance.DefaultCurrencyIndex = DefaultCurrencies.SelectedIndex;
+            // gets refresh rate index
+            Configuration.Instance.RefreshRateIndex = RefreshRates.SelectedIndex;
+
+            String returnText;
+            if (data.saveSettings() == true)
+                returnText = "Successfully saved";
+            else
+                returnText = "Something went wrong, your data can not be saved!\n Contact us for more information";
+
+           
+            TextBlock popupText = new TextBlock
+            {
+                Text = returnText,
+                Background = Brushes.Turquoise,
+                Foreground = Brushes.Black,
+            };
+            Popup msg = new Popup()
+            {
+                PlacementTarget = SaveButton,
+                Placement = PlacementMode.Top,
+                IsOpen = true,
+                StaysOpen = false,
+                HorizontalOffset = 5,
+                VerticalOffset = -5,
+                Width = SaveButton.Width * 2,
+
+                Child = popupText
+            };
+        }
     }
+
+   
 }

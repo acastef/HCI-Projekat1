@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.VisualBasic.FileIO;
 using Stocks.Model;
+using Stocks.Util;
 
 namespace Stocks.FileManager
 {
@@ -82,6 +83,35 @@ namespace Stocks.FileManager
             
         }
 
+        internal bool saveSettings()
+        {
+            String currentPath = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
+
+            try
+            {
+                // saving real time parameters
+                Dictionary<String, Boolean> realTimeP = Configuration.Instance.RealTimeParameters;
+                using (StreamWriter writetext = new StreamWriter(currentPath + "\\Files\\" + "real_time_parameteres.txt", false))
+                {
+                    foreach (String key in realTimeP.Keys)
+                    {
+                        writetext.WriteLine(key + ":" + realTimeP[key]);
+                    }
+                }
+
+                //saving default currency and refresh rate index
+                using (StreamWriter writetext = new StreamWriter(currentPath + "\\Files\\" + "meta_data.txt", false))
+                {
+                    writetext.WriteLine("defaultCurrency: " + Configuration.Instance.DefaultCurrencyIndex);
+                    writetext.WriteLine("refreshRate: " + Configuration.Instance.RefreshRateIndex);
+                }
+
+                return true;
+            }
+            catch { return false;  }
+                
+        }
+
         public List<int> ReadRefreshRates(String path)
         {
             String currentPath = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
@@ -118,7 +148,7 @@ namespace Stocks.FileManager
 
         }
 
-        public Dictionary<String, String> ReadRealTimeParameteres(String path, String delimiter)
+        public Dictionary<String, Boolean> ReadRealTimeParameteres(String path, String delimiter)
         {
             String currentPath = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
 
@@ -127,12 +157,12 @@ namespace Stocks.FileManager
 
                 parser.TextFieldType = FieldType.Delimited;
                 parser.SetDelimiters(delimiter);
-                Dictionary<String, String> listOfParameters = new Dictionary<String, String>();
+                Dictionary<String, Boolean> listOfParameters = new Dictionary<String, Boolean>();
                 while (!parser.EndOfData)
                 {
                     string[] fields = parser.ReadFields();
                     //String[] keyValue = fields[0].Trim().Split(':');
-                    listOfParameters[fields[0].Trim()] = fields[1].Trim();
+                    listOfParameters[fields[0].Trim()] = Boolean.Parse( fields[1].Trim());
                 }
 
                 return listOfParameters;

@@ -33,7 +33,7 @@
             <ComboBox Name="RefreshRates" SelectedIndex="1"></ComboBox>
         </StackPanel>
 
-        <Button Grid.Column="1"  Grid.Row="1" Margin="5"> Save</Button>
+        <Button Name ="SaveButton" Grid.Column="1"  Grid.Row="1" Margin="5" Click="SaveButtonClick"> Save</Button>
 
     </Grid>
 </Window>
