@@ -1,2 +1,2 @@
-defaultCurrency: 1
-refreshRate: 2
+defaultCurrency: 0
+refreshRate: 0

@@ -88,7 +88,7 @@
                 </TabItem.Content>
             </TabItem>
         </TabControl>
-        <ScrollViewer Grid.Column="1">
+        <ScrollViewer Grid.Row="1" Grid.Column="1">
             <StackPanel Name ="DataContainer">
             </StackPanel>
         </ScrollViewer>

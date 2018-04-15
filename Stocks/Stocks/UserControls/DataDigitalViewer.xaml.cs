@@ -32,7 +32,7 @@ namespace Stocks.UserControls
             InitializeComponent();
             Id = Configuration.Instance.Symbol;
             Title.Text = Configuration.Instance.FullName;
-            _realtime = new RealtimeViewer();
+            //_realtime = new RealtimeViewer();
             _digitalCurrencyHisotryTrendind = new DigitalCurrencyHisotryTrendind();
 
         }

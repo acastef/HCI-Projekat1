@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Stocks.Util;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,43 +13,32 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using System.ComponentModel;
-using Stocks.Util;
 
 namespace Stocks.UserControls
 {
     /// <summary>
-    /// Interaction logic for DataViewer.xaml
+    /// Interaction logic for CurrencyDataViewer.xaml
     /// </summary>
-    public partial class DataViewer : UserControl
+    public partial class CurrencyDataViewer : UserControl
     {
         private String _id;
-        private HistoryTrending _historyTrending;
         private RealtimeViewer _realtime;
+        private CurrencyHistoryTrending _currencyHistoryTrending;
+
+        public CurrencyDataViewer()
+        {
+            InitializeComponent();
+            Id = Configuration.Instance.Symbol;
+            Title.Text = Configuration.Instance.FullName;
+            //_realtime = new RealtimeViewer();
+            _currencyHistoryTrending = new CurrencyHistoryTrending();
+        }
 
         public String Id
         {
             get { return _id; }
-            set {_id = value;}
+            set { _id = value; }
         }
-
-        public DataViewer()
-        {        
-            InitializeComponent();
-            Id = Configuration.Instance.Symbol;
-            Title.Text = Configuration.Instance.FullName;
-            _historyTrending = new HistoryTrending();
-            //_realtime = new RealtimeViewer();
-        }
-
-        
-        public HistoryTrending HistoryTrending
-        {
-            get { return _historyTrending; }
-            set { _historyTrending = value; }
-        }
-
-
 
         public RealtimeViewer RealTime
         {
@@ -56,11 +46,10 @@ namespace Stocks.UserControls
             set { _realtime = value; }
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected virtual void OnPropertyChanged(string propertyName = null)
+        public CurrencyHistoryTrending CurrencyHisotryTrendind
         {
-            if (PropertyChanged != null) PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            get { return _currencyHistoryTrending; }
+            set { _currencyHistoryTrending = value; }
         }
     }
 }

@@ -265,6 +265,12 @@
     <Compile Include="UserControls\CompareGraph.xaml.cs">
       <DependentUpon>CompareGraph.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\CurrencyDataViewer.xaml.cs">
+      <DependentUpon>CurrencyDataViewer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\CurrencyHistoryTrending.xaml.cs">
+      <DependentUpon>CurrencyHistoryTrending.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\DataDigitalViewer.xaml.cs">
       <DependentUpon>DataDigitalViewer.xaml</DependentUpon>
     </Compile>
@@ -299,6 +305,14 @@
     <Compile Include="WMA\Impl_WMA.cs" />
     <Compile Include="WMA\Int_WMA.cs" />
     <Page Include="UserControls\CompareGraph.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\CurrencyDataViewer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\CurrencyHistoryTrending.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

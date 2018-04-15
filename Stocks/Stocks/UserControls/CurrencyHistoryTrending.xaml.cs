@@ -1,10 +1,9 @@
 ﻿using Avapi;
-using Avapi.AvapiCURRENCY_EXCHANGE_RATE;
-using Avapi.AvapiDIGITAL_CURRENCY_DAILY;
-using Avapi.AvapiTIME_SERIES_DAILY;
 using LiveCharts;
+using LiveCharts.Configurations;
 using LiveCharts.Defaults;
 using LiveCharts.Wpf;
+using Stocks.Model;
 using Stocks.Util;
 using System;
 using System.Collections.Generic;
@@ -28,21 +27,20 @@ using System.Windows.Shapes;
 namespace Stocks.UserControls
 {
     /// <summary>
-    /// Interaction logic for DigitalCurrencyHisotryTrendind.xaml
+    /// Interaction logic for CurrencyHistoryTrending.xaml
     /// </summary>
-    public partial class DigitalCurrencyHisotryTrendind : UserControl, INotifyPropertyChanged
+    public partial class CurrencyHistoryTrending : UserControl, INotifyPropertyChanged
     {
         private ZoomingOptions _zoomingMode;
         private string _title;
         private FetchArgs _args;
         private double _exchangeRate = 1;
-        private IAvapiConnection _connection = AvapiConnection.Instance;
         private CompareGraph graph = Application.Current.Windows[1] as CompareGraph;
         private LineSeries temp;
         private bool _added;
         private Popup msg;
 
-        public DigitalCurrencyHisotryTrendind()
+        public CurrencyHistoryTrending()
         {
             InitializeComponent();
 
@@ -58,7 +56,10 @@ namespace Stocks.UserControls
             gradientBrush.GradientStops.Add(new GradientStop(Color.FromRgb(64, 224, 208), 0));
             gradientBrush.GradientStops.Add(new GradientStop(Colors.Transparent, 1));
 
-            _connection.Connect("5XQ6Y6JJKEOQ7JRU");
+            var dayConfig = Mappers.Xy<DateModel>()
+                .X(dayModel => (double)dayModel.DateTime.Ticks)
+                .Y(dayModel => dayModel.Value);
+
             _args = new FetchArgs
             {
                 DefaultCurrency = Configuration.Instance.DefaultCurrency,
@@ -67,23 +68,32 @@ namespace Stocks.UserControls
                 RefreshRate = Configuration.Instance.RefreshRate
             };
 
-            XFormatter = val => new DateTime((long)val).ToString("dd MMM yyyy");
+            XFormatter = value => new DateTime((long)value).ToString("dd.MM.yyyy. HH:mm:ss");
+            //XFormatter = value => new DateTime(Math.Max(0,((long)value * TimeSpan.FromMilliseconds(1000).Ticks))).ToString("dd.MM.yyyy. HH:mm:ss");
+
+            //XFormatter = val => new DateTime((long)Math.Max(0, val)).ToString("dd MM yyyy HH:mm:ss");
             YFormatter = val => val.ToString("0.##") + " " + _args.DefaultCurrency;
 
             SeriesCollection = new SeriesCollection
             {
                 new LineSeries
                 {
+                    Configuration = dayConfig,
+                    AreaLimit = -10,
                     Values = GetData(),
                     Fill = gradientBrush,
                     StrokeThickness = 1,
-                    PointGeometrySize = 0,
+                    PointGeometrySize = 10,
                     Title = _args.FullName,
 
                 }
             };
 
             ZoomingMode = ZoomingOptions.Xy;
+
+
+
+
 
             Title = _args.FullName;
 
@@ -104,185 +114,65 @@ namespace Stocks.UserControls
             }
         }
 
-        private ChartValues<DateTimePoint> GetData()
+        private ChartValues<DateModel> GetData()
         {
-            var values = new ChartValues<DateTimePoint>();
+            return Read();
 
-
-            Int_DIGITAL_CURRENCY_DAILY digital_currency_daily =
-                _connection.GetQueryObject_DIGITAL_CURRENCY_DAILY();
-            try
-            {
-                IAvapiResponse_DIGITAL_CURRENCY_DAILY digital_currency_dailyResponse =
-           digital_currency_daily.QueryPrimitive(_args.Symbol, _args.DefaultCurrency);
-
-                var data = digital_currency_dailyResponse.Data;
-                if (data.Error && _args.DefaultCurrency == "USD")
-                {
-                    MessageBox.Show("Failed to fetch data", "Error");
-                    Read("\\" + _args.Symbol + ".csv");
-                    try
-                    {
-                        return (ChartValues<DateTimePoint>)SeriesCollection[0].Values;
-                    }
-                    catch
-                    {
-
-                    }
-
-                }
-                else if (data.Error)
-                {
-
-                    digital_currency_dailyResponse = digital_currency_daily.QueryPrimitive(_args.Symbol, "USD");
-                    var data1 = digital_currency_dailyResponse.Data;
-                    if (data1.Error)
-                    {
-                        MessageBox.Show("Failed to fetch data", "Error");
-                        values = Read("\\" + _args.Symbol + ".csv");
-                        try
-                        {
-                            return (ChartValues<DateTimePoint>)SeriesCollection[0].Values;
-                        }
-                        catch (Exception)
-                        {
-
-                        }
-
-                    }
-                    else
-                    {
-                        try
-                        {
-                            Int_CURRENCY_EXCHANGE_RATE currency_exchange_rate = _connection.GetQueryObject_CURRENCY_EXCHANGE_RATE();
-                            IAvapiResponse_CURRENCY_EXCHANGE_RATE currency_exchange_rateResponse =
-                            currency_exchange_rate.QueryPrimitive("USD", _args.DefaultCurrency);
-                            var data2 = currency_exchange_rateResponse.Data;
-                            if (data2.Error)
-                            {
-                                MessageBox.Show("Failed to fetch exchange rate data for " + _args, "Error");
-                            }
-
-                            else
-                            {
-                                _exchangeRate = double.Parse(data2.ExchangeRate);
-                                DateTime offset = DateTime.Now.AddYears(-1);
-                                DateTime temp;
-                                foreach (var timeseries in data1.TimeSeries)
-                                {
-                                    temp = DateTime.ParseExact(timeseries.DateTime, "yyyy-MM-dd", CultureInfo.InvariantCulture);
-                                    if (temp > offset)
-                                    {
-                                        values.Add(new DateTimePoint(temp, double.Parse(timeseries.Close) * _exchangeRate));
-                                    }
-
-                                }
-                                Write("\\" + _args.Symbol + ".csv", values);
-                            }
-                        }
-                        catch (NullReferenceException)
-                        {
-                            MessageBox.Show("Failed to fetch currency exchange rate for " + _args.DefaultCurrency + " currency. Values will be show in USD", "Error");
-                            DateTime offset = DateTime.Now.AddYears(-1);
-                            DateTime temp;
-                            _exchangeRate = 1;
-                            foreach (var timeseries in data1.TimeSeries)
-                            {
-                                temp = DateTime.ParseExact(timeseries.DateTime, "yyyy-MM-dd", CultureInfo.InvariantCulture);
-                                if (temp > offset)
-                                {
-                                    values.Add(new DateTimePoint(temp, double.Parse(timeseries.Close)));
-                                }
-
-                            }
-                            YFormatter = val => "$" + val.ToString("0.##");
-                            Write("\\" + _args.Symbol + ".csv", values);
-                        }
-
-
-                    }
-                }
-                else
-                {
-                    DateTime offset = DateTime.Now.AddYears(-1);
-                    DateTime temp;
-                    _exchangeRate = 1;
-                    foreach (var timeseries in data.TimeSeries)
-                    {
-                        temp = DateTime.ParseExact(timeseries.DateTime, "yyyy-MM-dd", CultureInfo.InvariantCulture);
-                        if (temp > offset)
-                        {
-                            values.Add(new DateTimePoint(temp, double.Parse(timeseries.Close)));
-                        }
-
-                    }
-                    Write("\\" + _args.Symbol + ".csv", values);
-                }
-            }
-            catch(Exception e)
-            {
-                Console.WriteLine(e.Message);
-                values = Read("\\" + _args.Symbol + ".csv");
-                
-            }
-           
-            //SeriesCollection[0].Title = data.MetaData.DigitalCurrencyName;
-            return values;
         }
 
-
-        private void Write(string pathFile, ChartValues<DateTimePoint> values)
+        private ChartValues<DateModel> Read()
         {
-            string currentPaht = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
-            string path = currentPaht + "\\Files\\" + _args.Symbol;
-
-            if (!Directory.Exists(path))
-            {
-                Directory.CreateDirectory(path);
-            }
-
-            path += pathFile;
-
-            using (StreamWriter writer = new StreamWriter(path))
-            {
-                foreach (var line in values)
-                {
-                    writer.WriteLine(line.DateTime.ToShortDateString() + "," + line.Value / _exchangeRate);
-                }
-            }
-        }
-
-        private ChartValues<DateTimePoint> Read(string filePath)
-        {
-            var temp = new ChartValues<DateTimePoint>();
+            var temp = new ChartValues<DateModel>();
             try
             {
 
                 using (StreamReader reader = new StreamReader(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName +
-                    "\\Files\\" + _args.Symbol + filePath))
+                    "\\Files\\Currencies\\" + _args.Symbol + ".csv"))
                 {
                     string line;
                     while ((line = reader.ReadLine()) != null)
                     {
-                        string[] token = line.Split(',');
-                        temp.Add(new DateTimePoint
+                        if (line == "")
                         {
-                            Value = double.Parse(token[1]) * _exchangeRate,
-                            DateTime = DateTime.ParseExact(token[0], "dd-MMM-yy", CultureInfo.InvariantCulture)
-                        });
+                            continue;
+                        }
+                        string[] token = line.Split(',');
+                        var date = DateTime.ParseExact(token[0], "dd-MM-yyyy HH:MM:ss", CultureInfo.InvariantCulture);
+                        if(temp.Count == 0)
+                        {
+                            temp.Add(new DateModel
+                            {
+                                Value = double.Parse(token[1]) * _exchangeRate,
+                                DateTime = date
+                            });
+                        }
+                        else
+                        {
+                            if (date > temp.Last().DateTime && temp.Count > 0)
+                            {
+                                temp.Add(new DateModel
+                                {
+                                    Value = double.Parse(token[1]) * _exchangeRate,
+                                    DateTime = date
+                                });
+                            }
+                        }
+                       
+                       
 
                     }
                 }
-                return temp;
+
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
                 MessageBox.Show("Can not get data for " + _args.FullName + "!", "Error");
+
             }
             return temp;
-
         }
+
 
         public ZoomingOptions ZoomingMode
         {

@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -51,60 +52,11 @@ namespace Stocks.UserControls
                 DefaultCurrency = Configuration.Instance.DefaultCurrency,
                 Symbol = Configuration.Instance.Symbol,
                 FullName = Configuration.Instance.FullName,
-
-                RefreshRate = Configuration.Instance.RefreshRate *10 ,
+                RefreshRate = Configuration.Instance.RefreshRate,
                 Type = Configuration.Instance.Type
-                
+
             };
 
-            //Task.Run(() =>
-            //{
-            //    SynchronizationContext.SetSynchronizationContext(new SynchronizationContext());
-            //    while (true)
-            //    {
-            //        RealTimeData value = new RealTimeData();
-
-            //        _backgroindWork = Task.Factory.StartNew(() =>
-            //        {
-            //            value = GetData();
-            //        }, TaskCreationOptions.LongRunning);
-
-
-
-            //        _backgroindWork.ContinueWith(x =>
-            //        {
-            //            Console.WriteLine(value.Value);
-            //            if (CurrentValue != value.Value || CurrentValue != 0)
-            //            {
-            //                LastValue = CurrentValue;
-            //                CurrentValue = value.Value;
-            //                double pom1 =  CurrentValue - LastValue;
-            //                if (pom1 > 0)
-            //                {
-            //                    Color = Brushes.Green;
-            //                }
-            //                else if (pom1 < 0)
-            //                {
-            //                    Color = Brushes.Red;
-            //                }
-            //                else
-            //                {
-            //                    Color = Brushes.WhiteSmoke;
-            //                }
-            //                pom1 = Math.Truncate(pom1 * 100) / 100;
-            //                Trend = string.Format("{0:N2}", pom1);
-            //                if (LastValue != 0)
-            //                    pom1 = Math.Truncate(pom1 / LastValue * 100);
-            //                else
-            //                    pom1 = 100;
-            //                TrendPercentage = string.Format("{0:N2}%", pom1);
-            //            }
-
-            //        }, TaskScheduler.FromCurrentSynchronizationContext());
-            //        Thread.Sleep(_args.RefreshRate * 10000);
-            //    }
-
-            //});
 
             Init();
 
@@ -145,16 +97,16 @@ namespace Stocks.UserControls
                             pom1 = 100;
                         TrendPercentage = string.Format("{0:N2}%", pom1);
                     }
-                    Thread.Sleep(_args.RefreshRate * 10000);
+                    Thread.Sleep(_args.RefreshRate * 60000);
                 }
-                
+
             });
         }
 
         private RealTimeData GetData()
         {
 
-            if (_args.DefaultCurrency != "USD" && _exchangeRate == 1)
+            if (_args.DefaultCurrency != "USD" && _exchangeRate == 1 && _args.Type != TypeSeries.CURRENCY)
             {
                 try
                 {
@@ -196,7 +148,7 @@ namespace Stocks.UserControls
                     }
                     else
                     {
-                        
+
 
                         return new RealTimeData
                         {
@@ -204,7 +156,7 @@ namespace Stocks.UserControls
                             Date = DateTime.ParseExact(data.TimeSeries.First().DateTime, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture),
                             Trend = 0
                         };
-                    }       
+                    }
                 }
                 catch (Exception)
                 {
@@ -212,7 +164,7 @@ namespace Stocks.UserControls
                     Console.WriteLine("Desila je greska za deonice!");
                 }
             }
-            else if(_args.Type == TypeSeries.DIGITAL_CURRENCY)
+            else if (_args.Type == TypeSeries.DIGITAL_CURRENCY)
             {
                 Int_DIGITAL_CURRENCY_INTRADAY digital_currency_intraday =
                _connection.GetQueryObject_DIGITAL_CURRENCY_INTRADAY();
@@ -220,7 +172,7 @@ namespace Stocks.UserControls
                 {
                     IAvapiResponse_DIGITAL_CURRENCY_INTRADAY digital_currency_intradayResponse =
                digital_currency_intraday.QueryPrimitive(_args.Symbol, "USD");
-                    
+
                     var data = digital_currency_intradayResponse.Data;
                     if (data.Error)
                     {
@@ -240,22 +192,77 @@ namespace Stocks.UserControls
                 {
                     Console.WriteLine("Desila je greska za kripto valute!");
                 }
-               
+
             }
-            
-            
+            else if (_args.Type == TypeSeries.CURRENCY)
+            {
+                try
+                {
+                    Int_CURRENCY_EXCHANGE_RATE currency_exchange_rate = _connection.GetQueryObject_CURRENCY_EXCHANGE_RATE();
+                    IAvapiResponse_CURRENCY_EXCHANGE_RATE currency_exchange_rateResponse =
+                    currency_exchange_rate.QueryPrimitive(_args.Symbol, _args.DefaultCurrency);
+                    var data2 = currency_exchange_rateResponse.Data;
+                    if (data2.Error)
+                        MessageBox.Show("Failed to fetch data for exchage rate for " + _args.Symbol, "Error");
+                    else
+                    {
+
+                        var temp = new RealTimeData
+                        {
+                            Value = double.Parse(data2.ExchangeRate),
+                            Date = DateTime.Now,
+                            Trend = 0
+                        };
+                        Write(temp);
+                        return temp;
+
+                    }
+                }
+                catch (NullReferenceException)
+                {
+                    MessageBox.Show("Failed to fetch data for exchage rate for " + _args.Symbol, "Error");
+                }
+            }
+
 
 
             return new RealTimeData();
         }
 
+        private void Write(RealTimeData value)
+        {
+            string currentPaht = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
+            string path = currentPaht + "\\Files\\Currencies\\";
+            try
+            {
+                if (!Directory.Exists(path))
+                {
+                    Directory.CreateDirectory(path);
+                }
+
+                path += _args.Symbol + ".csv";
+
+                using (StreamWriter writer = File.AppendText(path))
+                {
+                    writer.WriteLine(value.Date.ToString("dd-MM-yyyy HH:MM:ss") + "," + value.Value / _exchangeRate);
+
+                }
+            }
+            catch (Exception e)
+            {
+                Console.Write(e.Message);
+            }
+
+        }
+
         public double CurrentValue
         {
             get { return _currentValue; }
-            set {
+            set
+            {
                 _currentValue = value;
                 OnPropertyChanged("CurrentValue");
-                }
+            }
         }
 
         public double LastValue
@@ -272,10 +279,11 @@ namespace Stocks.UserControls
         public String Trend
         {
             get { return _trend; }
-            set {
+            set
+            {
                 _trend = value;
                 OnPropertyChanged("Trend");
-                }
+            }
         }
 
         public String TrendPercentage
