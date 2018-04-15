@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Stocks.Util;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,42 +13,32 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Stocks.Util;
 
 namespace Stocks.UserControls
 {
     /// <summary>
-    /// Interaction logic for DataDigitalViewer.xaml
+    /// Interaction logic for CurrencyDataViewer.xaml
     /// </summary>
-    public partial class DataDigitalViewer : UserControl
+    public partial class CurrencyDataViewer : UserControl
     {
         private String _id;
         private RealtimeViewer _realtime;
-        private DigitalCurrencyHisotryTrendind _digitalCurrencyHisotryTrendind;
+        private CurrencyHistoryTrending _currencyHistoryTrending;
 
-        public DataDigitalViewer()
+        public CurrencyDataViewer()
         {
-            
             InitializeComponent();
             Id = Configuration.Instance.Symbol;
             Title.Text = Configuration.Instance.FullName;
-           // _realtime = new RealtimeViewer();
-            _digitalCurrencyHisotryTrendind = new DigitalCurrencyHisotryTrendind();
-
+            //_realtime = new RealtimeViewer();
+            _currencyHistoryTrending = new CurrencyHistoryTrending();
         }
 
         public String Id
         {
             get { return _id; }
-            set {_id = value;}
+            set { _id = value; }
         }
-
-        public DigitalCurrencyHisotryTrendind DigitalCurrencyHisotryTrendind
-        {
-            get { return _digitalCurrencyHisotryTrendind; }
-            set { _digitalCurrencyHisotryTrendind = value; }
-        }
-
 
         public RealtimeViewer RealTime
         {
@@ -56,7 +46,10 @@ namespace Stocks.UserControls
             set { _realtime = value; }
         }
 
-
-       
+        public CurrencyHistoryTrending CurrencyHisotryTrendind
+        {
+            get { return _currencyHistoryTrending; }
+            set { _currencyHistoryTrending = value; }
+        }
     }
 }

@@ -160,6 +160,8 @@ namespace Stocks.UserControls
                 if (data.Error)
                 {
                     MessageBox.Show("Failed to fetch data", "Error");
+                    Read("\\init.csv");
+                    return (ChartValues<DateTimePoint>)SeriesCollection[0].Values;
                 }
                 else
                 {
@@ -188,6 +190,7 @@ namespace Stocks.UserControls
 
 
                                 }
+                                Write("\\init.csv",values);
                             }
                         }
                         catch (NullReferenceException)
@@ -204,6 +207,7 @@ namespace Stocks.UserControls
 
                             }
                             YFormatter = val => "$" + val.ToString("0.##");
+                            Write("\\init.csv", values);
                         }
                     }
                     else
@@ -217,6 +221,7 @@ namespace Stocks.UserControls
 
 
                         }
+                        Write("\\init.csv", values);
                     }
 
 
@@ -224,7 +229,9 @@ namespace Stocks.UserControls
             }
             catch(NullReferenceException)
             {
-                MessageBox.Show("Suvise se upita salje serveru za krato vreme, misli da smo spameri. Oladi malo", "Error");
+                MessageBox.Show("Suvise se upita salje serveru za krato vreme, misli da smo spameri. Oladi malo! Prikazuju se podaci koji su dostupni u skladstu podataka." , "Error");
+                Read("\\init.csv");
+                return (ChartValues<DateTimePoint>)SeriesCollection[0].Values;
             }
             
             return values;
@@ -260,7 +267,12 @@ namespace Stocks.UserControls
                 await time_series_montly_adjusted.QueryPrimitiveAsync(_args.Symbol);
                 var data = time_series_weekly_adjustedResponse.Data;
                 if (data.Error)
+                {
                     MessageBox.Show("Failed to fetch data", "Error");
+                    Read("\\min.csv");
+                    ResetZoomOnClick(sender, e);
+                    return;
+                }
                 else
                 {
                     foreach (var timeseries in data.TimeSeries)
@@ -273,10 +285,13 @@ namespace Stocks.UserControls
             }
             catch (Exception)
             {
-                MessageBox.Show("Previse zahteva poslato u kratkom vremene server misli da si spamer! Oladi malo sa kliktanjem.");
+                MessageBox.Show("Previse zahteva poslato u kratkom vremene server misli da si spamer! Oladi malo sa kliktanjem.","Error");
+                Read("\\min.csv");
+                ResetZoomOnClick(sender, e);
+                return;
             }
-            
-            SeriesCollection[0].Values = values;
+            Read("\\min.csv");
+            //SeriesCollection[0].Values = values;
             ResetZoomOnClick(sender, e);
         }
 
@@ -291,7 +306,12 @@ namespace Stocks.UserControls
                 await time_series_montly_adjusted.QueryPrimitiveAsync(_args.Symbol);
                 var data = time_series_weekly_adjustedResponse.Data;
                 if (data.Error)
+                {
                     MessageBox.Show("Failed to fetch data", "Error");
+                    Read("\\5y.csv");
+                    ResetZoomOnClick(sender, e);
+                    return;
+                }  
                 else
                 {
                     DateTime offset = new DateTime(DateTime.Today.Year - 5, DateTime.Today.Month, DateTime.Today.Day);
@@ -310,9 +330,12 @@ namespace Stocks.UserControls
             catch (Exception)
             {
                 MessageBox.Show("Previse zahteva poslato u kratkom vremene server misli da si spamer! Oladi malo sa kliktanjem.");
+                Read("\\5y.csv");
+                ResetZoomOnClick(sender, e);
+                return;
             }
-            
-            SeriesCollection[0].Values = values;
+            Read("\\5y.csv");
+            //SeriesCollection[0].Values = values;
             ResetZoomOnClick(sender, e);
 
         }
@@ -328,7 +351,13 @@ namespace Stocks.UserControls
                await time_series_weekly_adjusted.QueryPrimitiveAsync(_args.Symbol);
                 var data = time_series_weekly_adjustedResponse.Data;
                 if (data.Error)
+                {
                     MessageBox.Show("Failed to fetch data", "Error");
+                    Read("\\2y.csv");
+                    ResetZoomOnClick(sender, e);
+                    return;
+                }
+                   
                 else
                 {
                     DateTime offset = new DateTime(DateTime.Today.Year - 2, DateTime.Today.Month, DateTime.Today.Day);
@@ -348,9 +377,12 @@ namespace Stocks.UserControls
             catch (Exception)
             {
                 MessageBox.Show("Previse zahteva poslato u kratkom vremene server misli da si spamer! Oladi malo sa kliktanjem.");
+                Read("\\2y.csv");
+                ResetZoomOnClick(sender, e);
+                return;
             }
-           
-            SeriesCollection[0].Values = values;
+            Read("\\2y.csv");
+            //SeriesCollection[0].Values = values;
             ResetZoomOnClick(sender, e);
 
         }
@@ -366,7 +398,12 @@ namespace Stocks.UserControls
                await time_series_weekly_adjusted.QueryPrimitiveAsync(_args.Symbol);
                 var data = time_series_weekly_adjustedResponse.Data;
                 if (data.Error)
+                {
                     MessageBox.Show("Failed to fetch data", "Error");
+                    Read("\\1y.csv");
+                    ResetZoomOnClick(sender, e);
+                    return;
+                }        
                 else
                 {
                     DateTime offset = new DateTime(DateTime.Today.Year - 1, DateTime.Today.Month, DateTime.Today.Day);
@@ -386,9 +423,12 @@ namespace Stocks.UserControls
             catch (Exception)
             {
                 MessageBox.Show("Previse zahteva poslato u kratkom vremene server misli da si spamer! Oladi malo sa kliktanjem.");
+                Read("\\1y.csv");
+                ResetZoomOnClick(sender, e);
+                return;
             }
-           
-            SeriesCollection[0].Values = values;
+            Read("\\1y.csv");
+            //SeriesCollection[0].Values = values;
             ResetZoomOnClick(sender, e);
         }
 
@@ -403,7 +443,12 @@ namespace Stocks.UserControls
                await time_series_daily_adjusted.QueryPrimitiveAsync(_args.Symbol);
                 var data = time_series_daily_adjustedResponse.Data;
                 if (data.Error)
+                {
                     MessageBox.Show("Failed to fetch data", "Error");
+                    Read("\\3m.csv");
+                    ResetZoomOnClick(sender, e);
+                    return;
+                }       
                 else
                 {
 
@@ -425,9 +470,12 @@ namespace Stocks.UserControls
             catch (Exception)
             {
                 MessageBox.Show("Previse zahteva poslato u kratkom vremene server misli da si spamer! Oladi malo sa kliktanjem.");
+                Read("\\3m.csv");
+                ResetZoomOnClick(sender, e);
+                return;
             }
-           
-            SeriesCollection[0].Values = values;
+            Read("\\3m.csv");
+            //SeriesCollection[0].Values = values;
             ResetZoomOnClick(sender, e);
         }
 
@@ -464,9 +512,13 @@ namespace Stocks.UserControls
             catch (Exception)
             {
                 MessageBox.Show("Previse zahteva poslato u kratkom vremene server misli da si spamer! Oladi malo sa kliktanjem.");
+                Read("\\1m.csv");
+                ResetZoomOnClick(sender, e);
+                return;
+
             }
-           
-            SeriesCollection[0].Values = values;
+            Read("\\1m.csv");
+            //SeriesCollection[0].Values = values;
             ResetZoomOnClick(sender, e);
         }
 
@@ -481,7 +533,12 @@ namespace Stocks.UserControls
                await time_series_daily_adjusted.QueryPrimitiveAsync(_args.Symbol);
                 var data = time_series_daily_adjustedResponse.Data;
                 if (data.Error)
+                {
                     MessageBox.Show("Failed to fetch data", "Error");
+                    Read("\\10d.csv");
+                    ResetZoomOnClick(sender, e);
+                    return;
+                }
                 else
                 {
                     DateTime offset = DateTime.Now.AddDays(-10);
@@ -501,13 +558,16 @@ namespace Stocks.UserControls
             catch (Exception)
             {
                 MessageBox.Show("Previse zahteva poslato u kratkom vremene server misli da si spamer! Oladi malo sa kliktanjem.");
+                Read("\\10d.csv");
+                ResetZoomOnClick(sender, e);
+                return;
             }
-           
-            SeriesCollection[0].Values = values;
+            Read("\\10d.csv");
+           // SeriesCollection[0].Values = values;
             ResetZoomOnClick(sender, e);
         }
 
-        private async void Write(string pathFile, ChartValues<DateTimePoint> values)
+        private  void Write(string pathFile, ChartValues<DateTimePoint> values)
         {
             string currentPaht = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
             string path = currentPaht + "\\Files\\" + _args.Symbol;
@@ -523,21 +583,22 @@ namespace Stocks.UserControls
             {
                 foreach(var line in values)
                 {
-                    await writer.WriteLineAsync(line.DateTime.ToShortDateString() + "," + line.Value / _exchangeRate);
+                      writer.WriteLine(line.DateTime.ToShortDateString() + "," + line.Value / _exchangeRate);
                 } 
             }
         }
 
-        private async void Read(string filePath)
+        private  void Read(string filePath)
         {
             var temp = new ChartValues<DateTimePoint>();
             try
             {
+                
                 using(StreamReader reader = new StreamReader(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName +
                     "\\Files\\" + _args.Symbol + filePath))
                 {
                     string line;
-                    while((line = await reader.ReadLineAsync())!= null)
+                    while((line = reader.ReadLine())!= null)
                     {
                         string[] token = line.Split(',');
                         temp.Add(new DateTimePoint
@@ -550,9 +611,11 @@ namespace Stocks.UserControls
                 }
                 SeriesCollection[0].Values = temp;
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                MessageBox.Show("Can not get data!", "Error");
+                Console.WriteLine(e.Message);
+                MessageBox.Show("Can not get data for " + _args.FullName + "!", "Error");
+                SeriesCollection[0].Values = temp;
             }
             
         }

@@ -153,8 +153,8 @@ namespace Stocks
                     Style = (Style)Application.Current.FindResource("CustomCheckBox")
                 };
 
-                cb.AddHandler(CheckBox.CheckedEvent, new RoutedEventHandler(cbCurrChecked));
-                cb.AddHandler(CheckBox.UncheckedEvent, new RoutedEventHandler(cbCurrUnchecked));
+                cb.AddHandler(CheckBox.CheckedEvent, new RoutedEventHandler(cbDigCurrChecked));
+                cb.AddHandler(CheckBox.UncheckedEvent, new RoutedEventHandler(cbDigCurrUnchecked));
                 DCurrenciesItems.Add(cb);
             }
 
@@ -167,8 +167,8 @@ namespace Stocks
                     Style = (Style)Application.Current.FindResource("CustomCheckBox")
                 };
 
-                cb.AddHandler(CheckBox.CheckedEvent, new RoutedEventHandler(cb_Checked));
-                cb.AddHandler(CheckBox.UncheckedEvent, new RoutedEventHandler(cb_Unchecked));
+                cb.AddHandler(CheckBox.CheckedEvent, new RoutedEventHandler(cbCurrChecked));
+                cb.AddHandler(CheckBox.UncheckedEvent, new RoutedEventHandler(cbCurrUnchecked));
                 CCurrenciesItems.Add(cb);
             }
 
@@ -179,6 +179,48 @@ namespace Stocks
             DataContext = this;
         }
 
+        private void cbCurrChecked(object sender, RoutedEventArgs e)
+        {
+            CheckBox cb = (CheckBox)sender;
+
+            Configuration.Instance.Type = TypeSeries.CURRENCY;
+            String merged = (String)cb.Content;
+            String firstSplit = merged.Split('(')[1];
+            Configuration.Instance.Symbol = firstSplit.Substring(0, firstSplit.Length - 1);
+            Configuration.Instance.FullName = merged.Split('(')[0];
+            DataContainer.Children.Add(new CurrencyDataViewer());
+        }
+
+        private void cbCurrUnchecked(object sender, RoutedEventArgs e)
+        {
+            CheckBox cb = (CheckBox)sender;
+
+
+            String merged = (String)cb.Content;
+            String firstSplit = merged.Split('(')[1];
+            String symbol = firstSplit.Substring(0, firstSplit.Length - 1);
+            CurrencyDataViewer temp;
+            foreach (var dv in DataContainer.Children)
+            {
+                try
+                {
+                    temp = (CurrencyDataViewer)dv;
+                }
+                catch (Exception)
+                {
+                    continue;
+                }
+
+                if (temp.Id == symbol)
+                {
+                    temp.CurrencyHisotryTrendind.Remove();
+                    DataContainer.Children.Remove(temp);
+                    break;
+                }
+            }
+        }
+    
+
         private void cb_Checked(object sender, RoutedEventArgs e)
         {
             CheckBox cb = (CheckBox)sender;
@@ -188,7 +230,6 @@ namespace Stocks
             String firstSplit = merged.Split('(')[1];
             Configuration.Instance.Symbol = firstSplit.Substring(0, firstSplit.Length -1);
             Configuration.Instance.FullName = merged.Split('(')[0];
-            Configuration.Instance.Type = TypeSeries.STOCK;
             DataContainer.Children.Add(new DataViewer());
         }
         private void cb_Unchecked(object sender, RoutedEventArgs e)
@@ -222,11 +263,10 @@ namespace Stocks
 
 
 
-        private void cbCurrChecked(object sender, RoutedEventArgs e)
+        private void cbDigCurrChecked(object sender, RoutedEventArgs e)
         {
             CheckBox cb = (CheckBox)sender;
 
-            Configuration.Instance.Type = TypeSeries.STOCK;
             String merged = (String)cb.Content;
             String firstSplit = merged.Split('(')[1];
             Configuration.Instance.Symbol = firstSplit.Substring(0, firstSplit.Length - 1);
@@ -234,7 +274,7 @@ namespace Stocks
             Configuration.Instance.Type = TypeSeries.DIGITAL_CURRENCY;
             DataContainer.Children.Add(new DataDigitalViewer());
         }
-        private void cbCurrUnchecked(object sender, RoutedEventArgs e)
+        private void cbDigCurrUnchecked(object sender, RoutedEventArgs e)
         {
             CheckBox cb = (CheckBox)sender;
 
