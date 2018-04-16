@@ -201,7 +201,18 @@ namespace Avapi.AvapiCURRENCY_EXCHANGE_RATE
             }
 
             AvapiResponse_CURRENCY_EXCHANGE_RATE_Content ret = new AvapiResponse_CURRENCY_EXCHANGE_RATE_Content();
-            JObject jsonInputParsed = JObject.Parse(jsonInput);
+            JObject jsonInputParsed;
+            try
+            {
+                jsonInputParsed = JObject.Parse(jsonInput);
+            }
+            catch (Exception)
+            {
+                ret.Error = true;
+                ret.ErrorMessage = "Can not parse data";
+                return ret;
+            }
+           
             string errorMessage = (string)jsonInputParsed["Error Message"];
             if (!string.IsNullOrEmpty(errorMessage))
             {

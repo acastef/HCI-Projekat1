@@ -22,16 +22,17 @@
         <StackPanel Grid.Row="1" Orientation="Horizontal">
 
             <Button Click="ResetZoomOnClick" Style="{StaticResource CustomButton}">Reset Zoom</Button>
+            <Button Click="Refresh" Style="{StaticResource CustomButton}">Refresh</Button>
             <Button Name="AddButton"  Click="Add" Style="{StaticResource CustomButton}">Add</Button>
             <Button Name="RemoveButton" Click="Remove"  Style="{StaticResource CustomButton}">Remove</Button>
         </StackPanel>
-        <lvc:CartesianChart Grid.Row="2" Series="{Binding SeriesCollection}" Zoom="{Binding ZoomingMode}" >
-            <!---->
+        <lvc:CartesianChart Grid.Row="2" Series="{Binding SeriesCollection}"  >
+            <!--Zoom="{Binding ZoomingMode}"-->
             <lvc:CartesianChart.AxisX>
-                <lvc:Axis Name="X" LabelFormatter="{Binding XFormatter}" MinValue="0"/>
+                <lvc:Axis Name="X" LabelFormatter="{Binding XFormatter}"  IsMerged="True"/>
             </lvc:CartesianChart.AxisX>
             <lvc:CartesianChart.AxisY>
-                <lvc:Axis Name="Y" LabelFormatter="{Binding YFormatter}"/>
+                <lvc:Axis Name="Y" LabelFormatter="{Binding YFormatter}" MinValue="0"/>
             </lvc:CartesianChart.AxisY>
             <lvc:CartesianChart.Resources>
                 <Style TargetType="lvc:LineSeries">

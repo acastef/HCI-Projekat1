@@ -68,10 +68,10 @@ namespace Stocks.UserControls
                 RefreshRate = Configuration.Instance.RefreshRate
             };
 
-            //XFormatter = value => new DateTime((long)value).ToString("dd.MM.yyyy. HH:mm:ss");
-            //XFormatter = value => new DateTime(Math.Max(0,((long)value * TimeSpan.FromMilliseconds(1000).Ticks))).ToString("dd.MM.yyyy. HH:mm:ss");
+            XFormatter = value => new DateTime((long)value).ToString("dd.MM.yyyy. HH:mm:ss");
+           // XFormatter = value => new DateTime(Math.Max(0,((long)value / TimeSpan.FromSeconds(1).Ticks))).ToString("dd.MM.yyyy. HH:mm:ss");
 
-            XFormatter = val => new DateTime((long)Math.Max(0, val)).ToString("dd MM yyyy HH:mm:ss");
+            //XFormatter = val => new DateTime((long)Math.Max(0, val)).ToString("dd MM yyyy HH:mm:ss");
             YFormatter = val => val.ToString("0.##") + " " + _args.DefaultCurrency;
 
             SeriesCollection = new SeriesCollection
@@ -130,15 +130,22 @@ namespace Stocks.UserControls
             }
         }
 
+        
+
         private ChartValues<DateTimePoint> GetData()
         {
             return Read();
 
         }
 
-        private ChartValues<LiveCharts.Defaults.DateTimePoint> Read()
+        private ChartValues<DateTimePoint> Read()
         {
-            var temp = new ChartValues<LiveCharts.Defaults.DateTimePoint>();
+            
+            var temp = new ChartValues<DateTimePoint>
+            {
+                new DateTimePoint { Value = 0, DateTime = DateTime.Now },
+                new DateTimePoint { Value = 0.2, DateTime = DateTime.Now.AddSeconds(10) }
+            };
             try
             {
 
@@ -154,25 +161,12 @@ namespace Stocks.UserControls
                         }
                         string[] token = line.Split(',');
                         var date = DateTime.ParseExact(token[0], "dd-MM-yyyy HH:MM:ss", CultureInfo.InvariantCulture);
-                        if(temp.Count == 0)
+                        temp.Add(new DateTimePoint
                         {
-                            temp.Add(new DateTimePoint
-                            {
-                                Value = double.Parse(token[1]) * _exchangeRate,
-                                DateTime = date
-                            });
-                        }
-                        else
-                        {
-                            if (date > temp.Last().DateTime && temp.Count > 0)
-                            {
-                                temp.Add(new DateTimePoint
-                                {
-                                    Value = double.Parse(token[1]) * _exchangeRate,
-                                    DateTime = date
-                                });
-                            }
-                        }
+                            Value = double.Parse(token[1]) * _exchangeRate,
+                            DateTime = date
+                        });
+                       
                        
                        
 
@@ -186,6 +180,8 @@ namespace Stocks.UserControls
                 MessageBox.Show("Can not get data for " + _args.FullName + "!", "Error");
 
             }
+            
+            
             return temp;
         }
 
@@ -318,6 +314,11 @@ namespace Stocks.UserControls
                 Remove();
                 _added = false;
             }
+        }
+
+        private void Refresh(object sender, RoutedEventArgs e)
+        {
+            SeriesCollection[0].Values = Read();
         }
     }
 }
