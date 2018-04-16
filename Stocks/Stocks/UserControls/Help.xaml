@@ -1,0 +1,27 @@
+﻿<Window x:Class="Stocks.UserControls.Help"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Stocks.UserControls"
+        mc:Ignorable="d"
+        Title="Help" Height="450" Width="800" MinWidth="800" MinHeight="450">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid x:Name="ImagePanel" Grid.Row="0">
+            <Image VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Name="help_Image"></Image>
+        </Grid>
+        <StackPanel Height="60" Grid.Row="1" Orientation="Horizontal">
+            <CheckBox Name="CheckBox" Checked="CheckBox_Checked" Unchecked="CheckBox_Checked" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20">Don't show help again</CheckBox>
+            <Separator Width="125" Background="White"></Separator>
+            <Button Name="Previous" Margin="0 7" Width="100" Click="Button_Click_1">Previos tip</Button>
+            <Separator Width="100" Background="White"></Separator>
+            <Button Name="Next" Margin="0 7" Width="100" Click="Button_Click">Next tip</Button>
+            <Separator Width="85" Background="White"></Separator>
+            <Button Margin="0 7" Width="100" Click="Close">Close</Button>
+        </StackPanel>
+    </Grid>
+</Window>

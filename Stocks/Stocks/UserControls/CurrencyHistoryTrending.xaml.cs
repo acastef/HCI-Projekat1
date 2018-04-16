@@ -56,9 +56,9 @@ namespace Stocks.UserControls
             gradientBrush.GradientStops.Add(new GradientStop(Color.FromRgb(64, 224, 208), 0));
             gradientBrush.GradientStops.Add(new GradientStop(Colors.Transparent, 1));
 
-            var dayConfig = Mappers.Xy<DateModel>()
-                .X(dayModel => (double)dayModel.DateTime.Ticks)
-                .Y(dayModel => dayModel.Value);
+            //var dayConfig = Mappers.Xy<DateModel>()
+            //    .X(dayModel => (double)dayModel.DateTime.Ticks)
+            //    .Y(dayModel => dayModel.Value);
 
             _args = new FetchArgs
             {
@@ -68,18 +68,18 @@ namespace Stocks.UserControls
                 RefreshRate = Configuration.Instance.RefreshRate
             };
 
-            XFormatter = value => new DateTime((long)value).ToString("dd.MM.yyyy. HH:mm:ss");
+            //XFormatter = value => new DateTime((long)value).ToString("dd.MM.yyyy. HH:mm:ss");
             //XFormatter = value => new DateTime(Math.Max(0,((long)value * TimeSpan.FromMilliseconds(1000).Ticks))).ToString("dd.MM.yyyy. HH:mm:ss");
 
-            //XFormatter = val => new DateTime((long)Math.Max(0, val)).ToString("dd MM yyyy HH:mm:ss");
+            XFormatter = val => new DateTime((long)Math.Max(0, val)).ToString("dd MM yyyy HH:mm:ss");
             YFormatter = val => val.ToString("0.##") + " " + _args.DefaultCurrency;
 
             SeriesCollection = new SeriesCollection
             {
                 new LineSeries
                 {
-                    Configuration = dayConfig,
-                    AreaLimit = -10,
+                   // Configuration = dayConfig,
+                    //AreaLimit = -10,
                     Values = GetData(),
                     Fill = gradientBrush,
                     StrokeThickness = 1,
@@ -100,6 +100,22 @@ namespace Stocks.UserControls
             DataContext = this;
         }
 
+
+    //    new DateTimePoint{Value = 1, DateTime = DateTime.Now
+    //},
+    //                    new DateTimePoint{Value = 5, DateTime = DateTime.Now.AddSeconds(1)},
+    //                    new DateTimePoint{Value = 3, DateTime = DateTime.Now.AddSeconds(2)},
+    //                    new DateTimePoint{Value = 4, DateTime = DateTime.Now.AddSeconds(3)},
+    //                    new DateTimePoint{Value = 7, DateTime = DateTime.Now.AddSeconds(4)},
+    //                    new DateTimePoint{Value = 2, DateTime = DateTime.Now.AddSeconds(5)},
+    //                    new DateTimePoint{Value = 11, DateTime = DateTime.Now.AddSeconds(6)},
+    //                    new DateTimePoint{Value = 6, DateTime = DateTime.Now.AddSeconds(7)},
+    //                    new DateTimePoint{Value = 9, DateTime = DateTime.Now.AddSeconds(8)},
+    //                    new DateTimePoint{Value = 1, DateTime = DateTime.Now.AddSeconds(9)},
+    //                    new DateTimePoint{Value = 3, DateTime = DateTime.Now.AddSeconds(10)},
+    //                    new DateTimePoint{Value = 9, DateTime = DateTime.Now.AddSeconds(11)},
+
+
         public SeriesCollection SeriesCollection { get; set; }
         public Func<double, string> XFormatter { get; set; }
         public Func<double, string> YFormatter { get; set; }
@@ -114,15 +130,15 @@ namespace Stocks.UserControls
             }
         }
 
-        private ChartValues<DateModel> GetData()
+        private ChartValues<DateTimePoint> GetData()
         {
             return Read();
 
         }
 
-        private ChartValues<DateModel> Read()
+        private ChartValues<LiveCharts.Defaults.DateTimePoint> Read()
         {
-            var temp = new ChartValues<DateModel>();
+            var temp = new ChartValues<LiveCharts.Defaults.DateTimePoint>();
             try
             {
 
@@ -140,7 +156,7 @@ namespace Stocks.UserControls
                         var date = DateTime.ParseExact(token[0], "dd-MM-yyyy HH:MM:ss", CultureInfo.InvariantCulture);
                         if(temp.Count == 0)
                         {
-                            temp.Add(new DateModel
+                            temp.Add(new DateTimePoint
                             {
                                 Value = double.Parse(token[1]) * _exchangeRate,
                                 DateTime = date
@@ -150,7 +166,7 @@ namespace Stocks.UserControls
                         {
                             if (date > temp.Last().DateTime && temp.Count > 0)
                             {
-                                temp.Add(new DateModel
+                                temp.Add(new DateTimePoint
                                 {
                                     Value = double.Parse(token[1]) * _exchangeRate,
                                     DateTime = date
@@ -245,11 +261,11 @@ namespace Stocks.UserControls
             {
                 if (_exchangeRate != 1)
                 {
-                    var values = new ChartValues<DateTimePoint>();
+                    var values = new ChartValues<LiveCharts.Defaults.DateTimePoint>();
                     foreach (var value in SeriesCollection[0].Values)
                     {
-                        var cast = (DateTimePoint)value;
-                        values.Add(new DateTimePoint { Value = cast.Value / _exchangeRate, DateTime = cast.DateTime });
+                        var cast = (LiveCharts.Defaults.DateTimePoint)value;
+                        values.Add(new LiveCharts.Defaults.DateTimePoint { Value = cast.Value / _exchangeRate, DateTime = cast.DateTime });
                     }
                     temp.Values = values;
                     temp.Title = SeriesCollection[0].Title;

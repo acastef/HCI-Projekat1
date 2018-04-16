@@ -280,6 +280,9 @@
     <Compile Include="UserControls\DigitalCurrencyHisotryTrendind.xaml.cs">
       <DependentUpon>DigitalCurrencyHisotryTrendind.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\Help.xaml.cs">
+      <DependentUpon>Help.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\HistoryTrending.xaml.cs">
       <DependentUpon>HistoryTrending.xaml</DependentUpon>
     </Compile>
@@ -298,6 +301,7 @@
     <Compile Include="Utility.cs" />
     <Compile Include="Util\FetchData.cs" />
     <Compile Include="Util\Configuration.cs" />
+    <Compile Include="Util\Images.cs" />
     <Compile Include="WILLR\Const_WILLR.cs" />
     <Compile Include="WILLR\Impl_WILLR.cs" />
     <Compile Include="WILLR\Int_WILLR.cs" />
@@ -325,6 +329,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\DigitalCurrencyHisotryTrendind.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\Help.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -386,13 +394,31 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Files\" />
+    <Resource Include="Util\1.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Pictures\settingsImage.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Pictures\settingsImage2.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Files\help.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Util\2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Util\3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="bin\Debug\1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="bin\Debug\3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="bin\Debug\2.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

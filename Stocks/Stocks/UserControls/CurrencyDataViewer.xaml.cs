@@ -31,7 +31,7 @@ namespace Stocks.UserControls
             Id = Configuration.Instance.Symbol;
             Title.Text = Configuration.Instance.FullName;
             //_realtime = new RealtimeViewer();
-            _currencyHistoryTrending = new CurrencyHistoryTrending();
+            //_currencyHistoryTrending = new CurrencyHistoryTrending();
         }
 
         public String Id

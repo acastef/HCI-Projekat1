@@ -4,10 +4,11 @@
              xmlns:local="clr-namespace:Stocks"
              xmlns:single="clr-namespace:Stocks.Util"
              xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
-             StartupUri="MainWindow.xaml">
+             Startup="Application_Startup">
     <Application.Resources>
         <x:Static Member="single:Configuration.Instance" x:Key="Config"></x:Static>
-
+        <!--<x:Static Member="single:Images.bitmapImages" x:Key="Img"></x:Static>-->
+        
         <Style x:Key="CustomWindow" TargetType="{x:Type Window}">
             <Setter Property="MinWidth" Value="500"/>
             <Setter Property="MinHeight" Value="500"/>

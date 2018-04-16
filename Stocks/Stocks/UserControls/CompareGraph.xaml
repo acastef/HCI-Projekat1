@@ -13,6 +13,7 @@
             <lvc:CartesianChart.Resources>
                 <Style TargetType="lvc:CartesianChart">
                     <Setter Property="Background" Value="#282728"></Setter>
+                     
                 </Style>
                 <Style TargetType="lvc:DefaultTooltip">
                     <Setter Property="Background" Value="#232123"></Setter>

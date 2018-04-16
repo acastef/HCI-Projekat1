@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,6 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using LiveCharts.Wpf;
 using Stocks.FileManager;
 using Stocks.Model;
 using Stocks.UserControls;
@@ -34,9 +36,11 @@ namespace Stocks
         private List<CheckBox> DCurrenciesItems { get; set; }
         private List<CheckBox> CCurrenciesItems { get; set; }
         private List<CheckBox> _checkBoxList { get; set; }
-        private CompareGraph graph = null;
+        public CompareGraph graph = null;
         private SettingsWindow settings = null;
         private LoadData Data = new LoadData();
+        private Help helpWindow;
+        
 
         // search field for stocks
         private string _searchText1;
@@ -175,8 +179,13 @@ namespace Stocks
             }
 
             graph = new CompareGraph();
-            graph.Show();
-            
+            //graph.Show();
+            //Load_Help();
+            //if (!Configuration.Instance.Help)
+            //{
+            //    helpWindow = new Help();
+            //    helpWindow.Show();
+            //}
 
             DataContext = this;
         }
@@ -200,8 +209,12 @@ namespace Stocks
 
             String merged = (String)cb.Content;
             String firstSplit = merged.Split('(')[1];
+            String fullName = merged.Split('(')[0];
             String symbol = firstSplit.Substring(0, firstSplit.Length - 1);
             CurrencyDataViewer temp;
+
+            
+
             foreach (var dv in DataContainer.Children)
             {
                 try
@@ -215,7 +228,18 @@ namespace Stocks
 
                 if (temp.Id == symbol)
                 {
-                    temp.CurrencyHisotryTrendind.Remove();
+
+                    foreach (var item in graph.SeriesCollection)
+                    {
+                        var ls = item as LineSeries;
+                        if (ls.Title == fullName)
+                        {
+                            graph.SeriesCollection.Remove(item);
+                            break;
+                        }
+                    }
+
+                    //temp.CurrencyHisotryTrendind.Remove();
                     DataContainer.Children.Remove(temp);
                     break;
                 }
@@ -241,6 +265,7 @@ namespace Stocks
             
             String merged = (String)cb.Content;
             String firstSplit = merged.Split('(')[1];
+            String fullName = merged.Split('(')[0];
             String symbol = firstSplit.Substring(0, firstSplit.Length - 1);
             DataViewer temp;
             foreach(var dv in DataContainer.Children)
@@ -256,7 +281,17 @@ namespace Stocks
 
                 if (temp.Id == symbol)
                 {
-                    temp.HistoryTrending.Remove();
+                    foreach (var item in graph.SeriesCollection)
+                    {
+                        var ls = item as LineSeries;
+                        if (ls.Title == fullName)
+                        {
+                            graph.SeriesCollection.Remove(item);
+                            break;
+                        }
+                    }
+
+                    //temp.HistoryTrending.Remove();
                     DataContainer.Children.Remove(temp);
                     break;
                 }
@@ -283,6 +318,7 @@ namespace Stocks
             Configuration.Instance.Type = TypeSeries.DIGITAL_CURRENCY;
             String merged = (String)cb.Content;
             String firstSplit = merged.Split('(')[1];
+            String fullName = merged.Split('(')[0];
             String symbol = firstSplit.Substring(0, firstSplit.Length - 1);
 
             DataDigitalViewer temp;
@@ -299,7 +335,17 @@ namespace Stocks
 
                 if (temp.Id == symbol)
                 {
-                    temp.DigitalCurrencyHisotryTrendind.Remove();
+                    foreach (var item in graph.SeriesCollection)
+                    {
+                        var ls = item as LineSeries;
+                        if (ls.Title == fullName)
+                        {
+                            graph.SeriesCollection.Remove(item);
+                            break;
+                        }
+                    }
+
+                    //temp.DigitalCurrencyHisotryTrendind.Remove();
                     DataContainer.Children.Remove(temp);
                     break;
                 }
@@ -364,6 +410,14 @@ namespace Stocks
             settings = new SettingsWindow();
             settings.Show();
         }
+
+        private void Button_Click_Help(object sender, RoutedEventArgs e)
+        {
+            helpWindow = new Help();
+            helpWindow.Show();
+        }
+
+       
     }
 
     

@@ -80,9 +80,16 @@ namespace Stocks.Util
             get { return _symbol; }
             set { _symbol = value; }
         }
-        
 
-       
+        private bool _help;
+
+        public bool Help
+        {
+            get { return _help; }
+            set { _help = value; }
+        }
+
+
 
         private TypeSeries typeSeries;
 

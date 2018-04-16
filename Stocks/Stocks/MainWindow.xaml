@@ -106,7 +106,7 @@
                                Height="16"/>
                 </StackPanel>
             </Button>
-            <Button Grid.Column="1">Help</Button>
+            <Button Grid.Column="1" Click="Button_Click_Help">Help</Button>
             <StatusBar Name="StatusBar" Grid.Column="0">
                 <StatusBarItem VerticalAlignment="Center" HorizontalAlignment="Left" Height="29" >
                     <Label>Status bar</Label>

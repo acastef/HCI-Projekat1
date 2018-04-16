@@ -37,7 +37,7 @@ namespace Stocks.UserControls
             InitializeComponent();
             Id = Configuration.Instance.Symbol;
             Title.Text = Configuration.Instance.FullName;
-            _historyTrending = new HistoryTrending();
+            //_historyTrending = new HistoryTrending();
             //_realtime = new RealtimeViewer();
         }
 

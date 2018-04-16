@@ -47,7 +47,7 @@ namespace Stocks.UserControls
         {
             InitializeComponent();
 
-            var dayConfig = Mappers.Xy<DateModel>()
+            var dayConfig = Mappers.Xy<DateTimePoint>()
                 .X(dayModel => (double)dayModel.DateTime.Ticks / TimeSpan.FromMilliseconds(1000).Ticks)
                 .Y(dayModel => dayModel.Value);
 
@@ -60,21 +60,21 @@ namespace Stocks.UserControls
                     Configuration = dayConfig,
                     AreaLimit = -10,
                     //Values = GetData(),
-                    Values = new ChartValues<DateModel>
+                    Values = new ChartValues<DateTimePoint>
                     {
 
-                        new DateModel{Value = 1, DateTime = DateTime.Now},
-                        new DateModel{Value = 5, DateTime = DateTime.Now.AddSeconds(1)},
-                        new DateModel{Value = 3, DateTime = DateTime.Now.AddSeconds(2)},
-                        new DateModel{Value = 4, DateTime = DateTime.Now.AddSeconds(3)},
-                        new DateModel{Value = 7, DateTime = DateTime.Now.AddSeconds(4)},
-                        new DateModel{Value = 2, DateTime = DateTime.Now.AddSeconds(5)},
-                        new DateModel{Value = 11, DateTime = DateTime.Now.AddSeconds(6)},
-                        new DateModel{Value = 6, DateTime = DateTime.Now.AddSeconds(7)},
-                        new DateModel{Value = 9, DateTime = DateTime.Now.AddSeconds(8)},
-                        new DateModel{Value = 1, DateTime = DateTime.Now.AddSeconds(9)},
-                        new DateModel{Value = 3, DateTime = DateTime.Now.AddSeconds(10)},
-                        new DateModel{Value = 9, DateTime = DateTime.Now.AddSeconds(11)},
+                        new DateTimePoint{Value = 1, DateTime = DateTime.Now},
+                        new DateTimePoint{Value = 5, DateTime = DateTime.Now.AddSeconds(1)},
+                        new DateTimePoint{Value = 3, DateTime = DateTime.Now.AddSeconds(2)},
+                        new DateTimePoint{Value = 4, DateTime = DateTime.Now.AddSeconds(3)},
+                        new DateTimePoint{Value = 7, DateTime = DateTime.Now.AddSeconds(4)},
+                        new DateTimePoint{Value = 2, DateTime = DateTime.Now.AddSeconds(5)},
+                        new DateTimePoint{Value = 11, DateTime = DateTime.Now.AddSeconds(6)},
+                        new DateTimePoint{Value = 6, DateTime = DateTime.Now.AddSeconds(7)},
+                        new DateTimePoint{Value = 9, DateTime = DateTime.Now.AddSeconds(8)},
+                        new DateTimePoint{Value = 1, DateTime = DateTime.Now.AddSeconds(9)},
+                        new DateTimePoint{Value = 3, DateTime = DateTime.Now.AddSeconds(10)},
+                        new DateTimePoint{Value = 9, DateTime = DateTime.Now.AddSeconds(11)},
 
 
 
@@ -93,7 +93,7 @@ namespace Stocks.UserControls
 
             Task.Run(() =>
             {
-                ChartValues<DateModel> values = new ChartValues<DateModel>();
+                ChartValues<DateTimePoint> values = new ChartValues<DateTimePoint>();
                 SynchronizationContext.SetSynchronizationContext(new SynchronizationContext());
                 while (true)
                 {
@@ -133,16 +133,16 @@ namespace Stocks.UserControls
                                 //LastHourSeries[0].Values = values;
                             }
                         },DispatcherPriority.ContextIdle);
-                        Step = ((ChartValues<DateModel>)LastHourSeries[0].Values).Last().Value -
-                                        ((ChartValues<DateModel>)LastHourSeries[0].Values).ElementAt(
-                                            ((ChartValues<DateModel>)LastHourSeries[0].Values).Count - 2).Value;
+                        Step = ((ChartValues<DateTimePoint>)LastHourSeries[0].Values).Last().Value -
+                                        ((ChartValues<DateTimePoint>)LastHourSeries[0].Values).ElementAt(
+                                            ((ChartValues<DateTimePoint>)LastHourSeries[0].Values).Count - 2).Value;
                         if (Step > 0)
                             ForegroundColor = Brushes.Green;
                         else if (Step < 0)
                             ForegroundColor = Brushes.Red;
                         else
                             ForegroundColor = Brushes.Black;
-                        LastLecture = ((ChartValues<DateModel>)LastHourSeries[0].Values).Last().Value;
+                        LastLecture = ((ChartValues<DateTimePoint>)LastHourSeries[0].Values).Last().Value;
 
 
                         //MessageBox.Show("Refresh", "Refrash");
@@ -257,7 +257,7 @@ namespace Stocks.UserControls
 
         private void SetValues(object sender, EventArgs e)
         {
-            var values = new ChartValues<DateModel>();
+            var values = new ChartValues<DateTimePoint>();
 
             Int_TIME_SERIES_INTRADAY time_series_intraday =
                 _connection.GetQueryObject_TIME_SERIES_INTRADAY();
@@ -298,7 +298,7 @@ namespace Stocks.UserControls
                         Console.WriteLine("DateTime: " + timeseries.DateTime);
                         Console.WriteLine("========================");
 
-                        values.Insert(0, new DateModel
+                        values.Insert(0, new DateTimePoint
                         {
                             Value = double.Parse(timeseries.close),
                             DateTime = DateTime.ParseExact(timeseries.DateTime, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)
@@ -316,10 +316,10 @@ namespace Stocks.UserControls
         }
 
 
-        private ChartValues<DateModel> GetData()
+        private ChartValues<DateTimePoint> GetData()
         {
             
-            var values = new ChartValues<DateModel>();
+            var values = new ChartValues<DateTimePoint>();
 
             //_backgroindWork = Task.Factory.StartNew(() =>
             //    {
@@ -454,7 +454,7 @@ namespace Stocks.UserControls
                         Console.WriteLine("DateTime: " + timeseries.DateTime);
                         Console.WriteLine("========================");
 
-                        values.Insert(0, new DateModel
+                        values.Insert(0, new DateTimePoint
                         {
                             Value = double.Parse(timeseries.close),
                             DateTime = DateTime.ParseExact(timeseries.DateTime, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)
@@ -514,7 +514,7 @@ namespace Stocks.UserControls
 
         private void SetLecture()
         {
-            var target = ((ChartValues<DateModel>)LastHourSeries[0].Values).Last().Value;
+            var target = ((ChartValues<DateTimePoint>)LastHourSeries[0].Values).Last().Value;
             var step = (target - _lastLecture) / 4;
             Step = target - _lastLecture;
 
