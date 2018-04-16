@@ -104,6 +104,7 @@
     <Compile Include="CCI\Const_CCI.cs" />
     <Compile Include="CCI\Impl_CCI.cs" />
     <Compile Include="CCI\Int_CCI.cs" />
+    <Compile Include="StatusBarMessage.cs" />
     <Compile Include="CMO\Const_CMO.cs" />
     <Compile Include="CMO\Impl_CMO.cs" />
     <Compile Include="CMO\Int_CMO.cs" />

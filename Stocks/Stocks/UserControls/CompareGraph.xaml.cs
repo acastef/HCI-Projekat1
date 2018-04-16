@@ -13,6 +13,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.ComponentModel;
 
 namespace Stocks.UserControls
 {
@@ -22,8 +23,6 @@ namespace Stocks.UserControls
     public partial class CompareGraph : Window
     {
 
-       
-       
 
         public CompareGraph()
         {
@@ -35,6 +34,19 @@ namespace Stocks.UserControls
             SeriesCollection = new SeriesCollection();
 
             DataContext = this;
+        }
+
+        protected override void OnInitialized(EventArgs e)
+        {
+            base.OnInitialized(e);
+            Application.Current.ShutdownMode = ShutdownMode.OnMainWindowClose;
+        }
+
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            base.OnClosing(e);
+            e.Cancel = true;
+            this.Hide();
         }
 
 

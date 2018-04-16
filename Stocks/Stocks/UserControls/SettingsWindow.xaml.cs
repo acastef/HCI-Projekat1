@@ -30,15 +30,11 @@ namespace Stocks.UserControls
            
             DataContext = this;
             InitializeComponent();
-
-            addRealTimeParameters();
+            
             addDefaultCurrencies();
             addRefreshRates();
             DefaultCurrencies.SelectedIndex = Configuration.Instance.DefaultCurrencyIndex;
             RefreshRates.SelectedIndex = Configuration.Instance.RefreshRateIndex;
-
-
-
         }
 
         private void addRefreshRates()
@@ -69,31 +65,8 @@ namespace Stocks.UserControls
             DefaultCurrencies.ItemsSource = comboBoxes;
         }
 
-        private void addRealTimeParameters()
-        {
-            listOfCheckBoxes = new List<CheckBox>();
-
-            foreach (String key in Configuration.Instance.RealTimeParameters.Keys)
-            {
-                CheckBox cb = new CheckBox();
-                if (Configuration.Instance.RealTimeParameters[key].ToString() == "True")
-                    cb.IsChecked = true;
-                cb.Content = key;
-                listOfCheckBoxes.Add(cb);
-
-            }
-
-            listOfBoxes.ItemsSource = listOfCheckBoxes;
-        }
-
         private void SaveButtonClick(object sender, RoutedEventArgs e)
         {
-            // gets values from realtime parameters
-            foreach (CheckBox cb in  listOfBoxes.Items)
-            {
-                Configuration.Instance.RealTimeParameters[(String)cb.Content] = (Boolean) cb.IsChecked;
-            }
-
             // gets default currency index
             Configuration.Instance.DefaultCurrencyIndex = DefaultCurrencies.SelectedIndex;
             // gets refresh rate index

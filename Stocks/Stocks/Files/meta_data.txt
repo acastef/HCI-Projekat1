@@ -1,2 +1,2 @@
-defaultCurrency: 0
+defaultCurrency: 1
 refreshRate: 0

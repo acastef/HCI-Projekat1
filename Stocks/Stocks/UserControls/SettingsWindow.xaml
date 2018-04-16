@@ -10,26 +10,20 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"></ColumnDefinition>
             <ColumnDefinition Width="*"></ColumnDefinition>
-            <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="2*"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
 
-        <StackPanel Name ="RealTimeParameters" Margin="3" Grid.Column="0" Grid.Row="0">
-            <Label FontWeight="Bold">Application Options</Label>
-            <ListBox Name ="listOfBoxes"></ListBox>
-        </StackPanel>
 
-
-        <StackPanel Grid.Row="0" Grid.Column="1" Margin="3">
+        <StackPanel Grid.Row="0" Grid.Column="0" Margin="3">
             <Label FontWeight="Bold" >Default Currency</Label>
             <ComboBox Name="DefaultCurrencies" ></ComboBox>
         </StackPanel>
 
-        <StackPanel Grid.Row="0" Grid.Column="2" Margin="3">
-            <Label FontWeight="Bold" >RefreshRatey</Label>
+        <StackPanel Grid.Row="0" Grid.Column="1" Margin="3">
+            <Label FontWeight="Bold">RefreshRate</Label>
             <ComboBox Name="RefreshRates" SelectedIndex="1"></ComboBox>
         </StackPanel>
 

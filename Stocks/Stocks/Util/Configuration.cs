@@ -10,13 +10,21 @@ namespace Stocks.Util
     class Configuration
     {
         private static  Configuration _instance;
-        private Dictionary<String, Boolean> _realTimeParameters;
 
         private int _defaultCurrencyIndex;
         private List<String> _defaultCurrenciesList = new List<String>();
 
         private int _refreshRateIndex;
         private List<int> _refreshRateList = new List<int>();
+
+        private String _messageText;
+
+        public String MessageText
+        {
+            get { return _messageText; }
+            set { _messageText = value; }
+        }
+
 
 
         public int RefreshRateIndex
@@ -47,13 +55,6 @@ namespace Stocks.Util
         {
             get { return _defaultCurrenciesList; }
             set { _defaultCurrenciesList = value; }
-        }
-
-
-        public Dictionary<String, Boolean> RealTimeParameters
-        {
-            get { return _realTimeParameters; }
-            set { _realTimeParameters = value; }
         }
 
         

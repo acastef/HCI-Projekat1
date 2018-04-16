@@ -8,10 +8,11 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition></RowDefinition>
-            <RowDefinition></RowDefinition>
-            <RowDefinition></RowDefinition>
-            <RowDefinition></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="2*"></RowDefinition>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition></ColumnDefinition>
@@ -25,6 +26,9 @@
         <TextBlock Grid.Column="1" Grid.Row="1" Foreground="WhiteSmoke" FontSize="20" TextAlignment="Center" VerticalAlignment="Center" Text="{Binding CurrentValue, StringFormat={}{0:N2}}"></TextBlock>
         <TextBlock Grid.Column="1" Grid.Row="2" Foreground="{Binding Color}" FontSize="20" TextAlignment="Center" VerticalAlignment="Center" Text="{Binding Trend, StringFormat={}{0:N2}}"></TextBlock>
         <TextBlock Grid.Column="1" Grid.Row="3" Foreground="{Binding Color}" FontSize="20" TextAlignment="Center" VerticalAlignment="Center" Text="{Binding TrendPercentage, StringFormat={}{0:N2}}"></TextBlock>
-
+        <StackPanel Grid.Row="4" Grid.Column="1" Margin="3">
+            <Label FontWeight="Bold" >RefreshRate</Label>
+            <ComboBox Name="RefreshRate" SelectedIndex="0"></ComboBox>
+        </StackPanel>
     </Grid>
 </UserControl>

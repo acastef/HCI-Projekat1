@@ -40,7 +40,12 @@ namespace Stocks
         private SettingsWindow settings = null;
         private LoadData Data = new LoadData();
         private Help helpWindow;
+        private Configuration statusMessage;
         
+
+        // message in status bar
+        
+
 
         // search field for stocks
         private string _searchText1;
@@ -50,7 +55,7 @@ namespace Stocks
             set
             {
                 _searchText1 = value;
-
+                //StatusMessage = "Stocks filtered";
                 OnPropertyChanged("SearchText1");
                 OnPropertyChanged("FilterStockItems");
             }
@@ -64,7 +69,7 @@ namespace Stocks
             set
             {
                 _searchText2 = value;
-
+                Configuration.Instance.MessageText = "Digital currencies filtered";
                 OnPropertyChanged("SearchText2");
                 OnPropertyChanged("FilterDCurrenciesItems");
             }
@@ -78,7 +83,7 @@ namespace Stocks
             set
             {
                 _searchText3 = value;
-
+                Configuration.Instance.MessageText = "Currencies filtered";
                 OnPropertyChanged("SearchText3");
                 OnPropertyChanged("FilterCCurrenciesItems");
             }
@@ -121,14 +126,15 @@ namespace Stocks
 
         public MainWindow()
         {
-            
+
             Load();
-            
+
             InitializeComponent();
 
             StockItems = new List<CheckBox>();
             DCurrenciesItems = new List<CheckBox>();
             CCurrenciesItems = new List<CheckBox>();
+            statusMessage = Configuration.Instance;
 
             // Initialize Stocks
             foreach (String stockCode in Stocks.ConcreteDataCollection.Keys)
@@ -136,7 +142,7 @@ namespace Stocks
                 CheckBox cb = new CheckBox()
                 {
                     Content = Stocks.ConcreteDataCollection[stockCode] + "(" + stockCode + ")",
-                     Style = (Style)Application.Current.FindResource("CustomCheckBox")
+                    Style = (Style)Application.Current.FindResource("CustomCheckBox")
 
                 };
 
@@ -146,12 +152,12 @@ namespace Stocks
             }
 
 
-            
+
 
             // Initialize Currencies
             foreach (String currencyCode in Currencies.ConcreteDataCollection.Keys)
             {
-                
+
                 CheckBox cb = new CheckBox()
                 {
 
@@ -200,6 +206,7 @@ namespace Stocks
             Configuration.Instance.Symbol = firstSplit.Substring(0, firstSplit.Length - 1);
             Configuration.Instance.FullName = merged.Split('(')[0];
             DataContainer.Children.Add(new CurrencyDataViewer());
+            Configuration.Instance.MessageText = Configuration.Instance.FullName + " fetched!";
         }
 
         private void cbCurrUnchecked(object sender, RoutedEventArgs e)
@@ -212,8 +219,8 @@ namespace Stocks
             String fullName = merged.Split('(')[0];
             String symbol = firstSplit.Substring(0, firstSplit.Length - 1);
             CurrencyDataViewer temp;
+            Configuration.Instance.MessageText = fullName + " removed!";
 
-            
 
             foreach (var dv in DataContainer.Children)
             {
@@ -253,22 +260,24 @@ namespace Stocks
 
             String merged = (String)cb.Content;
             String firstSplit = merged.Split('(')[1];
-            Configuration.Instance.Symbol = firstSplit.Substring(0, firstSplit.Length -1);
+            Configuration.Instance.Symbol = firstSplit.Substring(0, firstSplit.Length - 1);
             Configuration.Instance.FullName = merged.Split('(')[0];
             Configuration.Instance.Type = TypeSeries.STOCK;
             DataContainer.Children.Add(new DataViewer());
+            Configuration.Instance.MessageText = Configuration.Instance.FullName + " fetched!";
         }
         private void cb_Unchecked(object sender, RoutedEventArgs e)
         {
             CheckBox cb = (CheckBox)sender;
 
-            
+
             String merged = (String)cb.Content;
             String firstSplit = merged.Split('(')[1];
             String fullName = merged.Split('(')[0];
             String symbol = firstSplit.Substring(0, firstSplit.Length - 1);
             DataViewer temp;
-            foreach(var dv in DataContainer.Children)
+            Configuration.Instance.MessageText = fullName + " removed!";
+            foreach (var dv in DataContainer.Children)
             {
                 try
                 {
@@ -302,6 +311,7 @@ namespace Stocks
 
         private void cbDigCurrChecked(object sender, RoutedEventArgs e)
         {
+            
             CheckBox cb = (CheckBox)sender;
 
             String merged = (String)cb.Content;
@@ -310,6 +320,7 @@ namespace Stocks
             Configuration.Instance.FullName = merged.Split('(')[0];
             Configuration.Instance.Type = TypeSeries.DIGITAL_CURRENCY;
             DataContainer.Children.Add(new DataDigitalViewer());
+            Configuration.Instance.MessageText = Configuration.Instance.FullName + " fetched!";
         }
         private void cbDigCurrUnchecked(object sender, RoutedEventArgs e)
         {
@@ -320,7 +331,7 @@ namespace Stocks
             String firstSplit = merged.Split('(')[1];
             String fullName = merged.Split('(')[0];
             String symbol = firstSplit.Substring(0, firstSplit.Length - 1);
-
+            Configuration.Instance.MessageText = fullName + " removed!";
             DataDigitalViewer temp;
             foreach (var dv in DataContainer.Children)
             {
@@ -354,7 +365,7 @@ namespace Stocks
 
         public void Load()
         {
-            
+
             try
             {
                 Stocks = Data.ReadStocks();
@@ -364,7 +375,7 @@ namespace Stocks
                 //read metadata
                 int[] meta = Data.ReadMetaData("meta_data.txt");
                 Configuration.Instance.DefaultCurrencyIndex = meta[0];
-                
+
 
                 //read all deafult currencies in application
                 Configuration.Instance.DefaultCurrenciesList = Data.ReadDefaultCurrencies("default_currencies.txt");
@@ -373,8 +384,7 @@ namespace Stocks
                 //get full name od default currency from all currencies in the app
                 //Configuration.Instance.FullName = Currencies.ConcreteDataCollection[Configuration.Instance.Symbol]; 
                 // read all real time parameters in application
-                Configuration.Instance.RealTimeParameters = Data.ReadRealTimeParameteres("real_time_parameteres.txt", ":");
-
+                
                 // you should have learned the pattern by now
                 Configuration.Instance.RefreshRateList = Data.ReadRefreshRates("refresh_rate_list.txt");
                 Configuration.Instance.RefreshRateIndex = meta[1];
@@ -407,18 +417,25 @@ namespace Stocks
         // Action on "SettingsButton" click
         private void SettingsButton_Click(object sender, RoutedEventArgs e)
         {
+            //StatusMessage = "Settings opened";
             settings = new SettingsWindow();
             settings.Show();
         }
 
         private void Button_Click_Help(object sender, RoutedEventArgs e)
         {
+            //StatusMessage = "Help window opened";
             helpWindow = new Help();
             helpWindow.Show();
         }
 
-       
+        private void ShowGlobalGraph(object sender, RoutedEventArgs e)
+        {
+            //StatusMessage = "Compare graph opened";
+            this.graph.Show();
+        }
+
     }
 
-    
+
 }

@@ -89,15 +89,6 @@ namespace Stocks.FileManager
 
             try
             {
-                // saving real time parameters
-                Dictionary<String, Boolean> realTimeP = Configuration.Instance.RealTimeParameters;
-                using (StreamWriter writetext = new StreamWriter(currentPath + "\\Files\\" + "real_time_parameteres.txt", false))
-                {
-                    foreach (String key in realTimeP.Keys)
-                    {
-                        writetext.WriteLine(key + ":" + realTimeP[key]);
-                    }
-                }
 
                 //saving default currency and refresh rate index
                 using (StreamWriter writetext = new StreamWriter(currentPath + "\\Files\\" + "meta_data.txt", false))

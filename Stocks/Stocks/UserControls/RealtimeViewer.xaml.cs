@@ -44,7 +44,7 @@ namespace Stocks.UserControls
         public RealtimeViewer()
         {
             InitializeComponent();
-
+            addRefreshRates();
             _connection.Connect("5XQ6Y6JJKEOQ7JRU");
 
             _args = new FetchArgs
@@ -59,8 +59,21 @@ namespace Stocks.UserControls
 
 
             Init();
-
             DataContext = this;
+        }
+
+        private void addRefreshRates()
+        {
+            List<ComboBoxItem> comboBoxes = new List<ComboBoxItem>();
+
+            foreach (int i in Configuration.Instance.RefreshRateList)
+            {
+                ComboBoxItem cb = new ComboBoxItem();
+                cb.Content = i + " minute(s)";
+                comboBoxes.Add(cb);
+            }
+
+            RefreshRate.ItemsSource = comboBoxes;
         }
 
         private async void Init()
@@ -75,6 +88,10 @@ namespace Stocks.UserControls
                     {
                         LastValue = CurrentValue;
                         CurrentValue = value.Value;
+                        if (LastValue == 0)
+                        {
+                            LastValue = CurrentValue;
+                        }
                         Console.WriteLine(_args.FullName + "  " + _currentValue);
                         double pom1 = CurrentValue - LastValue;
                         if (pom1 > 0)
@@ -92,11 +109,19 @@ namespace Stocks.UserControls
                         pom1 = Math.Truncate(pom1 * 100) / 100;
                         Trend = string.Format("{0:N2}", pom1);
                         if (LastValue != 0)
-                            pom1 = Math.Truncate(pom1 / LastValue * 100);
+                            pom1 = Math.Truncate(pom1 / LastValue * 10000) / 100;
                         else
-                            pom1 = 100;
+                            pom1 = 99999999;
                         TrendPercentage = string.Format("{0:N2}%", pom1);
                     }
+                    if (CurrentValue == 0 && LastValue != 0)
+                    {
+                        CurrentValue = LastValue;
+                        Trend = "0.00";
+                        TrendPercentage = "0.00%";
+                        Color = Brushes.WhiteSmoke;
+                    }
+                    
                     Thread.Sleep(_args.RefreshRate * 60000);
                 }
 
@@ -135,6 +160,31 @@ namespace Stocks.UserControls
 
                 try
                 {
+                    //Const_TIME_SERIES_INTRADAY.TIME_SERIES_INTRADAY_interval cst = Const_TIME_SERIES_INTRADAY.TIME_SERIES_INTRADAY_interval.n_1min;
+                    //if (Refreshrate == "1 minute(s)") 
+                    //{
+                    //    cst = Const_TIME_SERIES_INTRADAY.TIME_SERIES_INTRADAY_interval.n_1min;
+                    //}
+                    //else if (Refreshrate == "5 minutes(s)")
+                    //{
+                    //    cst = Const_TIME_SERIES_INTRADAY.TIME_SERIES_INTRADAY_interval.n_5min;
+                    //}
+                    //else if (Refreshrate == "15 minute(s)")
+                    //{
+                    //    cst = Const_TIME_SERIES_INTRADAY.TIME_SERIES_INTRADAY_interval.n_15min;
+                    //}
+                    //else if (Refreshrate == "30 minute(s)")
+                    //{
+                    //    cst = Const_TIME_SERIES_INTRADAY.TIME_SERIES_INTRADAY_interval.n_30min;
+                    //}
+                    //else if (Refreshrate == "60 minute(s)")
+                    //{
+                    //    cst = Const_TIME_SERIES_INTRADAY.TIME_SERIES_INTRADAY_interval.n_60min;
+                    //}
+                    //else
+                    //{
+                    //    cst = Const_TIME_SERIES_INTRADAY.TIME_SERIES_INTRADAY_interval.none;
+                    //}
                     IAvapiResponse_TIME_SERIES_INTRADAY time_series_intradayResponse =
                     time_series_intraday.Query(
                      _args.Symbol,
@@ -224,8 +274,6 @@ namespace Stocks.UserControls
                 }
             }
 
-
-
             return new RealTimeData();
         }
 
@@ -305,6 +353,8 @@ namespace Stocks.UserControls
                 OnPropertyChanged("Color");
             }
         }
+
+        
 
         public event PropertyChangedEventHandler PropertyChanged;
 

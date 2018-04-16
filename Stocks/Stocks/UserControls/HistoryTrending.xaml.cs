@@ -160,7 +160,7 @@ namespace Stocks.UserControls
                 if (data.Error)
                 {
                     MessageBox.Show("Failed to fetch data", "Error");
-                    Read("\\init.csv");
+                    SeriesCollection[0].Values = Read("\\init.csv");
                     return (ChartValues<DateTimePoint>)SeriesCollection[0].Values;
                 }
                 else
@@ -230,7 +230,7 @@ namespace Stocks.UserControls
             catch (NullReferenceException)
             {
                 MessageBox.Show("Suvise se upita salje serveru za krato vreme, misli da smo spameri. Oladi malo! Prikazuju se podaci koji su dostupni u skladstu podataka.", "Error");
-                Read("\\init.csv");
+                SeriesCollection[0].Values = Read("\\init.csv");
                 return (ChartValues<DateTimePoint>)SeriesCollection[0].Values;
             }
 
@@ -269,7 +269,7 @@ namespace Stocks.UserControls
                 if (data.Error)
                 {
                     MessageBox.Show("Failed to fetch data", "Error");
-                    Read("\\min.csv");
+                    SeriesCollection[0].Values = Read("\\min.csv");
                     ResetZoomOnClick(sender, e);
                     return;
                 }
@@ -286,11 +286,11 @@ namespace Stocks.UserControls
             catch (Exception)
             {
                 MessageBox.Show("Previse zahteva poslato u kratkom vremene server misli da si spamer! Oladi malo sa kliktanjem.", "Error");
-                Read("\\min.csv");
+                SeriesCollection[0].Values = Read("\\min.csv");
                 ResetZoomOnClick(sender, e);
                 return;
             }
-            Read("\\min.csv");
+            SeriesCollection[0].Values = Read("\\min.csv");
             //SeriesCollection[0].Values = values;
             ResetZoomOnClick(sender, e);
         }
@@ -308,7 +308,7 @@ namespace Stocks.UserControls
                 if (data.Error)
                 {
                     MessageBox.Show("Failed to fetch data", "Error");
-                    Read("\\5y.csv");
+                    SeriesCollection[0].Values = Read("\\5y.csv");
                     ResetZoomOnClick(sender, e);
                     return;
                 }
@@ -330,11 +330,11 @@ namespace Stocks.UserControls
             catch (Exception)
             {
                 MessageBox.Show("Previse zahteva poslato u kratkom vremene server misli da si spamer! Oladi malo sa kliktanjem.");
-                Read("\\5y.csv");
+                SeriesCollection[0].Values = Read("\\5y.csv");
                 ResetZoomOnClick(sender, e);
                 return;
             }
-            Read("\\5y.csv");
+            SeriesCollection[0].Values = Read("\\5y.csv");
             //SeriesCollection[0].Values = values;
             ResetZoomOnClick(sender, e);
 
@@ -353,7 +353,7 @@ namespace Stocks.UserControls
                 if (data.Error)
                 {
                     MessageBox.Show("Failed to fetch data", "Error");
-                    Read("\\2y.csv");
+                    SeriesCollection[0].Values = Read("\\2y.csv");
                     ResetZoomOnClick(sender, e);
                     return;
                 }
@@ -377,11 +377,11 @@ namespace Stocks.UserControls
             catch (Exception)
             {
                 MessageBox.Show("Previse zahteva poslato u kratkom vremene server misli da si spamer! Oladi malo sa kliktanjem.");
-                Read("\\2y.csv");
+                SeriesCollection[0].Values = Read("\\2y.csv");
                 ResetZoomOnClick(sender, e);
                 return;
             }
-            Read("\\2y.csv");
+            SeriesCollection[0].Values = Read("\\2y.csv");
             //SeriesCollection[0].Values = values;
             ResetZoomOnClick(sender, e);
 
@@ -400,7 +400,7 @@ namespace Stocks.UserControls
                 if (data.Error)
                 {
                     MessageBox.Show("Failed to fetch data", "Error");
-                    Read("\\1y.csv");
+                    SeriesCollection[0].Values = Read("\\1y.csv");
                     ResetZoomOnClick(sender, e);
                     return;
                 }
@@ -423,11 +423,11 @@ namespace Stocks.UserControls
             catch (Exception)
             {
                 MessageBox.Show("Previse zahteva poslato u kratkom vremene server misli da si spamer! Oladi malo sa kliktanjem.");
-                Read("\\1y.csv");
+                SeriesCollection[0].Values = Read("\\1y.csv");
                 ResetZoomOnClick(sender, e);
                 return;
             }
-            Read("\\1y.csv");
+            SeriesCollection[0].Values = Read("\\1y.csv");
             //SeriesCollection[0].Values = values;
             ResetZoomOnClick(sender, e);
         }
@@ -445,7 +445,7 @@ namespace Stocks.UserControls
                 if (data.Error)
                 {
                     MessageBox.Show("Failed to fetch data", "Error");
-                    Read("\\3m.csv");
+                    SeriesCollection[0].Values = Read("\\3m.csv");
                     ResetZoomOnClick(sender, e);
                     return;
                 }
@@ -470,11 +470,11 @@ namespace Stocks.UserControls
             catch (Exception)
             {
                 MessageBox.Show("Previse zahteva poslato u kratkom vremene server misli da si spamer! Oladi malo sa kliktanjem.");
-                Read("\\3m.csv");
+                SeriesCollection[0].Values = Read("\\3m.csv");
                 ResetZoomOnClick(sender, e);
                 return;
             }
-            Read("\\3m.csv");
+            SeriesCollection[0].Values = Read("\\3m.csv");
             //SeriesCollection[0].Values = values;
             ResetZoomOnClick(sender, e);
         }
@@ -512,12 +512,12 @@ namespace Stocks.UserControls
             catch (Exception)
             {
                 MessageBox.Show("Previse zahteva poslato u kratkom vremene server misli da si spamer! Oladi malo sa kliktanjem.");
-                Read("\\1m.csv");
+                SeriesCollection[0].Values = Read("\\1m.csv");
                 ResetZoomOnClick(sender, e);
                 return;
 
             }
-            Read("\\1m.csv");
+            SeriesCollection[0].Values = Read("\\1m.csv");
             //SeriesCollection[0].Values = values;
             ResetZoomOnClick(sender, e);
         }
@@ -535,7 +535,7 @@ namespace Stocks.UserControls
                 if (data.Error)
                 {
                     MessageBox.Show("Failed to fetch data", "Error");
-                    Read("\\10d.csv");
+                    SeriesCollection[0].Values = Read("\\10d.csv");
                     ResetZoomOnClick(sender, e);
                     return;
                 }
@@ -558,11 +558,11 @@ namespace Stocks.UserControls
             catch (Exception)
             {
                 MessageBox.Show("Previse zahteva poslato u kratkom vremene server misli da si spamer! Oladi malo sa kliktanjem.");
-                Read("\\10d.csv");
+                SeriesCollection[0].Values = Read("\\10d.csv");
                 ResetZoomOnClick(sender, e);
                 return;
             }
-            Read("\\10d.csv");
+            SeriesCollection[0].Values = Read("\\10d.csv");
             // SeriesCollection[0].Values = values;
             ResetZoomOnClick(sender, e);
         }
@@ -588,7 +588,7 @@ namespace Stocks.UserControls
             }
         }
 
-        private void Read(string filePath)
+        private ChartValues<DateTimePoint> Read(string filePath)
         {
             var temp = new ChartValues<DateTimePoint>();
             try
@@ -609,13 +609,15 @@ namespace Stocks.UserControls
 
                     }
                 }
-                SeriesCollection[0].Values = temp;
+                //SeriesCollection[0].Values = temp;
+                return temp;
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
                 MessageBox.Show("Can not get data for " + _args.FullName + "!", "Error");
-                SeriesCollection[0].Values = temp;
+                //SeriesCollection[0].Values = temp;
+                return temp;
             }
 
         }
